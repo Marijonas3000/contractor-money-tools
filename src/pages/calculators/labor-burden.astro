@@ -1,0 +1,1102 @@
+---
+const pageTitle = 'Labor Burden Calculator | Contractor Money Tools';
+const pageDescription =
+  'Estimate what an employee costs per productive hour, including payroll assumptions, benefits, and paid nonproductive time.';
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={pageDescription} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="/" class="brand">Contractor Money Tools</a>
+    </header>
+
+    <main>
+      <header class="page-intro">
+        <p class="eyebrow">Employee cost planning</p>
+        <h1>Labor Burden Calculator</h1>
+        <p>
+          See what an employee really costs per productive hour—not just what
+          appears on their paycheck.
+        </p>
+      </header>
+
+      <form id="labor-burden-form" novalidate>
+        <div class="calculator-layout">
+          <section class="panel inputs-panel" aria-labelledby="quick-inputs-title">
+            <div class="section-heading">
+              <div>
+                <p class="step">Step 1</p>
+                <h2 id="quick-inputs-title">Quick inputs</h2>
+              </div>
+              <p>Adjust any value. Results update automatically.</p>
+            </div>
+
+            <div class="input-grid">
+              <label class="field" for="hourlyWage">
+                <span>Hourly wage</span>
+                <span class="input-shell prefix">
+                  <span aria-hidden="true">$</span>
+                  <input id="hourlyWage" name="hourlyWage" type="number" min="0" step="0.01" value="30" inputmode="decimal" />
+                </span>
+              </label>
+
+              <label class="field" for="hoursPerWeek">
+                <span>Hours paid per week</span>
+                <span class="input-shell suffix">
+                  <input id="hoursPerWeek" name="hoursPerWeek" type="number" min="0.01" step="0.25" value="40" inputmode="decimal" />
+                  <span aria-hidden="true">hrs</span>
+                </span>
+              </label>
+
+              <label class="field" for="weeksPerYear">
+                <span>Weeks paid per year</span>
+                <span class="input-shell suffix">
+                  <input id="weeksPerYear" name="weeksPerYear" type="number" min="0.01" step="0.25" value="52" inputmode="decimal" />
+                  <span aria-hidden="true">wks</span>
+                </span>
+              </label>
+
+              <label class="field" for="payrollTaxRatePercent">
+                <span>Payroll taxes</span>
+                <span class="input-shell suffix">
+                  <input id="payrollTaxRatePercent" name="payrollTaxRatePercent" type="number" min="0" step="0.01" value="7.65" inputmode="decimal" aria-describedby="rate-assumption" />
+                  <span aria-hidden="true">%</span>
+                </span>
+              </label>
+
+              <label class="field" for="workersCompRatePercent">
+                <span>Workers’ compensation</span>
+                <span class="input-shell suffix">
+                  <input id="workersCompRatePercent" name="workersCompRatePercent" type="number" min="0" step="0.01" value="3" inputmode="decimal" aria-describedby="rate-assumption" />
+                  <span aria-hidden="true">%</span>
+                </span>
+              </label>
+
+              <label class="field" for="ptoDays">
+                <span>PTO days</span>
+                <span class="input-shell suffix">
+                  <input id="ptoDays" name="ptoDays" type="number" min="0" step="0.5" value="10" inputmode="decimal" />
+                  <span aria-hidden="true">days</span>
+                </span>
+              </label>
+
+              <label class="field" for="paidHolidays">
+                <span>Paid holidays</span>
+                <span class="input-shell suffix">
+                  <input id="paidHolidays" name="paidHolidays" type="number" min="0" step="0.5" value="8" inputmode="decimal" />
+                  <span aria-hidden="true">days</span>
+                </span>
+              </label>
+            </div>
+
+            <p id="rate-assumption" class="assumption-note">
+              Payroll tax and workers’ compensation rates are editable planning
+              assumptions. They are not universal or official rates.
+            </p>
+          </section>
+
+          <section class="result-card" aria-labelledby="primary-result-title" aria-live="polite">
+            <p class="step">Estimated cost</p>
+            <div data-primary-valid>
+              <h2 id="primary-result-title" class="result-statement">
+                Your <strong data-output="baseHourlyWage">$30.00/hour</strong>{' '}
+                employee actually costs{' '}
+                <strong data-output="trueProductiveHourCost">—</strong>{' '}
+                per productive hour.
+              </h2>
+              <p>
+                That includes wage-based burden, annual employee costs, and the
+                effect of paid nonproductive time.
+              </p>
+            </div>
+            <div id="validation-summary" class="validation-summary" role="alert" hidden>
+              <h2>Check your inputs</h2>
+              <ul id="validation-errors"></ul>
+            </div>
+          </section>
+        </div>
+
+        <details class="panel advanced-panel">
+          <summary>
+            <span>
+              <span class="step">Step 2</span>
+              <strong>Improve accuracy with advanced inputs</strong>
+            </span>
+            <span class="summary-action" aria-hidden="true">Show fields</span>
+          </summary>
+
+          <div class="advanced-content">
+            <p>Add benefits and other annual employee costs when they apply.</p>
+            <div class="input-grid">
+              <label class="field" for="healthInsurance">
+                <span>Health insurance</span>
+                <span class="input-shell prefix suffix">
+                  <span aria-hidden="true">$</span>
+                  <input id="healthInsurance" name="healthInsurance" type="number" min="0" step="1" value="0" inputmode="decimal" />
+                  <span aria-hidden="true">/yr</span>
+                </span>
+              </label>
+
+              <label class="field" for="retirementContribution">
+                <span>Retirement contribution</span>
+                <span class="input-shell prefix suffix">
+                  <span aria-hidden="true">$</span>
+                  <input id="retirementContribution" name="retirementContribution" type="number" min="0" step="1" value="0" inputmode="decimal" />
+                  <span aria-hidden="true">/yr</span>
+                </span>
+              </label>
+
+              <label class="field" for="trainingDays">
+                <span>Training days</span>
+                <span class="input-shell suffix">
+                  <input id="trainingDays" name="trainingDays" type="number" min="0" step="0.5" value="0" inputmode="decimal" />
+                  <span aria-hidden="true">days</span>
+                </span>
+              </label>
+
+              <label class="field" for="otherBenefits">
+                <span>Other benefits</span>
+                <span class="input-shell prefix suffix">
+                  <span aria-hidden="true">$</span>
+                  <input id="otherBenefits" name="otherBenefits" type="number" min="0" step="1" value="0" inputmode="decimal" />
+                  <span aria-hidden="true">/yr</span>
+                </span>
+              </label>
+
+              <label class="field" for="toolsUniforms">
+                <span>Tools and uniforms</span>
+                <span class="input-shell prefix suffix">
+                  <span aria-hidden="true">$</span>
+                  <input id="toolsUniforms" name="toolsUniforms" type="number" min="0" step="1" value="0" inputmode="decimal" />
+                  <span aria-hidden="true">/yr</span>
+                </span>
+              </label>
+
+              <label class="field" for="otherAnnualCosts">
+                <span>Other annual employee costs</span>
+                <span class="input-shell prefix suffix">
+                  <span aria-hidden="true">$</span>
+                  <input id="otherAnnualCosts" name="otherAnnualCosts" type="number" min="0" step="1" value="0" inputmode="decimal" />
+                  <span aria-hidden="true">/yr</span>
+                </span>
+              </label>
+
+              <label class="field" for="hoursPerWorkday">
+                <span>Hours per workday</span>
+                <span class="input-shell suffix">
+                  <input id="hoursPerWorkday" name="hoursPerWorkday" type="number" min="0.01" step="0.25" value="8" inputmode="decimal" />
+                  <span aria-hidden="true">hrs</span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </details>
+      </form>
+
+      <div data-valid-section>
+        <section class="content-section" aria-labelledby="breakdown-title">
+          <div class="section-heading wide-heading">
+            <div>
+              <p class="step">Cost breakdown</p>
+              <h2 id="breakdown-title">Where the annual cost goes</h2>
+            </div>
+            <p>Values are estimates based on the assumptions above.</p>
+          </div>
+
+          <dl class="breakdown-grid">
+            <div><dt>Base hourly wage</dt><dd data-output="baseHourlyWage">—</dd></div>
+            <div><dt>Annual base wage</dt><dd data-output="annualBaseWage">—</dd></div>
+            <div><dt>Payroll taxes</dt><dd data-output="payrollTaxes">—</dd></div>
+            <div><dt>Workers’ compensation</dt><dd data-output="workersComp">—</dd></div>
+            <div><dt>Benefits and other annual costs</dt><dd data-output="fixedAnnualEmploymentCosts">—</dd></div>
+            <div class="emphasis-row"><dt>Total annual employment cost</dt><dd data-output="totalAnnualEmploymentCost">—</dd></div>
+            <div><dt>Labor burden amount</dt><dd data-output="laborBurdenAmount">—</dd></div>
+            <div><dt>Labor burden</dt><dd data-output="laborBurdenPercent">—</dd></div>
+            <div><dt>Annual paid hours</dt><dd data-output="annualPaidHours">—</dd></div>
+            <div><dt>Nonproductive paid hours</dt><dd data-output="nonproductivePaidHours">—</dd></div>
+            <div><dt>Productive hours per year</dt><dd data-output="productiveHours">—</dd></div>
+            <div><dt>Cost per paid hour</dt><dd data-output="paidHourCost">—</dd></div>
+            <div class="emphasis-row"><dt>True productive-hour cost</dt><dd data-output="trueProductiveHourCost">—</dd></div>
+          </dl>
+        </section>
+
+        <section class="content-section time-section" aria-labelledby="time-impact-title">
+          <div class="section-heading wide-heading">
+            <div>
+              <p class="step">Productive-time impact</p>
+              <h2 id="time-impact-title">Paid time is not all productive time</h2>
+            </div>
+          </div>
+
+          <div class="time-card">
+            <div class="time-numbers">
+              <div>
+                <span data-output="productiveHours">—</span>
+                <small>productive hours</small>
+              </div>
+              <div>
+                <span data-output="nonproductivePaidHours">—</span>
+                <small>paid nonproductive hours</small>
+              </div>
+            </div>
+            <div class="time-bar" aria-hidden="true">
+              <span id="productive-time-bar"></span>
+            </div>
+            <p>
+              <strong data-output="currentProductiveUtilizationPercent">—</strong>
+              of paid hours are productive under these assumptions. PTO,
+              holidays, and training are already included in annual wages; they
+              reduce productive hours instead of adding wages again.
+            </p>
+          </div>
+        </section>
+
+        <section class="content-section scenario-section" aria-labelledby="scenario-title">
+          <div class="scenario-copy">
+            <p class="step">Hypothetical scenario</p>
+            <h2 id="scenario-title">What if productive utilization improved by 5 points?</h2>
+            <p>
+              Keeping annual employment cost unchanged, the model increases
+              productive utilization by five percentage points, capped at 100%.
+              This is an illustration, not a recommendation or guaranteed saving.
+            </p>
+          </div>
+          <dl class="scenario-results">
+            <div><dt>Current utilization</dt><dd data-output="currentProductiveUtilizationPercent">—</dd></div>
+            <div><dt>Hypothetical utilization</dt><dd data-output="hypotheticalProductiveUtilizationPercent">—</dd></div>
+            <div><dt>Hypothetical productive hours</dt><dd data-output="hypotheticalProductiveHours">—</dd></div>
+            <div><dt>Hypothetical cost per productive hour</dt><dd data-output="hypotheticalTrueProductiveHourCost">—</dd></div>
+            <div class="scenario-difference"><dt>Difference per hour</dt><dd data-output="costPerHourDifference">—</dd></div>
+          </dl>
+        </section>
+      </div>
+
+      <section class="content-section prose-section" aria-labelledby="methodology-title">
+        <p class="step">Methodology</p>
+        <h2 id="methodology-title">How the calculator works</h2>
+        <p>
+          Labor burden is the amount above base wages that an employee costs the
+          business. This calculator adds wage-based payroll tax and workers’
+          compensation assumptions to benefits and other annual employee costs.
+        </p>
+        <div class="formula-list" aria-label="Calculator formulas">
+          <p><strong>Annual base wage</strong> = hourly wage × annual paid hours</p>
+          <p><strong>Total annual employment cost</strong> = base wage + payroll taxes + workers’ compensation + annual employee costs</p>
+          <p><strong>Productive hours</strong> = annual paid hours − paid nonproductive hours</p>
+          <p><strong>True productive-hour cost</strong> = total annual employment cost ÷ productive hours</p>
+        </div>
+        <p>
+          Productive-hour cost can be considerably higher than hourly wage because
+          the same annual cost is spread across fewer hours. PTO, paid holidays,
+          and training are not added to wages a second time.
+        </p>
+        <p class="disclaimer">
+          Payroll tax and workers’ compensation values are editable assumptions.
+          Actual employer costs vary by state, tax treatment, insurance,
+          classification, benefits, and business circumstances. This calculator
+          provides planning and educational information—not tax, legal,
+          accounting, insurance, or financial advice.
+        </p>
+      </section>
+
+      <section class="content-section faq-section" aria-labelledby="faq-title">
+        <p class="step">FAQ</p>
+        <h2 id="faq-title">Labor burden questions</h2>
+        <details>
+          <summary>What is included in labor burden?</summary>
+          <p>
+            This estimate includes payroll taxes, workers’ compensation,
+            benefits, tools and uniforms, and other annual employee costs entered
+            above the employee’s base wage.
+          </p>
+        </details>
+        <details>
+          <summary>Why are PTO and paid holidays not added as another cost?</summary>
+          <p>
+            Their wages are already included in annual base wage. Paid
+            nonproductive days reduce the hours available for productive work,
+            which raises the cost per productive hour.
+          </p>
+        </details>
+        <details>
+          <summary>Are the payroll tax and workers’ compensation rates official?</summary>
+          <p>
+            No. They are editable planning assumptions. Applicable rates depend
+            on factors such as location, tax treatment, insurance, and employee
+            classification.
+          </p>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      <p>Contractor Money Tools · Business planning calculators for contractors</p>
+    </footer>
+
+    <script>
+      import {
+        calculateLaborBurden,
+        type LaborBurdenInput,
+        type LaborBurdenResult,
+        type LaborBurdenValidationError,
+      } from '../../lib/calculators/labor-burden';
+
+      const form = document.querySelector<HTMLFormElement>('#labor-burden-form');
+      const validationSummary = document.querySelector<HTMLElement>('#validation-summary');
+      const validationErrors = document.querySelector<HTMLUListElement>('#validation-errors');
+      const primaryValid = document.querySelector<HTMLElement>('[data-primary-valid]');
+      const validSections = document.querySelectorAll<HTMLElement>('[data-valid-section]');
+      const productiveTimeBar = document.querySelector<HTMLElement>('#productive-time-bar');
+
+      const inputFields = [
+        'hourlyWage',
+        'hoursPerWeek',
+        'weeksPerYear',
+        'payrollTaxRatePercent',
+        'workersCompRatePercent',
+        'ptoDays',
+        'paidHolidays',
+        'healthInsurance',
+        'retirementContribution',
+        'trainingDays',
+        'otherBenefits',
+        'toolsUniforms',
+        'otherAnnualCosts',
+        'hoursPerWorkday',
+      ] as const satisfies readonly (keyof LaborBurdenInput)[];
+
+      const fieldLabels: Record<string, string> = {
+        hourlyWage: 'Hourly wage',
+        hoursPerWeek: 'Hours paid per week',
+        weeksPerYear: 'Weeks paid per year',
+        payrollTaxRatePercent: 'Payroll taxes',
+        workersCompRatePercent: 'Workers’ compensation',
+        ptoDays: 'PTO days',
+        paidHolidays: 'Paid holidays',
+        healthInsurance: 'Health insurance',
+        retirementContribution: 'Retirement contribution',
+        trainingDays: 'Training days',
+        otherBenefits: 'Other benefits',
+        toolsUniforms: 'Tools and uniforms',
+        otherAnnualCosts: 'Other annual employee costs',
+        hoursPerWorkday: 'Hours per workday',
+        annualBaseWage: 'Annual base wage',
+        productiveHours: 'Productive hours',
+        calculation: 'Calculation',
+      };
+
+      const currency = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+      const percent = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 1,
+      });
+      const hours = new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 1,
+      });
+
+      function setOutput(name: string, value: string) {
+        document
+          .querySelectorAll<HTMLElement>(`[data-output="${name}"]`)
+          .forEach((element) => {
+            element.textContent = value;
+          });
+      }
+
+      function readInput(): LaborBurdenInput {
+        return Object.fromEntries(
+          inputFields.map((field) => {
+            const input = form?.elements.namedItem(field);
+            return [
+              field,
+              input instanceof HTMLInputElement ? input.valueAsNumber : Number.NaN,
+            ];
+          }),
+        ) as unknown as LaborBurdenInput;
+      }
+
+      function showValidation(errors: LaborBurdenValidationError[]) {
+        primaryValid?.setAttribute('hidden', '');
+        validationSummary?.removeAttribute('hidden');
+        validSections.forEach((section) => section.setAttribute('hidden', ''));
+
+        form?.querySelectorAll('input').forEach((input) => {
+          input.removeAttribute('aria-invalid');
+        });
+
+        if (validationErrors) {
+          validationErrors.replaceChildren(
+            ...errors.map((error) => {
+              const item = document.createElement('li');
+              const input = document.getElementById(error.field);
+
+              if (input instanceof HTMLInputElement) {
+                input.setAttribute('aria-invalid', 'true');
+                const link = document.createElement('a');
+                link.href = `#${error.field}`;
+                link.textContent = `${fieldLabels[error.field]}: ${error.message}`;
+                item.append(link);
+              } else {
+                item.textContent = `${fieldLabels[error.field]}: ${error.message}`;
+              }
+
+              return item;
+            }),
+          );
+        }
+      }
+
+      function showResults(result: LaborBurdenResult) {
+        primaryValid?.removeAttribute('hidden');
+        validationSummary?.setAttribute('hidden', '');
+        validSections.forEach((section) => section.removeAttribute('hidden'));
+        form?.querySelectorAll('input').forEach((input) => {
+          input.removeAttribute('aria-invalid');
+        });
+
+        setOutput('baseHourlyWage', `${currency.format(result.baseHourlyWage)}/hour`);
+        setOutput('annualPaidHours', `${hours.format(result.annualPaidHours)} hours`);
+        setOutput('annualBaseWage', currency.format(result.annualBaseWage));
+        setOutput('payrollTaxes', currency.format(result.payrollTaxes));
+        setOutput('workersComp', currency.format(result.workersComp));
+        setOutput('fixedAnnualEmploymentCosts', currency.format(result.fixedAnnualEmploymentCosts));
+        setOutput('totalAnnualEmploymentCost', currency.format(result.totalAnnualEmploymentCost));
+        setOutput('nonproductivePaidHours', `${hours.format(result.nonproductivePaidHours)} hours`);
+        setOutput('productiveHours', `${hours.format(result.productiveHours)} hours`);
+        setOutput('laborBurdenAmount', currency.format(result.laborBurdenAmount));
+        setOutput('laborBurdenPercent', `${percent.format(result.laborBurdenPercent)}%`);
+        setOutput('paidHourCost', currency.format(result.paidHourCost));
+        setOutput('trueProductiveHourCost', currency.format(result.trueProductiveHourCost));
+
+        const scenario = result.sensitivityScenario;
+        setOutput('currentProductiveUtilizationPercent', `${percent.format(scenario.currentProductiveUtilizationPercent)}%`);
+        setOutput('hypotheticalProductiveUtilizationPercent', `${percent.format(scenario.hypotheticalProductiveUtilizationPercent)}%`);
+        setOutput('hypotheticalProductiveHours', `${hours.format(scenario.hypotheticalProductiveHours)} hours`);
+        setOutput('hypotheticalTrueProductiveHourCost', currency.format(scenario.hypotheticalTrueProductiveHourCost));
+        setOutput('costPerHourDifference', currency.format(scenario.costPerHourDifference));
+
+        if (productiveTimeBar) {
+          productiveTimeBar.style.width = `${Math.min(scenario.currentProductiveUtilizationPercent, 100)}%`;
+        }
+      }
+
+      function updateCalculator() {
+        const calculation = calculateLaborBurden(readInput());
+
+        if (calculation.success) {
+          showResults(calculation.result);
+        } else {
+          showValidation(calculation.errors);
+        }
+      }
+
+      form?.addEventListener('input', updateCalculator);
+      updateCalculator();
+    </script>
+  </body>
+</html>
+
+<style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  :global(:root) {
+    color-scheme: light;
+    --ink: #17232d;
+    --muted: #5c6b75;
+    --navy: #153447;
+    --navy-deep: #0d2635;
+    --teal: #167c73;
+    --teal-light: #dff2ef;
+    --amber: #f4aa3c;
+    --cream: #f7f5ef;
+    --line: #d9e0e3;
+    --white: #ffffff;
+    --danger: #a42a2a;
+    --radius: 0.85rem;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  :global(body) {
+    margin: 0;
+    color: var(--ink);
+    background: var(--cream);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  :global(button),
+  :global(input) {
+    font: inherit;
+  }
+
+  :global([hidden]) {
+    display: none !important;
+  }
+
+  :global(a) {
+    color: var(--teal);
+  }
+
+  .site-header {
+    border-bottom: 1px solid rgb(255 255 255 / 12%);
+    background: var(--navy-deep);
+    padding: 1rem max(1rem, calc((100% - 70rem) / 2));
+  }
+
+  .brand {
+    color: var(--white);
+    font-weight: 750;
+    letter-spacing: -0.015em;
+    text-decoration: none;
+  }
+
+  main,
+  footer {
+    width: min(100% - 2rem, 70rem);
+    margin-inline: auto;
+  }
+
+  main {
+    padding-block: 2.5rem 5rem;
+  }
+
+  .page-intro {
+    max-width: 46rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .eyebrow,
+  .step {
+    margin: 0 0 0.35rem;
+    color: var(--teal);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.095em;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  p {
+    margin-top: 0;
+  }
+
+  h1,
+  h2 {
+    color: var(--navy-deep);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+
+  h1 {
+    margin-bottom: 0.75rem;
+    font-size: clamp(2.1rem, 7vw, 3.5rem);
+  }
+
+  h2 {
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+  }
+
+  .page-intro > p:last-child,
+  .section-heading > p,
+  .advanced-content > p,
+  .result-card p,
+  .scenario-copy p,
+  .prose-section > p {
+    color: var(--muted);
+  }
+
+  .page-intro > p:last-child {
+    max-width: 40rem;
+    margin-bottom: 0;
+    font-size: 1.1rem;
+  }
+
+  .calculator-layout {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .panel,
+  .content-section {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: 0 0.4rem 1.4rem rgb(13 38 53 / 5%);
+  }
+
+  .inputs-panel,
+  .content-section {
+    padding: 1.25rem;
+  }
+
+  .section-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-heading h2,
+  .section-heading p {
+    margin-bottom: 0;
+  }
+
+  .section-heading > p {
+    font-size: 0.9rem;
+  }
+
+  .input-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.4rem;
+    color: var(--navy-deep);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .input-shell {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    min-height: 3rem;
+    border: 1px solid #bac7cc;
+    border-radius: 0.55rem;
+    background: var(--white);
+    color: var(--muted);
+    font-weight: 600;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+
+  .input-shell:focus-within {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgb(22 124 115 / 18%);
+  }
+
+  .input-shell > span {
+    padding-inline: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .input-shell.prefix > span:first-child {
+    padding-right: 0;
+  }
+
+  .input-shell.suffix > span:last-child {
+    padding-left: 0;
+  }
+
+  input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    padding: 0.72rem 0.8rem;
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  input[aria-invalid="true"] {
+    color: var(--danger);
+  }
+
+  .input-shell:has(input[aria-invalid="true"]) {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px rgb(164 42 42 / 12%);
+  }
+
+  .assumption-note {
+    margin: 1rem 0 0;
+    border-left: 3px solid var(--amber);
+    padding-left: 0.8rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .result-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--navy);
+    border-radius: var(--radius);
+    background: var(--navy-deep);
+    padding: 1.5rem;
+    color: var(--white);
+    box-shadow: 0 1rem 2.5rem rgb(13 38 53 / 16%);
+  }
+
+  .result-card::after {
+    position: absolute;
+    right: -3rem;
+    bottom: -4rem;
+    width: 11rem;
+    height: 11rem;
+    border: 1.4rem solid rgb(244 170 60 / 15%);
+    border-radius: 50%;
+    content: "";
+    pointer-events: none;
+  }
+
+  .result-card .step {
+    color: #8ed9d1;
+  }
+
+  .result-statement,
+  .validation-summary h2 {
+    max-width: 33rem;
+    color: var(--white);
+    font-size: clamp(1.55rem, 6vw, 2.35rem);
+    line-height: 1.2;
+  }
+
+  .result-statement strong {
+    color: #ffc56d;
+  }
+
+  .result-card p:last-child {
+    position: relative;
+    z-index: 1;
+    max-width: 33rem;
+    margin-bottom: 0;
+    color: #cad6dc;
+  }
+
+  .validation-summary ul {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  .validation-summary a {
+    color: #ffd394;
+  }
+
+  .advanced-panel {
+    margin-top: 1rem;
+  }
+
+  .advanced-panel > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 1.25rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .advanced-panel > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .advanced-panel > summary:focus-visible,
+  .faq-section summary:focus-visible,
+  .brand:focus-visible {
+    outline: 3px solid var(--amber);
+    outline-offset: 3px;
+  }
+
+  .advanced-panel .step {
+    display: block;
+  }
+
+  .summary-action {
+    color: var(--teal);
+    font-size: 0.88rem;
+    font-weight: 800;
+  }
+
+  .advanced-panel[open] .summary-action {
+    font-size: 0;
+  }
+
+  .advanced-panel[open] .summary-action::after {
+    font-size: 0.88rem;
+    content: "Hide fields";
+  }
+
+  .advanced-content {
+    border-top: 1px solid var(--line);
+    padding: 1.25rem;
+  }
+
+  .content-section {
+    margin-top: 1rem;
+  }
+
+  .breakdown-grid,
+  .scenario-results {
+    display: grid;
+    margin: 0;
+  }
+
+  .breakdown-grid > div,
+  .scenario-results > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid var(--line);
+    padding-block: 0.8rem;
+  }
+
+  .breakdown-grid dt,
+  .scenario-results dt {
+    color: var(--muted);
+  }
+
+  .breakdown-grid dd,
+  .scenario-results dd {
+    margin: 0;
+    color: var(--navy-deep);
+    font-weight: 800;
+    text-align: right;
+  }
+
+  .breakdown-grid .emphasis-row {
+    border-top-color: var(--navy);
+  }
+
+  .breakdown-grid .emphasis-row dt,
+  .breakdown-grid .emphasis-row dd {
+    color: var(--navy-deep);
+    font-weight: 800;
+  }
+
+  .time-card {
+    border-radius: 0.7rem;
+    background: var(--cream);
+    padding: 1rem;
+  }
+
+  .time-numbers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .time-numbers div {
+    display: grid;
+  }
+
+  .time-numbers span {
+    color: var(--navy-deep);
+    font-size: 1.2rem;
+    font-weight: 850;
+  }
+
+  .time-numbers small {
+    color: var(--muted);
+    line-height: 1.3;
+  }
+
+  .time-bar {
+    overflow: hidden;
+    height: 0.8rem;
+    margin-block: 1rem;
+    border-radius: 999px;
+    background: #d8dee0;
+  }
+
+  .time-bar span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--teal);
+    transition: width 180ms ease;
+  }
+
+  .time-card p {
+    margin-bottom: 0;
+    color: var(--muted);
+  }
+
+  .scenario-section {
+    border-color: #b8dcd7;
+    background: var(--teal-light);
+  }
+
+  .scenario-copy p:last-child {
+    margin-bottom: 1.25rem;
+  }
+
+  .scenario-results > div {
+    border-color: rgb(21 52 71 / 15%);
+  }
+
+  .scenario-results .scenario-difference dd {
+    color: var(--teal);
+    font-size: 1.15rem;
+  }
+
+  .prose-section,
+  .faq-section {
+    max-width: 54rem;
+  }
+
+  .formula-list {
+    margin-block: 1.25rem;
+    border-left: 3px solid var(--teal);
+    padding-left: 1rem;
+  }
+
+  .formula-list p {
+    margin-bottom: 0.5rem;
+  }
+
+  .disclaimer {
+    border-radius: 0.6rem;
+    background: var(--cream);
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .faq-section details {
+    border-top: 1px solid var(--line);
+    padding-block: 0.9rem;
+  }
+
+  .faq-section summary {
+    cursor: pointer;
+    color: var(--navy-deep);
+    font-weight: 750;
+  }
+
+  .faq-section details p {
+    margin: 0.75rem 0 0;
+    color: var(--muted);
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 1.5rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  footer p {
+    margin: 0;
+  }
+
+  @media (max-width: 41.999rem) {
+    .input-shell,
+    .input-shell input {
+      font-size: 1rem;
+    }
+  }
+
+  @media (min-width: 42rem) {
+    main {
+      padding-top: 3.5rem;
+    }
+
+    .inputs-panel,
+    .content-section {
+      padding: 1.75rem;
+    }
+
+    .input-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .wide-heading {
+      flex-direction: row;
+      align-items: end;
+      justify-content: space-between;
+    }
+
+    .breakdown-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 2rem;
+    }
+
+    .scenario-section {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(20rem, 1.1fr);
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .scenario-copy p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @media (min-width: 62rem) {
+    main {
+      padding-top: 2rem;
+    }
+
+    .page-intro {
+      margin-bottom: 1rem;
+    }
+
+    .calculator-layout {
+      grid-template-columns: minmax(0, 1.35fr) minmax(20rem, 0.65fr);
+      align-items: start;
+    }
+
+    .inputs-panel {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .inputs-panel .section-heading {
+      margin-bottom: 0.75rem;
+    }
+
+    .inputs-panel .input-grid {
+      gap: 0.75rem 1rem;
+    }
+
+    .inputs-panel .assumption-note {
+      margin-top: 0.75rem;
+    }
+
+    .advanced-panel,
+    .content-section {
+      margin-top: 0.75rem;
+    }
+
+    .result-card {
+      position: sticky;
+      top: 1rem;
+      min-height: 21rem;
+      padding: 2rem;
+    }
+
+    .inputs-panel .input-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .advanced-content .input-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>

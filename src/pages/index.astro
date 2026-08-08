@@ -1,0 +1,38 @@
+---
+const pageTitle = 'Contractor Money Tools';
+const pageDescription = 'Practical calculators for contractor business decisions.';
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={pageDescription} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <main>
+      <h1>{pageTitle}</h1>
+      <p>Calculator tools are coming soon.</p>
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  :global(body) {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+
+  main {
+    width: min(100% - 2rem, 48rem);
+    margin-inline: auto;
+    padding-block: 4rem;
+  }
+</style>
