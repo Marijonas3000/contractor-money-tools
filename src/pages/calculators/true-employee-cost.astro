@@ -1,0 +1,445 @@
+---
+import CalculatorPageLayout from '../../layouts/CalculatorPageLayout.astro';
+import RecommendationSlot from '../../components/calculators/RecommendationSlot.astro';
+import RelatedCalculators from '../../components/calculators/RelatedCalculators.astro';
+const pageTitle = 'True Employee Cost Calculator | Contractor Money Tools';
+const pageDescription =
+  'Estimate the true annual employer cost of an hourly or salaried employee, including taxes, benefits, and operating support.';
+---
+
+<CalculatorPageLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="calculator">      <header class="page-intro">
+        <p class="eyebrow">Employee cost planning</p>
+        <h1>True Employee Cost Calculator</h1>
+        <p>
+          Base pay is only part of what an employee costs your business. Add
+          employer-paid taxes, benefits, and support costs to see the full year.
+        </p>
+      </header>
+
+      <form id="employee-cost-form" novalidate>
+        <div class="calculator-layout">
+          <section class="panel inputs-panel" aria-labelledby="quick-inputs-title">
+            <div class="section-heading">
+              <div>
+                <p class="step">Step 1</p>
+                <h2 id="quick-inputs-title">Employee and cost inputs</h2>
+              </div>
+              <p>Adjust any value. Results update automatically.</p>
+            </div>
+
+            <fieldset class="mode-fieldset">
+              <legend>Employee type</legend>
+              <div class="mode-toggle">
+                <label>
+                  <input type="radio" name="mode" value="hourly" checked />
+                  <span>Hourly</span>
+                </label>
+                <label>
+                  <input type="radio" name="mode" value="salary" />
+                  <span>Salary</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <div class="input-group" data-mode-fields="hourly">
+              <h3>Base compensation</h3>
+              <div class="input-grid compensation-grid">
+                <label class="field" for="hourlyWage">
+                  <span>Hourly wage</span>
+                  <span class="input-shell prefix suffix">
+                    <span aria-hidden="true">$</span>
+                    <input id="hourlyWage" name="hourlyWage" type="number" min="0.01" step="0.01" value="30" inputmode="decimal" />
+                    <span aria-hidden="true">/hr</span>
+                  </span>
+                </label>
+                <label class="field" for="hoursPerWeek">
+                  <span>Paid hours per week</span>
+                  <span class="input-shell suffix">
+                    <input id="hoursPerWeek" name="hoursPerWeek" type="number" min="0.01" step="0.25" value="40" inputmode="decimal" />
+                    <span aria-hidden="true">hrs</span>
+                  </span>
+                </label>
+                <label class="field" for="weeksPerYear">
+                  <span>Paid weeks per year</span>
+                  <span class="input-shell suffix">
+                    <input id="weeksPerYear" name="weeksPerYear" type="number" min="0.01" step="0.25" value="52" inputmode="decimal" />
+                    <span aria-hidden="true">wks</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="input-group" data-mode-fields="salary" hidden>
+              <h3>Base compensation</h3>
+              <div class="input-grid">
+                <label class="field" for="annualSalary">
+                  <span>Annual salary</span>
+                  <span class="input-shell prefix suffix">
+                    <span aria-hidden="true">$</span>
+                    <input id="annualSalary" name="annualSalary" type="number" min="0.01" step="1" value="70000" inputmode="decimal" disabled />
+                    <span aria-hidden="true">/yr</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="input-group employer-costs">
+              <h3>Employer costs</h3>
+              <div class="input-grid">
+                <label class="field" for="payrollTaxRatePercent">
+                  <span>Payroll taxes</span>
+                  <span class="input-shell suffix">
+                    <input id="payrollTaxRatePercent" name="payrollTaxRatePercent" type="number" min="0" step="0.01" value="7.65" inputmode="decimal" aria-describedby="rate-assumption" />
+                    <span aria-hidden="true">%</span>
+                  </span>
+                </label>
+                <label class="field" for="workersCompRatePercent">
+                  <span>Workers’ compensation</span>
+                  <span class="input-shell suffix">
+                    <input id="workersCompRatePercent" name="workersCompRatePercent" type="number" min="0" step="0.01" value="3" inputmode="decimal" aria-describedby="rate-assumption" />
+                    <span aria-hidden="true">%</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <p id="rate-assumption" class="assumption-note">
+              Payroll tax and workers’ compensation rates are editable planning
+              assumptions—not universal or official U.S. rates.
+            </p>
+          </section>
+
+          <section class="result-card" aria-labelledby="primary-result-title" aria-live="polite">
+            <p class="step">Estimated annual cost</p>
+            <div data-primary-valid>
+              <h2 id="primary-result-title" class="result-statement">
+                Your <strong data-output="compensationDescription">$30/hour</strong>{' '}
+                employee costs about{' '}
+                <strong data-output="primaryAnnualCost">—</strong> per year.
+              </h2>
+              <p class="secondary-result">
+                Every <strong>$1.00</strong> of base pay costs your business{' '}
+                <strong data-output="costMultiplierDollars">—</strong>{'.'}
+              </p>
+            </div>
+            <div id="validation-summary" class="validation-summary" role="alert" hidden>
+              <h2>Check your inputs</h2>
+              <ul id="validation-errors"></ul>
+            </div>
+          </section>
+        </div>
+
+        <details class="panel advanced-panel">
+          <summary>
+            <span>
+              <span class="step">Step 2</span>
+              <strong>Improve accuracy with advanced inputs</strong>
+            </span>
+            <span class="summary-action" aria-hidden="true">Show fields</span>
+          </summary>
+          <div class="advanced-content">
+            <p>Add annual compensation, benefit, equipment, and support costs when they apply.</p>
+            <div class="input-grid advanced-grid">
+              <label class="field" for="healthInsurance"><span>Health insurance</span><span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="healthInsurance" name="healthInsurance" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span></label>
+              <label class="field" for="retirementContribution"><span>Retirement contribution</span><span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="retirementContribution" name="retirementContribution" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span></label>
+              <label class="field" for="bonusesAndCommissions"><span>Bonuses / commissions</span><span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="bonusesAndCommissions" name="bonusesAndCommissions" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span></label>
+              <label class="field" for="otherBenefits"><span>Other benefits</span><span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="otherBenefits" name="otherBenefits" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span></label>
+              <label class="field" for="recruitingHiringCost"><span>Recruiting / hiring cost</span><span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="recruitingHiringCost" name="recruitingHiringCost" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span></label>
+              <label class="field" for="trainingCost"><span>Training cost</span><span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="trainingCost" name="trainingCost" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span></label>
+              <label class="field" for="toolsUniforms"><span>Tools and uniforms</span><span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="toolsUniforms" name="toolsUniforms" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span></label>
+              <label class="field" for="phoneDeviceCost"><span>Phone / device cost</span><span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="phoneDeviceCost" name="phoneDeviceCost" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span></label>
+              <label class="field" for="vehicleCost"><span>Vehicle allowance / employer vehicle</span><span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="vehicleCost" name="vehicleCost" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span></label>
+              <label class="field" for="softwareLicenses"><span>Software / licenses</span><span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="softwareLicenses" name="softwareLicenses" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span></label>
+              <label class="field" for="workspaceAllocation"><span>Workspace / office allocation</span><span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="workspaceAllocation" name="workspaceAllocation" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span></label>
+              <label class="field" for="otherAnnualEmployeeCosts"><span>Other annual employee costs</span><span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="otherAnnualEmployeeCosts" name="otherAnnualEmployeeCosts" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span></label>
+            </div>
+          </div>
+        </details>
+
+        <section class="content-section" aria-labelledby="breakdown-title" data-valid-section>
+          <div class="section-heading wide-heading">
+            <div><p class="step">Cost breakdown</p><h2 id="breakdown-title">What the employee costs the business</h2></div>
+            <p>Annual estimates based on the assumptions above.</p>
+          </div>
+          <dl class="breakdown-grid">
+            <div><dt>Base compensation</dt><dd data-output="annualBaseCompensation">—</dd></div>
+            <div><dt>Payroll taxes</dt><dd data-output="payrollTaxes">—</dd></div>
+            <div><dt>Workers’ compensation</dt><dd data-output="workersComp">—</dd></div>
+            <div><dt>Bonuses / commissions</dt><dd data-output="additionalCashCompensation">—</dd></div>
+            <div><dt>Benefits</dt><dd data-output="benefitsCost">—</dd></div>
+            <div><dt>Operating support costs</dt><dd data-output="operatingSupportCost">—</dd></div>
+            <div><dt>Additional employer cost</dt><dd data-output="additionalEmployerCost">—</dd></div>
+            <div><dt>Additional employer cost</dt><dd data-output="additionalEmployerCostPercent">—</dd></div>
+            <div class="emphasis-row"><dt>Total annual employee cost</dt><dd data-output="totalAnnualEmployeeCost">—</dd></div>
+            <div><dt>Monthly employer cost</dt><dd data-output="monthlyEmployerCost">—</dd></div>
+            <div><dt>Weekly employer cost</dt><dd data-output="weeklyEmployerCost">—</dd></div>
+            <div><dt>Cost multiplier</dt><dd data-output="costMultiplier">—</dd></div>
+            <div id="paid-hour-row" class="emphasis-row"><dt>Paid hour employer cost</dt><dd data-output="paidHourEmployerCost">—</dd></div>
+          </dl>
+        </section>
+
+        <section class="content-section revenue-section" aria-labelledby="revenue-title">
+          <div class="revenue-copy">
+            <p class="step">Optional scenario</p>
+            <h2 id="revenue-title">Compare employee cost with expected revenue</h2>
+            <p>Leave this blank if you do not want to model employee-generated revenue.</p>
+            <label class="field revenue-input" for="expectedAnnualRevenue">
+              <span>Expected annual revenue generated by employee</span>
+              <span class="input-shell prefix suffix">
+                <span aria-hidden="true">$</span>
+                <input id="expectedAnnualRevenue" name="expectedAnnualRevenue" type="number" min="0" step="1" inputmode="decimal" />
+                <span aria-hidden="true">/yr</span>
+              </span>
+            </label>
+          </div>
+          <div id="revenue-results" class="revenue-results" hidden>
+            <dl>
+              <div><dt>Expected revenue</dt><dd data-output="expectedAnnualRevenue">—</dd></div>
+              <div><dt>Revenue-to-cost ratio</dt><dd data-output="revenueToCostRatio">—</dd></div>
+              <div><dt>Contribution before shared overhead</dt><dd data-output="contributionBeforeSharedOverhead">—</dd></div>
+            </dl>
+            <p><strong>This is not net profit.</strong> Shared company overhead and other business costs may still remain.</p>
+          </div>
+        </section>
+      </form>
+
+  </Fragment>
+
+  <Fragment slot="methodology">
+      <section class="content-section prose-section" aria-labelledby="methodology-title">
+        <p class="step">Methodology</p>
+        <h2 id="methodology-title">How the calculator works</h2>
+        <p>
+          Base pay is not the same as total employer cost. The calculator adds
+          employer-paid payroll tax and workers’ compensation assumptions,
+          bonuses, benefits, and operating support costs to annual base compensation.
+        </p>
+        <div class="formula-list" aria-label="Calculator formulas">
+          <p><strong>Base compensation</strong> = hourly wage × paid hours × paid weeks, or annual salary</p>
+          <p><strong>Total employee cost</strong> = base compensation + wage-based costs + bonuses + benefits + support costs</p>
+          <p><strong>Cost multiplier</strong> = total employee cost ÷ base compensation</p>
+          <p><strong>Additional employer cost</strong> = total employee cost − base compensation</p>
+        </div>
+        <p>
+          Actual costs vary by employee, state, insurer, company policies, and
+          business model. Revenue comparison does not calculate net profit.
+        </p>
+        <p class="disclaimer">
+          This calculator provides planning and educational information—not tax,
+          legal, accounting, insurance, HR, or financial advice.
+        </p>
+      </section>
+
+  </Fragment>
+
+  <RecommendationSlot slot="recommendation" />
+
+  <Fragment slot="faq-related">
+      <section class="content-section faq-section" aria-labelledby="faq-title">
+        <p class="step">FAQ</p>
+        <h2 id="faq-title">True employee cost questions</h2>
+        <details><summary>What is included in true employee cost?</summary><p>It includes base compensation, entered payroll and workers’ compensation assumptions, bonuses, benefits, and annual support costs.</p></details>
+        <details><summary>Can I calculate both hourly and salaried employees?</summary><p>Yes. Hourly mode calculates annual base compensation from wage, paid hours, and paid weeks. Salary mode uses annual salary.</p></details>
+        <details><summary>Is contribution before shared overhead net profit?</summary><p>No. Shared company overhead, owner compensation, financing, tax, and other business costs may still remain.</p></details>
+        <details><summary>Are the tax and insurance rates official?</summary><p>No. They are editable planning assumptions and vary with location, classification, insurance, and business circumstances.</p></details>
+      </section>
+    <RelatedCalculators calculators={[{ title: 'Labor Burden Calculator', description: 'Estimate what an employee costs per productive hour.', href: '/calculators/labor-burden' }]} />
+  </Fragment>
+
+  <Fragment slot="scripts">
+    <script>
+      import {
+        calculateTrueEmployeeCost,
+        type TrueEmployeeCostCommonInput,
+        type TrueEmployeeCostInput,
+        type TrueEmployeeCostResult,
+        type TrueEmployeeCostValidationError,
+      } from '../../lib/calculators/true-employee-cost';
+
+      const form = document.querySelector<HTMLFormElement>('#employee-cost-form');
+      const primaryValid = document.querySelector<HTMLElement>('[data-primary-valid]');
+      const validationSummary = document.querySelector<HTMLElement>('#validation-summary');
+      const validationErrors = document.querySelector<HTMLUListElement>('#validation-errors');
+      const validSections = document.querySelectorAll<HTMLElement>('[data-valid-section]');
+      const revenueResults = document.querySelector<HTMLElement>('#revenue-results');
+      const paidHourRow = document.querySelector<HTMLElement>('#paid-hour-row');
+
+      const commonFields = [
+        'payrollTaxRatePercent', 'workersCompRatePercent', 'healthInsurance',
+        'retirementContribution', 'bonusesAndCommissions', 'otherBenefits',
+        'recruitingHiringCost', 'trainingCost', 'toolsUniforms',
+        'phoneDeviceCost', 'vehicleCost', 'softwareLicenses',
+        'workspaceAllocation', 'otherAnnualEmployeeCosts',
+      ] as const satisfies readonly (keyof TrueEmployeeCostCommonInput)[];
+
+      const fieldLabels: Record<string, string> = {
+        mode: 'Employee type', hourlyWage: 'Hourly wage', hoursPerWeek: 'Paid hours per week',
+        weeksPerYear: 'Paid weeks per year', annualSalary: 'Annual salary',
+        payrollTaxRatePercent: 'Payroll taxes', workersCompRatePercent: 'Workers’ compensation',
+        healthInsurance: 'Health insurance', retirementContribution: 'Retirement contribution',
+        bonusesAndCommissions: 'Bonuses / commissions', otherBenefits: 'Other benefits',
+        recruitingHiringCost: 'Recruiting / hiring cost', trainingCost: 'Training cost',
+        toolsUniforms: 'Tools and uniforms', phoneDeviceCost: 'Phone / device cost',
+        vehicleCost: 'Vehicle cost', softwareLicenses: 'Software / licenses',
+        workspaceAllocation: 'Workspace / office allocation', otherAnnualEmployeeCosts: 'Other annual employee costs',
+        expectedAnnualRevenue: 'Expected annual revenue', annualBaseCompensation: 'Annual base compensation',
+        calculation: 'Calculation',
+      };
+
+      const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const wholeCurrency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+      const flexibleCurrency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 });
+      const percent = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
+      const ratio = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      function getNumber(name: string): number {
+        const control = form?.elements.namedItem(name);
+        return control instanceof HTMLInputElement ? control.valueAsNumber : Number.NaN;
+      }
+
+      function setOutput(name: string, value: string) {
+        document.querySelectorAll<HTMLElement>(`[data-output="${name}"]`).forEach((element) => {
+          element.textContent = value;
+        });
+      }
+
+      function selectedMode(): 'hourly' | 'salary' {
+        const selected = form?.querySelector<HTMLInputElement>('input[name="mode"]:checked');
+        return selected?.value === 'salary' ? 'salary' : 'hourly';
+      }
+
+      function readInput(): TrueEmployeeCostInput {
+        const common = Object.fromEntries(commonFields.map((field) => [field, getNumber(field)])) as unknown as TrueEmployeeCostCommonInput;
+        const revenueControl = form?.elements.namedItem('expectedAnnualRevenue');
+        const expectedAnnualRevenue = revenueControl instanceof HTMLInputElement && revenueControl.value.trim() !== ''
+          ? revenueControl.valueAsNumber
+          : undefined;
+        const mode = selectedMode();
+
+        if (mode === 'salary') {
+          return { ...common, expectedAnnualRevenue, mode, annualSalary: getNumber('annualSalary') };
+        }
+
+        return {
+          ...common, expectedAnnualRevenue, mode,
+          hourlyWage: getNumber('hourlyWage'),
+          hoursPerWeek: getNumber('hoursPerWeek'),
+          weeksPerYear: getNumber('weeksPerYear'),
+        };
+      }
+
+      function syncMode() {
+        const mode = selectedMode();
+        document.querySelectorAll<HTMLElement>('[data-mode-fields]').forEach((container) => {
+          const active = container.dataset.modeFields === mode;
+          container.toggleAttribute('hidden', !active);
+          container.querySelectorAll<HTMLInputElement>('input').forEach((input) => { input.disabled = !active; });
+        });
+      }
+
+      function showValidation(errors: TrueEmployeeCostValidationError[]) {
+        primaryValid?.setAttribute('hidden', '');
+        validationSummary?.removeAttribute('hidden');
+        validSections.forEach((section) => section.setAttribute('hidden', ''));
+        revenueResults?.setAttribute('hidden', '');
+        form?.querySelectorAll('input').forEach((input) => input.removeAttribute('aria-invalid'));
+
+        validationErrors?.replaceChildren(...errors.map((error) => {
+          const item = document.createElement('li');
+          const control = document.getElementById(error.field);
+          if (control instanceof HTMLInputElement) {
+            control.setAttribute('aria-invalid', 'true');
+            const link = document.createElement('a');
+            link.href = `#${error.field}`;
+            link.textContent = `${fieldLabels[error.field]}: ${error.message}`;
+            item.append(link);
+          } else {
+            item.textContent = `${fieldLabels[error.field]}: ${error.message}`;
+          }
+          return item;
+        }));
+      }
+
+      function showResults(result: TrueEmployeeCostResult, input: TrueEmployeeCostInput) {
+        primaryValid?.removeAttribute('hidden');
+        validationSummary?.setAttribute('hidden', '');
+        validSections.forEach((section) => section.removeAttribute('hidden'));
+        form?.querySelectorAll('input').forEach((control) => control.removeAttribute('aria-invalid'));
+
+        const description = input.mode === 'hourly'
+          ? `${flexibleCurrency.format(input.hourlyWage)}/hour`
+          : `${wholeCurrency.format(input.annualSalary)}`;
+        setOutput('compensationDescription', description);
+        setOutput('primaryAnnualCost', wholeCurrency.format(result.totalAnnualEmployeeCost));
+        setOutput('costMultiplierDollars', currency.format(result.costMultiplier));
+        setOutput('annualBaseCompensation', currency.format(result.annualBaseCompensation));
+        setOutput('payrollTaxes', currency.format(result.payrollTaxes));
+        setOutput('workersComp', currency.format(result.workersComp));
+        setOutput('additionalCashCompensation', currency.format(result.additionalCashCompensation));
+        setOutput('benefitsCost', currency.format(result.benefitsCost));
+        setOutput('operatingSupportCost', currency.format(result.operatingSupportCost));
+        setOutput('additionalEmployerCost', currency.format(result.additionalEmployerCost));
+        setOutput('additionalEmployerCostPercent', `${percent.format(result.additionalEmployerCostPercent)}%`);
+        setOutput('totalAnnualEmployeeCost', currency.format(result.totalAnnualEmployeeCost));
+        setOutput('monthlyEmployerCost', currency.format(result.monthlyEmployerCost));
+        setOutput('weeklyEmployerCost', currency.format(result.weeklyEmployerCost));
+        setOutput('costMultiplier', `${ratio.format(result.costMultiplier)}×`);
+
+        if (result.mode === 'hourly') {
+          paidHourRow?.removeAttribute('hidden');
+          setOutput('paidHourEmployerCost', currency.format(result.paidHourEmployerCost));
+        } else {
+          paidHourRow?.setAttribute('hidden', '');
+        }
+
+        if (result.revenueScenario) {
+          revenueResults?.removeAttribute('hidden');
+          setOutput('expectedAnnualRevenue', currency.format(result.revenueScenario.expectedAnnualRevenue));
+          setOutput('revenueToCostRatio', `${ratio.format(result.revenueScenario.revenueToCostRatio)}×`);
+          setOutput('contributionBeforeSharedOverhead', currency.format(result.revenueScenario.contributionBeforeSharedOverhead));
+        } else {
+          revenueResults?.setAttribute('hidden', '');
+        }
+      }
+
+      function updateCalculator() {
+        syncMode();
+        const input = readInput();
+        const calculation = calculateTrueEmployeeCost(input);
+        if (calculation.success) showResults(calculation.result, input);
+        else showValidation(calculation.errors);
+      }
+
+      form?.addEventListener('input', updateCalculator);
+      updateCalculator();
+    </script>
+  </Fragment>
+</CalculatorPageLayout>
+
+<style>
+  .mode-fieldset { margin: 0 0 1rem; border: 0; padding: 0; }
+  .mode-fieldset legend { margin-bottom: .4rem; color: var(--navy-deep); font-size: .88rem; font-weight: 750; }
+  .mode-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem; border-radius: .65rem; background: #e9edef; padding: .25rem; }
+  .mode-toggle label { position: relative; cursor: pointer; }
+  .mode-toggle input { position: absolute; opacity: 0; pointer-events: none; }
+  .mode-toggle span { display: block; border-radius: .45rem; padding: .65rem 1rem; color: var(--muted); font-weight: 750; text-align: center; }
+  .mode-toggle input:checked + span { background: var(--white); color: var(--navy-deep); box-shadow: 0 1px 4px rgb(13 38 53 / 12%); }
+  .mode-toggle input:focus-visible + span { outline: 3px solid var(--amber); outline-offset: 2px; }
+  .input-group + .input-group { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+  .secondary-result { position: relative; z-index: 1; max-width: 30rem; margin: 1.25rem 0 0; color: #cad6dc; font-size: 1.05rem; }
+  .revenue-copy > p { color: var(--muted); margin-bottom: 1rem; }
+  .revenue-section { border-color: #b8dcd7; background: var(--teal-light); }
+  .revenue-input { max-width: 29rem; }
+  .revenue-results { margin-top: 1.25rem; border-top: 1px solid rgb(21 52 71 / 18%); padding-top: .5rem; }
+  .revenue-results dl { display: grid; margin: 0; }
+  .revenue-results dl > div { display: flex; justify-content: space-between; gap: 1rem; border-top: 1px solid rgb(21 52 71 / 15%); padding-block: .8rem; }
+  .revenue-results dt { color: var(--muted); }
+  .revenue-results dd { margin: 0; color: var(--navy-deep); font-weight: 800; text-align: right; }
+  .revenue-results p { margin: .75rem 0 0; color: var(--muted); font-size: .9rem; }
+  @media (min-width: 42rem) {
+    .compensation-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .revenue-section { display: grid; grid-template-columns: minmax(0, 1fr) minmax(20rem, 1fr); gap: 2.5rem; align-items: start; }
+    .revenue-results { margin-top: 0; border-top: 0; padding-top: 0; }
+  }
+</style>

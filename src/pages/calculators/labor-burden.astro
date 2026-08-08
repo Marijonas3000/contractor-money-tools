@@ -1,24 +1,14 @@
 ---
+import CalculatorPageLayout from '../../layouts/CalculatorPageLayout.astro';
+import RecommendationSlot from '../../components/calculators/RecommendationSlot.astro';
+import RelatedCalculators from '../../components/calculators/RelatedCalculators.astro';
 const pageTitle = 'Labor Burden Calculator | Contractor Money Tools';
 const pageDescription =
   'Estimate what an employee costs per productive hour, including payroll assumptions, benefits, and paid nonproductive time.';
 ---
 
-<!doctype html>
-<html lang="en-US">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={pageDescription} />
-    <title>{pageTitle}</title>
-  </head>
-  <body>
-    <header class="site-header">
-      <a href="/" class="brand">Contractor Money Tools</a>
-    </header>
-
-    <main>
-      <header class="page-intro">
+<CalculatorPageLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="calculator">      <header class="page-intro">
         <p class="eyebrow">Employee cost planning</p>
         <h1>Labor Burden Calculator</h1>
         <p>
@@ -200,6 +190,9 @@ const pageDescription =
         </details>
       </form>
 
+  </Fragment>
+
+  <Fragment slot="results">
       <div data-valid-section>
         <section class="content-section" aria-labelledby="breakdown-title">
           <div class="section-heading wide-heading">
@@ -278,6 +271,9 @@ const pageDescription =
         </section>
       </div>
 
+  </Fragment>
+
+  <Fragment slot="methodology">
       <section class="content-section prose-section" aria-labelledby="methodology-title">
         <p class="step">Methodology</p>
         <h2 id="methodology-title">How the calculator works</h2>
@@ -306,6 +302,11 @@ const pageDescription =
         </p>
       </section>
 
+  </Fragment>
+
+  <RecommendationSlot slot="recommendation" />
+
+  <Fragment slot="faq-related">
       <section class="content-section faq-section" aria-labelledby="faq-title">
         <p class="step">FAQ</p>
         <h2 id="faq-title">Labor burden questions</h2>
@@ -334,12 +335,10 @@ const pageDescription =
           </p>
         </details>
       </section>
-    </main>
+    <RelatedCalculators calculators={[{ title: 'True Employee Cost Calculator', description: 'Estimate the full annual employer cost of an hourly or salaried employee.', href: '/calculators/true-employee-cost' }]} />
+  </Fragment>
 
-    <footer>
-      <p>Contractor Money Tools · Business planning calculators for contractors</p>
-    </footer>
-
+  <Fragment slot="scripts">
     <script>
       import {
         calculateLaborBurden,
@@ -505,598 +504,34 @@ const pageDescription =
       form?.addEventListener('input', updateCalculator);
       updateCalculator();
     </script>
-  </body>
-</html>
+  </Fragment>
+</CalculatorPageLayout>
 
 <style>
-  :global(*) {
-    box-sizing: border-box;
-  }
-
-  :global(:root) {
-    color-scheme: light;
-    --ink: #17232d;
-    --muted: #5c6b75;
-    --navy: #153447;
-    --navy-deep: #0d2635;
-    --teal: #167c73;
-    --teal-light: #dff2ef;
-    --amber: #f4aa3c;
-    --cream: #f7f5ef;
-    --line: #d9e0e3;
-    --white: #ffffff;
-    --danger: #a42a2a;
-    --radius: 0.85rem;
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  }
-
-  :global(body) {
-    margin: 0;
-    color: var(--ink);
-    background: var(--cream);
-    font-size: 1rem;
-    line-height: 1.55;
-  }
-
-  :global(button),
-  :global(input) {
-    font: inherit;
-  }
-
-  :global([hidden]) {
-    display: none !important;
-  }
-
-  :global(a) {
-    color: var(--teal);
-  }
-
-  .site-header {
-    border-bottom: 1px solid rgb(255 255 255 / 12%);
-    background: var(--navy-deep);
-    padding: 1rem max(1rem, calc((100% - 70rem) / 2));
-  }
-
-  .brand {
-    color: var(--white);
-    font-weight: 750;
-    letter-spacing: -0.015em;
-    text-decoration: none;
-  }
-
-  main,
-  footer {
-    width: min(100% - 2rem, 70rem);
-    margin-inline: auto;
-  }
-
-  main {
-    padding-block: 2.5rem 5rem;
-  }
-
-  .page-intro {
-    max-width: 46rem;
-    margin-bottom: 1.75rem;
-  }
-
-  .eyebrow,
-  .step {
-    margin: 0 0 0.35rem;
-    color: var(--teal);
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.095em;
-    text-transform: uppercase;
-  }
-
-  h1,
-  h2,
-  p {
-    margin-top: 0;
-  }
-
-  h1,
-  h2 {
-    color: var(--navy-deep);
-    line-height: 1.12;
-    letter-spacing: -0.03em;
-  }
-
-  h1 {
-    margin-bottom: 0.75rem;
-    font-size: clamp(2.1rem, 7vw, 3.5rem);
-  }
-
-  h2 {
-    margin-bottom: 0.75rem;
-    font-size: clamp(1.4rem, 4vw, 2rem);
-  }
-
-  .page-intro > p:last-child,
-  .section-heading > p,
-  .advanced-content > p,
-  .result-card p,
-  .scenario-copy p,
-  .prose-section > p {
-    color: var(--muted);
-  }
-
-  .page-intro > p:last-child {
-    max-width: 40rem;
-    margin-bottom: 0;
-    font-size: 1.1rem;
-  }
-
-  .calculator-layout {
-    display: grid;
-    gap: 1rem;
-  }
-
-  .panel,
-  .content-section {
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--white);
-    box-shadow: 0 0.4rem 1.4rem rgb(13 38 53 / 5%);
-  }
-
-  .inputs-panel,
-  .content-section {
-    padding: 1.25rem;
-  }
-
-  .section-heading {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .section-heading h2,
-  .section-heading p {
-    margin-bottom: 0;
-  }
-
-  .section-heading > p {
-    font-size: 0.9rem;
-  }
-
-  .input-grid {
-    display: grid;
-    gap: 1rem;
-  }
-
-  .field {
-    display: grid;
-    gap: 0.4rem;
-    color: var(--navy-deep);
-    font-size: 0.88rem;
-    font-weight: 700;
-  }
-
-  .input-shell {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    min-height: 3rem;
-    border: 1px solid #bac7cc;
-    border-radius: 0.55rem;
-    background: var(--white);
-    color: var(--muted);
-    font-weight: 600;
-    transition: border-color 120ms ease, box-shadow 120ms ease;
-  }
-
-  .input-shell:focus-within {
-    border-color: var(--teal);
-    box-shadow: 0 0 0 3px rgb(22 124 115 / 18%);
-  }
-
-  .input-shell > span {
-    padding-inline: 0.8rem;
-    white-space: nowrap;
-  }
-
-  .input-shell.prefix > span:first-child {
-    padding-right: 0;
-  }
-
-  .input-shell.suffix > span:last-child {
-    padding-left: 0;
-  }
-
-  input {
-    width: 100%;
-    min-width: 0;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    padding: 0.72rem 0.8rem;
-    color: var(--ink);
-    font-weight: 700;
-  }
-
-  input[aria-invalid="true"] {
-    color: var(--danger);
-  }
-
-  .input-shell:has(input[aria-invalid="true"]) {
-    border-color: var(--danger);
-    box-shadow: 0 0 0 3px rgb(164 42 42 / 12%);
-  }
-
-  .assumption-note {
-    margin: 1rem 0 0;
-    border-left: 3px solid var(--amber);
-    padding-left: 0.8rem;
-    color: var(--muted);
-    font-size: 0.82rem;
-  }
-
-  .result-card {
-    position: relative;
-    overflow: hidden;
-    border: 1px solid var(--navy);
-    border-radius: var(--radius);
-    background: var(--navy-deep);
-    padding: 1.5rem;
-    color: var(--white);
-    box-shadow: 0 1rem 2.5rem rgb(13 38 53 / 16%);
-  }
-
-  .result-card::after {
-    position: absolute;
-    right: -3rem;
-    bottom: -4rem;
-    width: 11rem;
-    height: 11rem;
-    border: 1.4rem solid rgb(244 170 60 / 15%);
-    border-radius: 50%;
-    content: "";
-    pointer-events: none;
-  }
-
-  .result-card .step {
-    color: #8ed9d1;
-  }
-
-  .result-statement,
-  .validation-summary h2 {
-    max-width: 33rem;
-    color: var(--white);
-    font-size: clamp(1.55rem, 6vw, 2.35rem);
-    line-height: 1.2;
-  }
-
-  .result-statement strong {
-    color: #ffc56d;
-  }
-
-  .result-card p:last-child {
-    position: relative;
-    z-index: 1;
-    max-width: 33rem;
-    margin-bottom: 0;
-    color: #cad6dc;
-  }
-
-  .validation-summary ul {
-    margin: 0;
-    padding-left: 1.25rem;
-  }
-
-  .validation-summary a {
-    color: #ffd394;
-  }
-
-  .advanced-panel {
-    margin-top: 1rem;
-  }
-
-  .advanced-panel > summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1.15rem 1.25rem;
-    cursor: pointer;
-    list-style: none;
-  }
-
-  .advanced-panel > summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .advanced-panel > summary:focus-visible,
-  .faq-section summary:focus-visible,
-  .brand:focus-visible {
-    outline: 3px solid var(--amber);
-    outline-offset: 3px;
-  }
-
-  .advanced-panel .step {
-    display: block;
-  }
-
-  .summary-action {
-    color: var(--teal);
-    font-size: 0.88rem;
-    font-weight: 800;
-  }
-
-  .advanced-panel[open] .summary-action {
-    font-size: 0;
-  }
-
-  .advanced-panel[open] .summary-action::after {
-    font-size: 0.88rem;
-    content: "Hide fields";
-  }
-
-  .advanced-content {
-    border-top: 1px solid var(--line);
-    padding: 1.25rem;
-  }
-
-  .content-section {
-    margin-top: 1rem;
-  }
-
-  .breakdown-grid,
-  .scenario-results {
-    display: grid;
-    margin: 0;
-  }
-
-  .breakdown-grid > div,
-  .scenario-results > div {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    border-top: 1px solid var(--line);
-    padding-block: 0.8rem;
-  }
-
-  .breakdown-grid dt,
-  .scenario-results dt {
-    color: var(--muted);
-  }
-
-  .breakdown-grid dd,
-  .scenario-results dd {
-    margin: 0;
-    color: var(--navy-deep);
-    font-weight: 800;
-    text-align: right;
-  }
-
-  .breakdown-grid .emphasis-row {
-    border-top-color: var(--navy);
-  }
-
-  .breakdown-grid .emphasis-row dt,
-  .breakdown-grid .emphasis-row dd {
-    color: var(--navy-deep);
-    font-weight: 800;
-  }
-
-  .time-card {
-    border-radius: 0.7rem;
-    background: var(--cream);
-    padding: 1rem;
-  }
-
-  .time-numbers {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-
-  .time-numbers div {
-    display: grid;
-  }
-
-  .time-numbers span {
-    color: var(--navy-deep);
-    font-size: 1.2rem;
-    font-weight: 850;
-  }
-
-  .time-numbers small {
-    color: var(--muted);
-    line-height: 1.3;
-  }
-
-  .time-bar {
-    overflow: hidden;
-    height: 0.8rem;
-    margin-block: 1rem;
-    border-radius: 999px;
-    background: #d8dee0;
-  }
-
-  .time-bar span {
-    display: block;
-    width: 0;
-    height: 100%;
-    border-radius: inherit;
-    background: var(--teal);
-    transition: width 180ms ease;
-  }
-
-  .time-card p {
-    margin-bottom: 0;
-    color: var(--muted);
-  }
-
-  .scenario-section {
-    border-color: #b8dcd7;
-    background: var(--teal-light);
-  }
-
-  .scenario-copy p:last-child {
-    margin-bottom: 1.25rem;
-  }
-
-  .scenario-results > div {
-    border-color: rgb(21 52 71 / 15%);
-  }
-
-  .scenario-results .scenario-difference dd {
-    color: var(--teal);
-    font-size: 1.15rem;
-  }
-
-  .prose-section,
-  .faq-section {
-    max-width: 54rem;
-  }
-
-  .formula-list {
-    margin-block: 1.25rem;
-    border-left: 3px solid var(--teal);
-    padding-left: 1rem;
-  }
-
-  .formula-list p {
-    margin-bottom: 0.5rem;
-  }
-
-  .disclaimer {
-    border-radius: 0.6rem;
-    background: var(--cream);
-    padding: 1rem;
-    font-size: 0.9rem;
-  }
-
-  .faq-section details {
-    border-top: 1px solid var(--line);
-    padding-block: 0.9rem;
-  }
-
-  .faq-section summary {
-    cursor: pointer;
-    color: var(--navy-deep);
-    font-weight: 750;
-  }
-
-  .faq-section details p {
-    margin: 0.75rem 0 0;
-    color: var(--muted);
-  }
-
-  footer {
-    border-top: 1px solid var(--line);
-    padding-block: 1.5rem;
-    color: var(--muted);
-    font-size: 0.85rem;
-  }
-
-  footer p {
-    margin: 0;
-  }
-
-  @media (max-width: 41.999rem) {
-    .input-shell,
-    .input-shell input {
-      font-size: 1rem;
-    }
-  }
-
+  .page-intro { max-width: 46rem; margin-bottom: 1.75rem; }
+  .page-intro > p:last-child { max-width: 40rem; }
+  .section-heading { margin-bottom: 1.25rem; }
+  .result-card p { color: var(--muted); }
+  .result-card p:last-child { position: relative; z-index: 1; max-width: 33rem; margin-bottom: 0; color: #cad6dc; }
+  .scenario-copy p { color: var(--muted); }
+  .scenario-results { display: grid; margin: 0; }
+  .scenario-results > div { display: flex; justify-content: space-between; gap: 1rem; border-top: 1px solid var(--line); padding-block: .8rem; }
+  .scenario-results dt { color: var(--muted); }
+  .scenario-results dd { margin: 0; color: var(--navy-deep); font-weight: 800; text-align: right; }
+  .time-card { border-radius: .7rem; background: var(--cream); padding: 1rem; }
+  .time-numbers { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .time-numbers div { display: grid; }
+  .time-numbers span { color: var(--navy-deep); font-size: 1.2rem; font-weight: 850; }
+  .time-numbers small { color: var(--muted); line-height: 1.3; }
+  .time-bar { overflow: hidden; height: .8rem; margin-block: 1rem; border-radius: 999px; background: #d8dee0; }
+  .time-bar span { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--teal); transition: width 180ms ease; }
+  .time-card p { margin-bottom: 0; color: var(--muted); }
+  .scenario-section { border-color: #b8dcd7; background: var(--teal-light); }
+  .scenario-copy p:last-child { margin-bottom: 1.25rem; }
+  .scenario-results > div { border-color: rgb(21 52 71 / 15%); }
+  .scenario-results .scenario-difference dd { color: var(--teal); font-size: 1.15rem; }
   @media (min-width: 42rem) {
-    main {
-      padding-top: 3.5rem;
-    }
-
-    .inputs-panel,
-    .content-section {
-      padding: 1.75rem;
-    }
-
-    .input-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .wide-heading {
-      flex-direction: row;
-      align-items: end;
-      justify-content: space-between;
-    }
-
-    .breakdown-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 2rem;
-    }
-
-    .scenario-section {
-      display: grid;
-      grid-template-columns: minmax(0, 0.9fr) minmax(20rem, 1.1fr);
-      gap: 2.5rem;
-      align-items: start;
-    }
-
-    .scenario-copy p:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  @media (min-width: 62rem) {
-    main {
-      padding-top: 2rem;
-    }
-
-    .page-intro {
-      margin-bottom: 1rem;
-    }
-
-    .calculator-layout {
-      grid-template-columns: minmax(0, 1.35fr) minmax(20rem, 0.65fr);
-      align-items: start;
-    }
-
-    .inputs-panel {
-      padding: 1.25rem 1.5rem;
-    }
-
-    .inputs-panel .section-heading {
-      margin-bottom: 0.75rem;
-    }
-
-    .inputs-panel .input-grid {
-      gap: 0.75rem 1rem;
-    }
-
-    .inputs-panel .assumption-note {
-      margin-top: 0.75rem;
-    }
-
-    .advanced-panel,
-    .content-section {
-      margin-top: 0.75rem;
-    }
-
-    .result-card {
-      position: sticky;
-      top: 1rem;
-      min-height: 21rem;
-      padding: 2rem;
-    }
-
-    .inputs-panel .input-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .advanced-content .input-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      scroll-behavior: auto !important;
-      transition-duration: 0.01ms !important;
-    }
+    .scenario-section { display: grid; grid-template-columns: minmax(0, .9fr) minmax(20rem, 1.1fr); gap: 2.5rem; align-items: start; }
+    .scenario-copy p:last-child { margin-bottom: 0; }
   }
 </style>

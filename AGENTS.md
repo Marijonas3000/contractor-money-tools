@@ -160,6 +160,26 @@ Initial calculator family:
 
 Do not implement additional calculators unless explicitly requested.
 
+## Reusable calculator page architecture
+
+All Contractor Money Tools calculators should follow this page structure:
+
+1. Intro / calculator
+2. Results
+3. Methodology / explanation
+4. Recommendation slot
+5. FAQ / related calculators
+
+The Recommendation slot must:
+- be reusable across calculators;
+- be optional;
+- render nothing if no recommendation is configured;
+- not contain hard-coded affiliate content;
+- not include affiliate links unless explicitly requested later;
+- support future contextual recommendations without requiring a page redesign.
+
+Do not implement affiliate content yet.
+
 ## Deployment
 
 Target hosting is Cloudflare Pages.

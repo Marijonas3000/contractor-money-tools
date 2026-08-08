@@ -1,0 +1,413 @@
+---
+import CalculatorPageLayout from '../../layouts/CalculatorPageLayout.astro';
+import RecommendationSlot from '../../components/calculators/RecommendationSlot.astro';
+import RelatedCalculators from '../../components/calculators/RelatedCalculators.astro';
+
+const pageTitle = 'Contractor Hourly Rate Calculator | Contractor Money Tools';
+const pageDescription =
+  'Estimate the hourly billing rate your contracting business needs to cover owner compensation, overhead, and a target profit margin.';
+---
+
+<CalculatorPageLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="calculator">
+    <header class="page-intro">
+      <p class="eyebrow">Business pricing</p>
+      <h1>Contractor Hourly Rate Calculator</h1>
+      <p>
+        Find the hourly rate needed to cover owner compensation, overhead, and
+        a target business profit margin.
+      </p>
+    </header>
+
+    <form id="hourly-rate-form" novalidate autocomplete="off">
+      <div class="calculator-layout rate-layout">
+        <section class="panel inputs-panel" aria-labelledby="rate-inputs-title">
+          <div class="section-heading">
+            <div>
+              <p class="step">Step 1</p>
+              <h2 id="rate-inputs-title">Business assumptions</h2>
+            </div>
+            <p>Adjust any value. Results update automatically.</p>
+          </div>
+
+          <div class="input-grid compact-inputs">
+            <label class="field" for="desiredAnnualOwnerCompensation">
+              <span>Desired annual owner compensation</span>
+              <span class="input-shell prefix suffix">
+                <span aria-hidden="true">$</span>
+                <input id="desiredAnnualOwnerCompensation" name="desiredAnnualOwnerCompensation" type="number" min="0" step="1000" value="80000" inputmode="decimal" />
+                <span aria-hidden="true">/yr</span>
+              </span>
+            </label>
+
+            <label class="field" for="annualBusinessOverhead">
+              <span>Annual business overhead</span>
+              <span class="input-shell prefix suffix">
+                <span aria-hidden="true">$</span>
+                <input id="annualBusinessOverhead" name="annualBusinessOverhead" type="number" min="0" step="1000" value="40000" inputmode="decimal" />
+                <span aria-hidden="true">/yr</span>
+              </span>
+            </label>
+
+            <label class="field" for="billableHoursPerWeek">
+              <span>Billable hours per week</span>
+              <span class="input-shell suffix">
+                <input id="billableHoursPerWeek" name="billableHoursPerWeek" type="number" min="0.01" step="0.25" value="25" inputmode="decimal" aria-describedby="billable-hours-note" />
+                <span aria-hidden="true">hrs</span>
+              </span>
+            </label>
+
+            <label class="field" for="workingWeeksPerYear">
+              <span>Working weeks per year</span>
+              <span class="input-shell suffix">
+                <input id="workingWeeksPerYear" name="workingWeeksPerYear" type="number" min="0.01" step="0.25" value="48" inputmode="decimal" />
+                <span aria-hidden="true">wks</span>
+              </span>
+            </label>
+
+            <label class="field" for="targetProfitMarginPercent">
+              <span>Target profit margin</span>
+              <span class="input-shell suffix">
+                <input id="targetProfitMarginPercent" name="targetProfitMarginPercent" type="number" min="0" max="99.99" step="0.1" value="20" inputmode="decimal" aria-describedby="margin-input-note" />
+                <span aria-hidden="true">%</span>
+              </span>
+            </label>
+
+            <label class="field optional-field" for="billableHoursPerDay">
+              <span>Billable hours per day <small>Optional</small></span>
+              <span class="input-shell suffix">
+                <input id="billableHoursPerDay" name="billableHoursPerDay" type="number" min="0.01" step="0.25" value="" inputmode="decimal" autocomplete="off" />
+                <span aria-hidden="true">hrs</span>
+              </span>
+            </label>
+          </div>
+
+          <p id="billable-hours-note" class="assumption-note">
+            <strong>Hours worked are not the same as hours billed.</strong>{' '}
+            Estimates, travel, admin, purchasing, callbacks, invoicing, and
+            other non-billable work reduce available billable hours.
+          </p>
+          <p id="margin-input-note" class="input-note">
+            Margin is profit as a percentage of revenue—not a markup added to cost.
+          </p>
+        </section>
+
+        <div class="result-stack" aria-live="polite">
+          <section class="break-even-card" data-primary-valid aria-labelledby="break-even-title">
+            <p class="step">Break-even rate</p>
+            <h2 id="break-even-title"><strong data-output="breakEvenHourlyRate">—</strong><span>/hour</span></h2>
+            <p>
+              At this rate, the business covers the selected owner compensation
+              and overhead, but does not produce the target profit margin.
+            </p>
+          </section>
+
+          <section class="result-card recommended-card" data-primary-valid aria-labelledby="recommended-rate-title">
+            <p class="step">Recommended billing rate</p>
+            <h2 id="recommended-rate-title" class="result-statement">
+              To target a <strong data-output="targetProfitMarginPercent">20%</strong>{' '}
+              profit margin, charge about{' '}
+              <strong data-output="recommendedHourlyBillingRate">—</strong>/hour.
+            </h2>
+          </section>
+
+          <section id="validation-summary" class="result-card validation-summary" role="alert" hidden>
+            <h2>Check your inputs</h2>
+            <ul id="validation-errors"></ul>
+          </section>
+        </div>
+      </div>
+    </form>
+  </Fragment>
+
+  <Fragment slot="results">
+    <div data-valid-section>
+      <section class="content-section" aria-labelledby="breakdown-title">
+        <div class="section-heading wide-heading">
+          <div>
+            <p class="step">Result breakdown</p>
+            <h2 id="breakdown-title">How the target rate is built</h2>
+          </div>
+          <p>Annual planning values based on your assumptions.</p>
+        </div>
+        <dl class="breakdown-grid">
+          <div><dt>Desired annual owner compensation</dt><dd data-output="desiredAnnualOwnerCompensation">—</dd></div>
+          <div><dt>Annual business overhead</dt><dd data-output="annualBusinessOverhead">—</dd></div>
+          <div><dt>Annual costs</dt><dd data-output="annualCosts">—</dd></div>
+          <div><dt>Billable hours per week</dt><dd data-output="billableHoursPerWeek">—</dd></div>
+          <div><dt>Working weeks per year</dt><dd data-output="workingWeeksPerYear">—</dd></div>
+          <div><dt>Annual billable hours</dt><dd data-output="annualBillableHours">—</dd></div>
+          <div class="emphasis-row"><dt>Break-even hourly rate</dt><dd data-output="breakEvenHourlyRateWithUnit">—</dd></div>
+          <div><dt>Target profit margin</dt><dd data-output="targetProfitMarginPercent">—</dd></div>
+          <div><dt>Required annual revenue</dt><dd data-output="requiredAnnualRevenue">—</dd></div>
+          <div><dt>Annual target profit</dt><dd data-output="annualTargetProfit">—</dd></div>
+          <div class="emphasis-row"><dt>Recommended hourly billing rate</dt><dd data-output="recommendedHourlyBillingRateWithUnit">—</dd></div>
+          <div id="day-rate-row" hidden><dt>Optional day rate</dt><dd data-output="optionalDayRate">—</dd></div>
+        </dl>
+      </section>
+
+      <section class="content-section margin-section" aria-labelledby="margin-title">
+        <div>
+          <p class="step">Margin, not markup</p>
+          <h2 id="margin-title"><strong data-output="targetProfitMarginPercent">20%</strong> margin is not the same as adding <strong data-output="targetProfitMarginPercent">20%</strong> markup</h2>
+          <p>
+            Adding the selected percentage to the <strong data-output="breakEvenHourlyRateWithUnit">—</strong>
+            break-even rate would be markup. Margin measures profit as a share
+            of the selling price, so this calculator’s true-margin result is
+            <strong data-output="recommendedHourlyBillingRateWithUnit">—</strong>.
+          </p>
+        </div>
+      </section>
+
+      <section class="content-section billable-section" aria-labelledby="billable-title">
+        <p class="step">Billable-hours impact</p>
+        <h2 id="billable-title">Hours worked ≠ hours billed</h2>
+        <p>
+          Only billable hours generate the hourly revenue used here. Time spent
+          on estimates, travel, scheduling, callbacks, purchasing, admin,
+          invoicing, marketing, and training still consumes the workweek but is
+          not modeled as a separate category in V1.
+        </p>
+      </section>
+    </div>
+  </Fragment>
+
+  <Fragment slot="methodology">
+    <section class="content-section prose-section" aria-labelledby="methodology-title">
+      <p class="step">Methodology</p>
+      <h2 id="methodology-title">How the calculator works</h2>
+      <p>
+        Owner compensation pays the owner for their work. Business profit is
+        what remains after the selected owner compensation and overhead are
+        covered. They are separate planning goals.
+      </p>
+      <div class="formula-list" aria-label="Calculator formulas">
+        <p><strong>Annual costs</strong> = desired owner compensation + annual overhead</p>
+        <p><strong>Annual billable hours</strong> = billable hours per week × working weeks per year</p>
+        <p><strong>Break-even rate</strong> = annual costs ÷ annual billable hours</p>
+        <p><strong>Required revenue</strong> = annual costs ÷ (1 − target margin)</p>
+        <p><strong>Recommended rate</strong> = required revenue ÷ annual billable hours</p>
+      </div>
+      <p>
+        V1 treats overhead as one annual aggregate and uses billable hours as
+        the key denominator. Higher target margins increase required revenue
+        nonlinearly because true margin math divides by one minus the margin.
+      </p>
+      <p>
+        This calculator does not model personal taxes or owner payroll
+        structure. Materials, subcontractors, market demand, job risk,
+        warranties, minimum charges, and other job-specific costs may also
+        affect the price you need to charge.
+      </p>
+      <p class="disclaimer">
+        This calculator provides business planning and educational
+        information—not tax, accounting, legal, or financial advice.
+      </p>
+    </section>
+  </Fragment>
+
+  <RecommendationSlot slot="recommendation" />
+
+  <Fragment slot="faq-related">
+    <section class="content-section faq-section" aria-labelledby="faq-title">
+      <p class="step">FAQ</p>
+      <h2 id="faq-title">Contractor hourly rate questions</h2>
+      <details><summary>What hourly rate should a contractor charge?</summary><p>Use your own owner-compensation goal, annual overhead, realistic billable hours, and target margin. There is no universal rate that fits every contractor or market.</p></details>
+      <details><summary>What is the difference between break-even rate and billing rate?</summary><p>The break-even rate covers the selected owner compensation and overhead. The recommended billing rate also targets the selected business profit margin.</p></details>
+      <details><summary>Why are billable hours lower than hours worked?</summary><p>Estimates, travel, scheduling, callbacks, purchasing, admin, invoicing, marketing, and training may take time without directly generating hourly revenue.</p></details>
+      <details><summary>Is a 20% margin the same as a 20% markup?</summary><p>No. Markup adds a percentage to cost. Margin measures profit as a percentage of selling price, so the resulting rates differ.</p></details>
+      <details><summary>Does this calculator include taxes?</summary><p>It does not model personal income tax, self-employment tax, or owner payroll structure. Include applicable business overhead in your aggregate overhead assumption and consult a qualified professional for tax-specific questions.</p></details>
+      <details><summary>Should materials be included in this hourly rate?</summary><p>This V1 rate is based on owner compensation and aggregate annual overhead. Price materials and other job-specific costs separately when they are not already represented in overhead.</p></details>
+      <details><summary>How many billable hours per week should I use?</summary><p>Use a realistic estimate based on your own schedule and records. Do not treat every hour worked as billable.</p></details>
+    </section>
+
+    <RelatedCalculators calculators={[
+      {
+        title: 'Labor Burden Calculator',
+        description: 'Estimate what an employee costs per productive hour.',
+        href: '/calculators/labor-burden',
+      },
+      {
+        title: 'True Employee Cost Calculator',
+        description: 'Estimate the full annual employer cost of an hourly or salaried employee.',
+        href: '/calculators/true-employee-cost',
+      },
+    ]} />
+  </Fragment>
+
+  <Fragment slot="scripts">
+    <script>
+      import {
+        calculateContractorHourlyRate,
+        type ContractorHourlyRateInput,
+        type ContractorHourlyRateResult,
+        type ContractorHourlyRateValidationError,
+      } from '../../lib/calculators/contractor-hourly-rate';
+
+      const form = document.querySelector<HTMLFormElement>('#hourly-rate-form');
+      const primaryResults = document.querySelectorAll<HTMLElement>('[data-primary-valid]');
+      const validSections = document.querySelectorAll<HTMLElement>('[data-valid-section]');
+      const validationSummary = document.querySelector<HTMLElement>('#validation-summary');
+      const validationErrors = document.querySelector<HTMLUListElement>('#validation-errors');
+      const dayRateRow = document.querySelector<HTMLElement>('#day-rate-row');
+      const dayHoursControl = form?.elements.namedItem('billableHoursPerDay');
+
+      if (dayHoursControl instanceof HTMLInputElement) {
+        dayHoursControl.value = '';
+      }
+
+      const fieldLabels: Record<string, string> = {
+        desiredAnnualOwnerCompensation: 'Desired annual owner compensation',
+        annualBusinessOverhead: 'Annual business overhead',
+        billableHoursPerWeek: 'Billable hours per week',
+        workingWeeksPerYear: 'Working weeks per year',
+        targetProfitMarginPercent: 'Target profit margin',
+        billableHoursPerDay: 'Billable hours per day',
+        annualCosts: 'Annual costs',
+        annualBillableHours: 'Annual billable hours',
+        calculation: 'Calculation',
+      };
+
+      const currency = new Intl.NumberFormat('en-US', {
+        style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2,
+      });
+      const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+      const percent = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+
+      function getNumber(name: string): number {
+        const control = form?.elements.namedItem(name);
+        return control instanceof HTMLInputElement ? control.valueAsNumber : Number.NaN;
+      }
+
+      function setOutput(name: string, value: string) {
+        document.querySelectorAll<HTMLElement>(`[data-output="${name}"]`).forEach((element) => {
+          element.textContent = value;
+        });
+      }
+
+      function userFacingValidationMessage(error: ContractorHourlyRateValidationError) {
+        return Object.entries(fieldLabels).reduce(
+          (message, [identifier, label]) => message.replaceAll(identifier, label),
+          error.message,
+        );
+      }
+
+      function readInput(): ContractorHourlyRateInput {
+        const billableHoursPerDay =
+          dayHoursControl instanceof HTMLInputElement && dayHoursControl.value.trim() !== ''
+            ? dayHoursControl.valueAsNumber
+            : undefined;
+
+        return {
+          desiredAnnualOwnerCompensation: getNumber('desiredAnnualOwnerCompensation'),
+          annualBusinessOverhead: getNumber('annualBusinessOverhead'),
+          billableHoursPerWeek: getNumber('billableHoursPerWeek'),
+          workingWeeksPerYear: getNumber('workingWeeksPerYear'),
+          targetProfitMarginPercent: getNumber('targetProfitMarginPercent'),
+          billableHoursPerDay,
+        };
+      }
+
+      function showValidation(errors: ContractorHourlyRateValidationError[]) {
+        primaryResults.forEach((section) => section.setAttribute('hidden', ''));
+        validSections.forEach((section) => section.setAttribute('hidden', ''));
+        validationSummary?.removeAttribute('hidden');
+        dayRateRow?.setAttribute('hidden', '');
+        form?.querySelectorAll('input').forEach((input) => {
+          input.removeAttribute('aria-invalid');
+          input.removeAttribute('aria-errormessage');
+        });
+
+        validationErrors?.replaceChildren(...errors.map((error, index) => {
+          const item = document.createElement('li');
+          item.id = `validation-error-${index}`;
+          const control = document.getElementById(error.field);
+          const message = userFacingValidationMessage(error);
+          if (control instanceof HTMLInputElement) {
+            control.setAttribute('aria-invalid', 'true');
+            control.setAttribute('aria-errormessage', item.id);
+            const link = document.createElement('a');
+            link.href = `#${error.field}`;
+            link.textContent = message;
+            item.append(link);
+          } else {
+            item.textContent = message;
+          }
+          return item;
+        }));
+      }
+
+      function showResults(result: ContractorHourlyRateResult, input: ContractorHourlyRateInput) {
+        primaryResults.forEach((section) => section.removeAttribute('hidden'));
+        validSections.forEach((section) => section.removeAttribute('hidden'));
+        validationSummary?.setAttribute('hidden', '');
+        form?.querySelectorAll('input').forEach((control) => {
+          control.removeAttribute('aria-invalid');
+          control.removeAttribute('aria-errormessage');
+        });
+
+        setOutput('desiredAnnualOwnerCompensation', currency.format(input.desiredAnnualOwnerCompensation));
+        setOutput('annualBusinessOverhead', currency.format(input.annualBusinessOverhead));
+        setOutput('billableHoursPerWeek', `${number.format(input.billableHoursPerWeek)} hours`);
+        setOutput('workingWeeksPerYear', `${number.format(input.workingWeeksPerYear)} weeks`);
+        setOutput('targetProfitMarginPercent', `${percent.format(input.targetProfitMarginPercent)}%`);
+        setOutput('annualBillableHours', `${number.format(result.annualBillableHours)} hours`);
+        setOutput('annualCosts', currency.format(result.annualCosts));
+        setOutput('breakEvenHourlyRate', currency.format(result.breakEvenHourlyRate));
+        setOutput('breakEvenHourlyRateWithUnit', `${currency.format(result.breakEvenHourlyRate)}/hour`);
+        setOutput('requiredAnnualRevenue', currency.format(result.requiredAnnualRevenue));
+        setOutput('annualTargetProfit', currency.format(result.annualTargetProfit));
+        setOutput('recommendedHourlyBillingRate', currency.format(result.recommendedHourlyBillingRate));
+        setOutput('recommendedHourlyBillingRateWithUnit', `${currency.format(result.recommendedHourlyBillingRate)}/hour`);
+
+        if (result.optionalDayRate === null) {
+          dayRateRow?.setAttribute('hidden', '');
+        } else {
+          dayRateRow?.removeAttribute('hidden');
+          setOutput('optionalDayRate', `${currency.format(result.optionalDayRate)}/day`);
+        }
+      }
+
+      function updateCalculator() {
+        const input = readInput();
+        const calculation = calculateContractorHourlyRate(input);
+        if (calculation.success) showResults(calculation.result, input);
+        else showValidation(calculation.errors);
+      }
+
+      form?.addEventListener('input', updateCalculator);
+      updateCalculator();
+    </script>
+  </Fragment>
+</CalculatorPageLayout>
+
+<style>
+  .rate-layout { align-items: stretch; }
+  .compact-inputs { gap: .8rem 1rem; }
+  .optional-field { border-radius: .65rem; background: var(--cream); padding: .75rem; }
+  .optional-field small { margin-left: .35rem; color: var(--muted); font-size: .72rem; font-weight: 650; text-transform: uppercase; }
+  .input-note { margin: .6rem 0 0; color: var(--muted); font-size: .82rem; }
+  .assumption-note strong { color: var(--navy-deep); }
+  .result-stack { display: grid; gap: 1rem; }
+  .break-even-card { border: 1px solid #b8dcd7; border-radius: var(--radius); background: var(--teal-light); padding: 1.25rem; }
+  .break-even-card h2 { display: flex; align-items: baseline; gap: .25rem; margin-bottom: .6rem; }
+  .break-even-card h2 strong { font-size: clamp(1.8rem, 7vw, 2.6rem); }
+  .break-even-card h2 span { color: var(--muted); font-size: 1rem; }
+  .break-even-card > p:last-child { margin-bottom: 0; color: var(--muted); font-size: .92rem; }
+  .recommended-card { min-height: 0; }
+  .recommended-card .result-statement { margin-bottom: 0; overflow-wrap: anywhere; }
+  .margin-section { border-color: #b8dcd7; background: var(--teal-light); }
+  .margin-section h2 { max-width: 50rem; }
+  .margin-section p, .billable-section p { margin-bottom: 0; color: var(--muted); }
+  .billable-section { max-width: 54rem; }
+  @media (min-width: 42rem) {
+    .compact-inputs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .margin-section { display: grid; grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (min-width: 62rem) {
+    .rate-layout { grid-template-columns: minmax(0, 1.35fr) minmax(20rem, .65fr); }
+    .result-stack { align-content: start; }
+    .break-even-card { padding: 1.5rem 2rem; }
+    .recommended-card { position: static; padding: 2rem; }
+  }
+</style>

@@ -1,0 +1,26 @@
+---
+export interface RecommendationConfig {
+  heading: string;
+  description: string;
+  actionLabel?: string;
+  url?: string;
+}
+
+interface Props {
+  recommendation?: RecommendationConfig;
+}
+
+const { recommendation } = Astro.props;
+const actionUrl = recommendation?.url?.startsWith('/') ? recommendation.url : undefined;
+---
+
+{recommendation && (
+  <aside class="content-section recommendation-section" aria-labelledby="recommendation-title">
+    <p class="step">Recommendation</p>
+    <h2 id="recommendation-title">{recommendation.heading}</h2>
+    <p>{recommendation.description}</p>
+    {recommendation.actionLabel && actionUrl && (
+      <a href={actionUrl}>{recommendation.actionLabel}</a>
+    )}
+  </aside>
+)}
