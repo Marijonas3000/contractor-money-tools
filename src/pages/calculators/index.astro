@@ -1,0 +1,44 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+
+const pageTitle = 'Contractor Calculators | Contractor Money Tools';
+const pageDescription = 'Browse free contractor calculators for productive labor cost, total employee cost, and hourly billing rates.';
+const calculators = [
+  {
+    title: 'Labor Burden Calculator',
+    description: 'Estimate what an employee really costs per productive hour after wage-based burden, annual costs, and paid nonproductive time.',
+    href: '/calculators/labor-burden',
+  },
+  {
+    title: 'True Employee Cost Calculator',
+    description: 'Estimate the full annual employer cost of an hourly or salaried employee, including benefits and operating support costs.',
+    href: '/calculators/true-employee-cost',
+  },
+  {
+    title: 'Contractor Hourly Rate Calculator',
+    description: 'Calculate a break-even rate and recommended billing rate from owner compensation, overhead, billable hours, and target margin.',
+    href: '/calculators/contractor-hourly-rate',
+  },
+];
+---
+
+<SiteLayout title={pageTitle} description={pageDescription}>
+  <header class="content-hero">
+    <p class="eyebrow">All live tools</p>
+    <h1>Contractor Calculators</h1>
+    <p>Choose a practical calculator for labor costs, employee costs, or hourly pricing. No account is required.</p>
+  </header>
+
+  <section aria-labelledby="calculator-directory-title">
+    <h2 id="calculator-directory-title" class="visually-hidden">Available contractor calculators</h2>
+    <div class="card-grid">
+      {calculators.map((calculator) => (
+        <article class="tool-card directory-card">
+          <h3>{calculator.title}</h3>
+          <p>{calculator.description}</p>
+          <a class="card-link" href={calculator.href}>Open calculator <span aria-hidden="true">→</span></a>
+        </article>
+      ))}
+    </div>
+  </section>
+</SiteLayout>

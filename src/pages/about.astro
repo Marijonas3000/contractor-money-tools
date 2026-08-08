@@ -1,0 +1,58 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const pageTitle = 'About Contractor Money Tools';
+const pageDescription = 'Learn how Contractor Money Tools helps U.S. contractors plan labor costs, employee costs, pricing, and profitability with transparent calculators.';
+---
+
+<SiteLayout title={pageTitle} description={pageDescription}>
+  <header class="content-hero">
+    <p class="eyebrow">About the project</p>
+    <h1>About Contractor Money Tools</h1>
+    <p>
+      Contractor Money Tools is for U.S. contractors and home-service business owners who need clearer answers
+      about labor costs, employee costs, pricing, and profitability.
+    </p>
+  </header>
+
+  <div class="prose-grid">
+    <section class="content-card" aria-labelledby="tools-first-title">
+      <p class="eyebrow">Tools first</p>
+      <h2 id="tools-first-title">Calculators built around practical decisions</h2>
+      <p>
+        The calculators are the product. Supporting explanations show the formulas, define important terms,
+        and make assumptions visible so business owners can understand what drives each result.
+      </p>
+      <p>
+        Current tools work without a user account. They are designed for planning and educational use, using
+        business-specific inputs that users can review and edit.
+      </p>
+    </section>
+
+    <section class="content-card" aria-labelledby="principles-title">
+      <p class="eyebrow">Methodology principles</p>
+      <h2 id="principles-title">Clear distinctions, fewer hidden assumptions</h2>
+      <ul class="principle-list">
+        <li>Separate wages from true labor cost.</li>
+        <li>Distinguish markup from margin.</li>
+        <li>Distinguish hours worked from hours billed.</li>
+        <li>Expose important assumptions instead of hiding them.</li>
+        <li>Explain calculations in plain English.</li>
+      </ul>
+    </section>
+
+    <section class="content-card full-width" aria-labelledby="planning-title">
+      <p class="eyebrow">Planning context</p>
+      <h2 id="planning-title">Your assumptions determine the result</h2>
+      <p>
+        Costs and pricing vary by business, location, tax treatment, insurance, workers’ compensation rates,
+        employee classification, and other circumstances. Calculator results are estimates based on the values entered.
+      </p>
+      <p class="notice">
+        Contractor Money Tools provides business planning calculators and educational information. It does not
+        provide tax, accounting, legal, insurance, investment, or financial advice.
+      </p>
+      <a class="card-link" href="/calculators/">Explore the calculators <span aria-hidden="true">→</span></a>
+    </section>
+  </div>
+</SiteLayout>

@@ -1,0 +1,88 @@
+---
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import AnalyticsConsent from '../components/AnalyticsConsent.astro';
+import '../styles/site.css';
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+const currentPath = Astro.url.pathname;
+const siteUrl = Astro.site ?? new URL('https://contractormoneytools.com');
+const canonicalUrl = new URL(currentPath, siteUrl);
+const openGraphImageUrl = new URL('/og-default.svg', siteUrl);
+const measurementId = 'G-PS80221W71';
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Contractor Money Tools" />
+    <meta property="og:image" content={openGraphImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={openGraphImageUrl} />
+    <title>{title}</title>
+    <script is:inline define:vars={{ measurementId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){window.dataLayer.push(arguments);}
+      window.gtag = window.gtag || gtag;
+      var consentChoice = null;
+      try {
+        var savedConsent = localStorage.getItem('cmt_analytics_consent');
+        if (savedConsent === 'granted' || savedConsent === 'denied') {
+          consentChoice = savedConsent;
+        }
+      } catch (error) {
+        consentChoice = null;
+      }
+      window.cmtAnalyticsConsent = consentChoice;
+      window.gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied'
+      });
+      if (consentChoice) {
+        window.gtag('consent', 'update', {
+          analytics_storage: consentChoice,
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied'
+        });
+      }
+      window.gtag('js', new Date());
+      window.gtag('config', measurementId);
+      window.addEventListener('cmt:analytics', function (event) {
+        var detail = event.detail;
+        if (detail && detail.name && detail.params) {
+          window.gtag('event', detail.name, detail.params);
+        }
+      });
+    </script>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}></script>
+    <slot name="head" />
+  </head>
+  <body>
+    <SiteHeader currentPath={currentPath} />
+    <main><slot /></main>
+    <SiteFooter currentPath={currentPath} />
+    <AnalyticsConsent />
+    <slot name="body-end" />
+  </body>
+</html>

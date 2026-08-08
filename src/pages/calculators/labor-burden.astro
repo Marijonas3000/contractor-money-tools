@@ -340,6 +340,7 @@ const pageDescription =
 
   <Fragment slot="scripts">
     <script>
+      import { initializeCalculatorTracking } from '../../lib/analytics';
       import {
         calculateLaborBurden,
         type LaborBurdenInput,
@@ -503,6 +504,11 @@ const pageDescription =
 
       form?.addEventListener('input', updateCalculator);
       updateCalculator();
+      initializeCalculatorTracking({
+        form,
+        calculatorId: 'labor_burden',
+        hasValidResult: () => validationSummary?.hasAttribute('hidden') ?? false,
+      });
     </script>
   </Fragment>
 </CalculatorPageLayout>

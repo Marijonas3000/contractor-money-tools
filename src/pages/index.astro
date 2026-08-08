@@ -1,38 +1,102 @@
 ---
-const pageTitle = 'Contractor Money Tools';
-const pageDescription = 'Practical calculators for contractor business decisions.';
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const pageTitle = 'Free Money Tools for Contractors | Contractor Money Tools';
+const pageDescription = 'Free calculators that help U.S. contractors understand labor costs, employee costs, hourly pricing, and business profitability.';
+const calculators = [
+  {
+    title: 'Labor Burden Calculator',
+    question: 'What does an employee really cost per productive hour?',
+    description: 'Add wage-based costs, benefits, and paid nonproductive time to estimate true productive-hour cost.',
+    href: '/calculators/labor-burden',
+  },
+  {
+    title: 'True Employee Cost Calculator',
+    question: 'What does an employee really cost my business per year?',
+    description: 'Estimate the full annual employer cost of an hourly or salaried employee beyond base pay.',
+    href: '/calculators/true-employee-cost',
+  },
+  {
+    title: 'Contractor Hourly Rate Calculator',
+    question: 'How much should I charge per billable hour?',
+    description: 'Turn owner compensation, overhead, billable hours, and a target margin into a practical billing rate.',
+    href: '/calculators/contractor-hourly-rate',
+  },
+];
 ---
 
-<!doctype html>
-<html lang="en-US">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={pageDescription} />
-    <title>{pageTitle}</title>
-  </head>
-  <body>
-    <main>
-      <h1>{pageTitle}</h1>
-      <p>Calculator tools are coming soon.</p>
-    </main>
-  </body>
-</html>
+<SiteLayout title={pageTitle} description={pageDescription}>
+  <section class="hero" aria-labelledby="home-title">
+    <p class="eyebrow">Practical business planning</p>
+    <h1 id="home-title">Free Money Tools for Contractors</h1>
+    <p class="hero-copy">
+      Contractor Money Tools helps U.S. contractors and home-service business owners understand labor cost,
+      employee cost, hourly pricing, and profitability.
+    </p>
+    <div class="button-row">
+      <a class="button button-primary" href="/calculators/">Explore Calculators</a>
+      <a class="button button-secondary" href="/calculators/contractor-hourly-rate">Calculate Your Hourly Rate</a>
+    </div>
+  </section>
 
-<style>
-  :global(*) {
-    box-sizing: border-box;
-  }
+  <section class="page-section" aria-labelledby="live-calculators-title">
+    <div class="section-intro">
+      <p class="eyebrow">Live calculators</p>
+      <h2 id="live-calculators-title">Start with the business question you need to answer</h2>
+      <p>Each tool uses editable assumptions and explains how its result is calculated.</p>
+    </div>
+    <div class="card-grid">
+      {calculators.map((calculator) => (
+        <article class="tool-card">
+          <h3>{calculator.title}</h3>
+          <p class="card-question">{calculator.question}</p>
+          <p>{calculator.description}</p>
+          <a class="card-link" href={calculator.href}>Open calculator <span aria-hidden="true">→</span></a>
+        </article>
+      ))}
+    </div>
+  </section>
 
-  :global(body) {
-    margin: 0;
-    font-family: system-ui, sans-serif;
-    line-height: 1.5;
-  }
+  <section class="page-section split-section" aria-labelledby="choose-title">
+    <div>
+      <p class="eyebrow">Choose the right tool</p>
+      <h2 id="choose-title">Match the calculator to your decision</h2>
+    </div>
+    <ul class="decision-list">
+      <li><span>True productive labor cost</span><a href="/calculators/labor-burden">Use Labor Burden</a></li>
+      <li><span>Total annual employee cost</span><a href="/calculators/true-employee-cost">Use True Employee Cost</a></li>
+      <li><span>What to charge customers</span><a href="/calculators/contractor-hourly-rate">Use Contractor Hourly Rate</a></li>
+    </ul>
+  </section>
 
-  main {
-    width: min(100% - 2rem, 48rem);
-    margin-inline: auto;
-    padding-block: 4rem;
-  }
-</style>
+  <section class="page-section trust-section" aria-labelledby="why-title">
+    <p class="eyebrow">Why Contractor Money Tools</p>
+    <h2 id="why-title">Useful numbers with the assumptions in view</h2>
+    <ul class="feature-grid">
+      <li><strong>Transparent formulas</strong><span>See how each result is built.</span></li>
+      <li><strong>Editable assumptions</strong><span>Use values that fit your business.</span></li>
+      <li><strong>No account required</strong><span>Open a calculator and start planning.</span></li>
+      <li><strong>Practical planning</strong><span>Focus on real contractor business decisions.</span></li>
+      <li><strong>Explained results</strong><span>Understand the output, not just the number.</span></li>
+    </ul>
+  </section>
+
+  <section class="page-section audience-section" aria-labelledby="audience-title">
+    <div>
+      <p class="eyebrow">Built for service businesses</p>
+      <h2 id="audience-title">For contractors who need clearer business numbers</h2>
+    </div>
+    <p>
+      Designed for HVAC, plumbing, electrical, roofing, remodeling, landscaping, painting, cleaning,
+      pest-control, and similar U.S. service businesses.
+    </p>
+  </section>
+
+  <section class="final-cta" aria-labelledby="final-cta-title">
+    <div>
+      <p class="eyebrow">Ready to run the numbers?</p>
+      <h2 id="final-cta-title">Choose a calculator and use your own assumptions.</h2>
+    </div>
+    <a class="button button-primary" href="/calculators/">Explore Calculators</a>
+  </section>
+</SiteLayout>

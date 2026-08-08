@@ -1,0 +1,129 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const pageTitle = 'Privacy Policy | Contractor Money Tools';
+const pageDescription = 'Learn how Contractor Money Tools handles calculator data, Google Analytics usage data, and browser technologies.';
+---
+
+<SiteLayout title={pageTitle} description={pageDescription}>
+  <header class="content-hero">
+    <p class="eyebrow">Privacy</p>
+    <h1>Privacy Policy</h1>
+    <p>
+      This policy explains how Contractor Money Tools handles information when
+      you use contractormoneytools.com.
+    </p>
+  </header>
+
+  <article class="content-card privacy-content">
+    <section aria-labelledby="information-title">
+      <h2 id="information-title">Information we collect</h2>
+      <p>
+        Contractor Money Tools is a static website. It currently has no user
+        accounts, login, database, contact form, newsletter, advertising,
+        affiliate links, or payment processing.
+      </p>
+      <p>
+        Google Analytics may collect normal website-usage information, such as
+        pages viewed, device and browser information, approximate geographic
+        information, traffic source, and interaction events.
+      </p>
+    </section>
+
+    <section aria-labelledby="calculator-data-title">
+      <h2 id="calculator-data-title">Calculator data</h2>
+      <p>
+        Calculator calculations run in your browser. Contractor Money Tools
+        does not intentionally send financial values entered into calculator
+        fields or calculated results to Google Analytics.
+      </p>
+      <p>
+        Calculator fields are intended for business-planning numbers. Do not
+        enter names, email addresses, account numbers, or other personal
+        identifiers into calculator fields.
+      </p>
+    </section>
+
+    <section aria-labelledby="analytics-title">
+      <h2 id="analytics-title">Analytics</h2>
+      <p>
+        Contractor Money Tools uses Google Analytics 4, with measurement ID
+        G-PS80221W71, to understand site usage and performance. Google Enhanced
+        Measurement is enabled for this web stream.
+      </p>
+      <p>
+        In addition to standard website measurements, the site records the
+        event names <code>calculator_start</code>,
+        <code>calculator_complete</code>, and
+        <code>calculator_navigation</code>. Their custom payloads use
+        calculator identifiers only—not financial input values or calculator
+        results.
+      </p>
+      <p>
+        Google may process analytics information under its own systems,
+        policies, and terms. Contractor Money Tools does not control Google’s
+        independent processing beyond this site’s Google Analytics configuration.
+      </p>
+      <p>
+        On your first visit, the site asks whether you accept analytics. Your
+        choice is stored in your browser so the question does not appear on
+        every visit. If you accept, analytics storage is granted. If you
+        decline, analytics storage remains denied and Google Analytics operates
+        only within that denied consent state.
+      </p>
+    </section>
+
+    <section aria-labelledby="cookies-title">
+      <h2 id="cookies-title">Cookies and similar technologies</h2>
+      <p>
+        With your consent, Google Analytics may use cookies or similar browser
+        technologies to measure visits and interactions. Until you accept,
+        analytics storage defaults to denied. The site also stores your
+        analytics-consent choice in browser storage. You can use your browser
+        settings to block or delete cookies and local browser storage, although
+        doing so may cause the site to ask for your choice again.
+      </p>
+    </section>
+
+    <section aria-labelledby="third-parties-title">
+      <h2 id="third-parties-title">Third-party services</h2>
+      <p>
+        The only third-party tracking service currently installed is Google
+        Analytics, provided by Google. No advertising, affiliate, payment,
+        CRM, or other third-party tracking service is currently active.
+      </p>
+    </section>
+
+    <section aria-labelledby="retention-title">
+      <h2 id="retention-title">Data retention and control</h2>
+      <p>
+        Analytics-data retention and controls are subject to this site’s Google
+        Analytics configuration and Google’s systems and policies. No specific
+        retention period is promised here. You can manage cookies and similar
+        browser storage through your browser settings.
+      </p>
+    </section>
+
+    <section aria-labelledby="changes-title">
+      <h2 id="changes-title">Changes to this policy</h2>
+      <p>
+        This policy may be updated when the site’s features, service providers,
+        or data practices change. The current version will be posted on this page.
+      </p>
+    </section>
+
+    <section aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <p>
+        Contact details will be added here when a public support channel is established.
+      </p>
+    </section>
+  </article>
+</SiteLayout>
+
+<style>
+  .privacy-content { max-width: 54rem; }
+  .privacy-content section + section { border-top: 1px solid var(--line); margin-top: 1.5rem; padding-top: 1.5rem; }
+  .privacy-content section > p:last-child { margin-bottom: 0; }
+  code { overflow-wrap: anywhere; color: var(--navy-deep); font-size: .9em; font-weight: 700; }
+</style>

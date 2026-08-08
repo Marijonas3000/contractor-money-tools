@@ -249,6 +249,7 @@ const pageDescription =
 
   <Fragment slot="scripts">
     <script>
+      import { initializeCalculatorTracking } from '../../lib/analytics';
       import {
         calculateTrueEmployeeCost,
         type TrueEmployeeCostCommonInput,
@@ -413,6 +414,11 @@ const pageDescription =
 
       form?.addEventListener('input', updateCalculator);
       updateCalculator();
+      initializeCalculatorTracking({
+        form,
+        calculatorId: 'true_employee_cost',
+        hasValidResult: () => validationSummary?.hasAttribute('hidden') ?? false,
+      });
     </script>
   </Fragment>
 </CalculatorPageLayout>

@@ -1,0 +1,29 @@
+---
+interface Props { currentPath: string; }
+
+const { currentPath } = Astro.props;
+const normalizePath = (path: string) => path === '/' ? '/' : `/${path.replace(/^\/+|\/+$/g, '')}/`;
+const normalizedCurrentPath = normalizePath(currentPath);
+const navigationItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Calculators', href: '/calculators/' },
+  { label: 'About', href: '/about/' },
+  { label: 'Privacy', href: '/privacy/' },
+];
+---
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <p class="footer-brand">Contractor Money Tools</p>
+      <p>Practical business planning calculators for contractors and home-service businesses.</p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <ul>
+        {navigationItems.map(({ label, href }) => (
+          <li><a href={href} aria-current={normalizedCurrentPath === href ? 'page' : undefined}>{label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</footer>

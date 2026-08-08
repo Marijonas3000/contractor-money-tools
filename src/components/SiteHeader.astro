@@ -1,0 +1,30 @@
+---
+interface Props { currentPath: string; }
+
+const { currentPath } = Astro.props;
+const normalizePath = (path: string) => path === '/' ? '/' : `/${path.replace(/^\/+|\/+$/g, '')}/`;
+const normalizedCurrentPath = normalizePath(currentPath);
+const navigationItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Calculators', href: '/calculators/' },
+  { label: 'About', href: '/about/' },
+];
+const getAriaCurrent = (href: string): 'page' | 'location' | undefined => {
+  if (normalizedCurrentPath === href) return 'page';
+  if (href !== '/' && normalizedCurrentPath.startsWith(href)) return 'location';
+  return undefined;
+};
+---
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="/" class="brand">Contractor Money Tools</a>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <ul>
+        {navigationItems.map(({ label, href }) => (
+          <li><a href={href} aria-current={getAriaCurrent(href)}>{label}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>

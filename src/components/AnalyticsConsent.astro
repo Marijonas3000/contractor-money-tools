@@ -1,0 +1,65 @@
+<aside
+  id="analytics-consent-banner"
+  class="consent-banner"
+  role="region"
+  aria-labelledby="analytics-consent-title"
+  hidden
+>
+  <div class="consent-banner-inner">
+    <div>
+      <p id="analytics-consent-title" class="consent-title">Analytics choice</p>
+      <p>
+        Contractor Money Tools uses Google Analytics to understand site usage.
+        <a href="/privacy/">Read the Privacy Policy</a>.
+      </p>
+    </div>
+    <div class="consent-actions">
+      <button type="button" class="consent-button consent-accept" data-consent="granted">
+        Accept analytics
+      </button>
+      <button type="button" class="consent-button consent-decline" data-consent="denied">
+        Decline
+      </button>
+    </div>
+  </div>
+</aside>
+
+<script>
+  const consentBanner = document.querySelector<HTMLElement>('#analytics-consent-banner');
+  const consentStorageKey = 'cmt_analytics_consent';
+
+  type ConsentChoice = 'granted' | 'denied';
+  type ConsentWindow = Window & {
+    cmtAnalyticsConsent?: ConsentChoice | null;
+    gtag?: (...args: unknown[]) => void;
+  };
+
+  const consentWindow = window as ConsentWindow;
+
+  if (!consentWindow.cmtAnalyticsConsent) {
+    consentBanner?.removeAttribute('hidden');
+  }
+
+  consentBanner?.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLButtonElement)) return;
+
+    const choice = target.dataset.consent;
+    if (choice !== 'granted' && choice !== 'denied') return;
+
+    consentWindow.gtag?.('consent', 'update', {
+      analytics_storage: choice,
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    });
+
+    consentWindow.cmtAnalyticsConsent = choice;
+    try {
+      localStorage.setItem(consentStorageKey, choice);
+    } catch {
+      // Consent still applies for this page view when browser storage is unavailable.
+    }
+    consentBanner.setAttribute('hidden', '');
+  });
+</script>

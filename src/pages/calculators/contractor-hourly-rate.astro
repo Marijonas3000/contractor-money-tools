@@ -237,6 +237,7 @@ const pageDescription =
 
   <Fragment slot="scripts">
     <script>
+      import { initializeCalculatorTracking } from '../../lib/analytics';
       import {
         calculateContractorHourlyRate,
         type ContractorHourlyRateInput,
@@ -377,6 +378,11 @@ const pageDescription =
 
       form?.addEventListener('input', updateCalculator);
       updateCalculator();
+      initializeCalculatorTracking({
+        form,
+        calculatorId: 'contractor_hourly_rate',
+        hasValidResult: () => validationSummary?.hasAttribute('hidden') ?? false,
+      });
     </script>
   </Fragment>
 </CalculatorPageLayout>
