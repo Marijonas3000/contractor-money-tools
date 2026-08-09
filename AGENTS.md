@@ -155,7 +155,7 @@ Initial calculator family:
 1. Labor Burden Calculator
 2. True Employee Cost Calculator
 3. Billable Hour Rate Calculator
-4. Markup vs Margin Calculator
+4. Contractor Markup Calculator
 5. Job Profitability Calculator
 
 Do not implement additional calculators unless explicitly requested.

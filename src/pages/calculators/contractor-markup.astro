@@ -1,0 +1,454 @@
+---
+import CalculatorPageLayout from '../../layouts/CalculatorPageLayout.astro';
+import RecommendationSlot from '../../components/calculators/RecommendationSlot.astro';
+import RelatedCalculators from '../../components/calculators/RelatedCalculators.astro';
+
+const pageTitle = 'Contractor Markup Calculator | Contractor Money Tools';
+const pageDescription = 'Turn contractor job cost into a selling price using markup or target margin, or check the markup and margin in a proposed bid price.';
+---
+
+<CalculatorPageLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="calculator">
+    <header class="page-intro">
+      <p class="eyebrow">Contractor job pricing</p>
+      <h1>Contractor Markup Calculator</h1>
+      <p>
+        Start with what a job costs, then apply markup, target a margin, or
+        check the markup and margin inside a proposed selling price.
+      </p>
+    </header>
+
+    <form id="contractor-markup-form" novalidate>
+      <div class="calculator-layout markup-layout">
+        <section class="panel inputs-panel" aria-labelledby="markup-inputs-title">
+          <div class="section-heading">
+            <div>
+              <p class="step">Step 1</p>
+              <h2 id="markup-inputs-title">Choose how to price the job</h2>
+            </div>
+            <p>Adjust any value. Results update automatically.</p>
+          </div>
+
+          <fieldset class="selector-fieldset">
+            <legend>Calculation mode</legend>
+            <div class="segmented-control calculation-modes">
+              <label>
+                <input type="radio" name="mode" value="add-markup" checked />
+                <span>Add markup</span>
+              </label>
+              <label>
+                <input type="radio" name="mode" value="target-margin" />
+                <span>Target margin</span>
+              </label>
+              <label>
+                <input type="radio" name="mode" value="check-price" />
+                <span>Check a price</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="selector-fieldset cost-selector">
+            <legend>Cost entry</legend>
+            <div class="segmented-control cost-modes">
+              <label>
+                <input type="radio" name="costEntryMode" value="breakdown" checked />
+                <span>Itemize job costs</span>
+              </label>
+              <label>
+                <input type="radio" name="costEntryMode" value="total" />
+                <span>Enter total cost</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div data-cost-fields="breakdown">
+            <div class="input-grid cost-grid">
+              <label class="field" for="laborCost">
+                <span>Labor</span>
+                <span class="input-shell prefix"><span aria-hidden="true">$</span><input id="laborCost" name="laborCost" type="number" min="0" step="0.01" value="3000" inputmode="decimal" /></span>
+              </label>
+              <label class="field" for="materialsCost">
+                <span>Materials</span>
+                <span class="input-shell prefix"><span aria-hidden="true">$</span><input id="materialsCost" name="materialsCost" type="number" min="0" step="0.01" value="4000" inputmode="decimal" /></span>
+              </label>
+              <label class="field" for="subcontractorsCost">
+                <span>Subcontractors</span>
+                <span class="input-shell prefix"><span aria-hidden="true">$</span><input id="subcontractorsCost" name="subcontractorsCost" type="number" min="0" step="0.01" value="1000" inputmode="decimal" /></span>
+              </label>
+              <label class="field" for="equipmentAndOtherDirectCosts">
+                <span>Equipment / other direct job costs</span>
+                <span class="input-shell prefix"><span aria-hidden="true">$</span><input id="equipmentAndOtherDirectCosts" name="equipmentAndOtherDirectCosts" type="number" min="0" step="0.01" value="1000" inputmode="decimal" /></span>
+              </label>
+              <label class="field" for="allocatedOverhead">
+                <span>Allocated overhead for this job</span>
+                <span class="input-shell prefix"><span aria-hidden="true">$</span><input id="allocatedOverhead" name="allocatedOverhead" type="number" min="0" step="0.01" value="1000" inputmode="decimal" /></span>
+              </label>
+            </div>
+            <p class="input-note labor-note">
+              Using employees? Start with their true productive-hour labor cost from the{' '}
+              <a href="/calculators/labor-burden/">Labor Burden Calculator</a>.
+            </p>
+            <p class="entered-cost-line">Total entered job cost: <strong data-output="inputEnteredJobCost">—</strong></p>
+          </div>
+
+          <div data-cost-fields="total" hidden>
+            <p class="input-note total-cost-note">Use this option when you already know the complete cost basis you want the markup applied to.</p>
+            <label class="field total-cost-field" for="totalJobCost">
+              <span>Total job cost</span>
+              <span class="input-shell prefix"><span aria-hidden="true">$</span><input id="totalJobCost" name="totalJobCost" type="number" min="0.01" step="0.01" value="10000" inputmode="decimal" disabled /></span>
+            </label>
+          </div>
+
+          <div class="mode-inputs">
+            <div data-mode-fields="add-markup">
+              <label class="field mode-field" for="markupPercent">
+                <span>Markup</span>
+                <span class="input-shell suffix"><input id="markupPercent" name="markupPercent" type="number" min="0" step="0.1" value="25" inputmode="decimal" /><span aria-hidden="true">%</span></span>
+              </label>
+              <p class="input-note">Editable planning assumption—not a recommended universal markup.</p>
+            </div>
+            <div data-mode-fields="target-margin" hidden>
+              <label class="field mode-field" for="targetMarginPercent">
+                <span>Target margin</span>
+                <span class="input-shell suffix"><input id="targetMarginPercent" name="targetMarginPercent" type="number" min="0" max="99.99" step="0.1" value="25" inputmode="decimal" disabled /><span aria-hidden="true">%</span></span>
+              </label>
+            </div>
+            <div data-mode-fields="check-price" hidden>
+              <label class="field mode-field" for="sellingPrice">
+                <span>Selling / bid price</span>
+                <span class="input-shell prefix"><span aria-hidden="true">$</span><input id="sellingPrice" name="sellingPrice" type="number" min="0.01" step="0.01" value="12500" inputmode="decimal" disabled /></span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <div class="result-stack" aria-live="polite">
+          <section class="result-card selling-result" data-primary-valid aria-labelledby="selling-price-title">
+            <p class="step">Selling / bid price</p>
+            <p class="selling-price" data-output="sellingPrice">—</p>
+            <h2 id="selling-price-title" class="result-summary" data-result-mode="add-markup">
+              Your <strong data-output="enteredJobCost">—</strong> job becomes a <strong data-output="sellingPrice">—</strong> quote at <strong data-output="markupPercent">—</strong> markup.
+            </h2>
+            <h2 class="result-summary" data-result-mode="target-margin" hidden>
+              To achieve a <strong data-output="marginPercent">—</strong> margin on the entered cost basis, the selling price is about <strong data-output="sellingPrice">—</strong>.
+            </h2>
+            <h2 class="result-summary" data-result-mode="check-price" hidden>
+              At a <strong data-output="sellingPrice">—</strong> selling price, this job carries a <strong data-output="markupPercent">—</strong> markup and <strong data-output="marginPercent">—</strong> margin on the entered cost basis.
+            </h2>
+            <p id="below-cost-warning" class="below-cost-warning" hidden>This selling price is below the entered job cost.</p>
+          </section>
+
+          <section id="validation-summary" class="result-card validation-summary" role="alert" hidden>
+            <h2>Check your inputs</h2>
+            <ul id="validation-errors"></ul>
+          </section>
+        </div>
+      </div>
+    </form>
+  </Fragment>
+
+  <Fragment slot="results">
+    <div data-valid-section>
+      <section class="content-section" aria-labelledby="breakdown-title">
+        <div class="section-heading wide-heading">
+          <div><p class="step">Result breakdown</p><h2 id="breakdown-title">How the selling price is built</h2></div>
+          <p>Values use the active cost and calculation modes.</p>
+        </div>
+        <dl class="breakdown-grid">
+          <div data-breakdown-output><dt>Labor</dt><dd data-output="laborCost">—</dd></div>
+          <div data-breakdown-output><dt>Materials</dt><dd data-output="materialsCost">—</dd></div>
+          <div data-breakdown-output><dt>Subcontractors</dt><dd data-output="subcontractorsCost">—</dd></div>
+          <div data-breakdown-output><dt>Equipment / other direct costs</dt><dd data-output="equipmentAndOtherDirectCosts">—</dd></div>
+          <div data-breakdown-output><dt>Allocated overhead</dt><dd data-output="allocatedOverhead">—</dd></div>
+          <div class="emphasis-row"><dt>Entered job cost</dt><dd data-output="enteredJobCost">—</dd></div>
+          <div class="emphasis-row"><dt>Selling / bid price</dt><dd data-output="sellingPrice">—</dd></div>
+          <div><dt>Markup amount</dt><dd data-output="markupAmount">—</dd></div>
+          <div><dt>Markup</dt><dd data-output="markupPercent">—</dd></div>
+          <div><dt id="margin-result-label">Equivalent margin</dt><dd data-output="marginPercent">—</dd></div>
+          <div><dt>Cost multiplier</dt><dd data-output="costMultiplier">—</dd></div>
+        </dl>
+      </section>
+
+      <section class="content-section use-case-section" aria-labelledby="owner-pricing-title">
+        <p class="step">Choose the right pricing tool</p>
+        <h2 id="owner-pricing-title">Pricing your own billable time?</h2>
+        <p>Pricing your own billable time rather than marking up a complete job cost? Use the <a href="/calculators/contractor-hourly-rate/">Contractor Hourly Rate Calculator</a>.</p>
+      </section>
+    </div>
+  </Fragment>
+
+  <Fragment slot="methodology">
+    <section class="content-section education-section" aria-labelledby="markup-margin-title">
+      <p class="step">Markup vs margin</p>
+      <h2 id="markup-margin-title">The percentages use different denominators</h2>
+      <div class="example-grid">
+        <div>
+          <h3>Apply 25% markup</h3>
+          <p><strong>$10,000 cost + 25% markup = $12,500 selling price</strong></p>
+          <p>Markup amount: $2,500<br />Equivalent margin: 20%</p>
+        </div>
+        <div>
+          <h3>Target 25% margin</h3>
+          <p><strong>Selling price: $13,333.33</strong></p>
+          <p>Required markup: approximately 33.33%</p>
+        </div>
+      </div>
+      <p>Markup uses cost as its denominator. Margin uses selling price as its denominator. That is why 25% markup is not the same as 25% margin.</p>
+    </section>
+
+    <section class="content-section prose-section" aria-labelledby="methodology-title">
+      <p class="step">Methodology</p>
+      <h2 id="methodology-title">How the calculator works</h2>
+      <div class="formula-list" aria-label="Contractor markup formulas">
+        <p><strong>Selling Price</strong> = Cost × (1 + Markup)</p>
+        <p><strong>Markup %</strong> = (Selling Price − Cost) ÷ Cost</p>
+        <p><strong>Margin %</strong> = (Selling Price − Cost) ÷ Selling Price</p>
+        <p><strong>Price from Target Margin</strong> = Cost ÷ (1 − Margin)</p>
+      </div>
+      <p>Enter the job costs and allocated overhead you want this markup applied to. Allocated overhead is a user-entered dollar amount in V1; the calculator does not choose an allocation method. Do not include the same cost both here and elsewhere in your pricing model.</p>
+      <p>Before marking up employee labor, make sure the estimate starts from fully burdened labor cost rather than base wages. Learn how to <a href="/guides/labor-burden-construction-estimates/">use labor burden correctly in estimates</a>.</p>
+      <p><strong>Markup amount is not automatically final net profit.</strong> This is the margin relative to the costs entered here. It is not necessarily your final net profit margin if additional overhead or business costs still need to be recovered.</p>
+      <p class="disclaimer">This calculator provides business planning and educational information—not tax, accounting, legal, or financial advice.</p>
+    </section>
+  </Fragment>
+
+  <RecommendationSlot slot="recommendation" />
+
+  <Fragment slot="faq-related">
+    <section class="content-section faq-section" aria-labelledby="faq-title">
+      <p class="step">FAQ</p>
+      <h2 id="faq-title">Contractor markup questions</h2>
+      <details><summary>What is contractor markup?</summary><p>Markup is the amount added to the entered job cost to reach a selling price. Markup percentage uses cost as its denominator.</p></details>
+      <details><summary>What is the difference between markup and margin?</summary><p>Markup compares the added amount with cost. Margin compares the same amount with selling price, so the percentages are not interchangeable.</p></details>
+      <details><summary>What margin does 25% markup produce?</summary><p>A 25% markup produces a 20% margin on the entered cost basis.</p></details>
+      <details><summary>What markup gives a 25% margin?</summary><p>A 25% target margin requires approximately 33.33% markup on cost.</p></details>
+      <details><summary>Should contractors mark up labor and materials?</summary><p>Include the job costs you intend the selling price to recover. The appropriate cost basis and pricing policy depend on the business and job.</p></details>
+      <details><summary>Should overhead be included before markup?</summary><p>Include any allocated overhead you want this job price to recover, but do not count the same overhead in more than one place.</p></details>
+      <details><summary>What if my selling price is below my job cost?</summary><p>Check a price mode accepts it and shows negative markup and margin values so you can see that the proposed price is below the entered cost basis.</p></details>
+    </section>
+
+    <RelatedCalculators calculators={[
+      { title: 'Labor Burden Calculator', description: 'Estimate what an employee costs per productive hour.', href: '/calculators/labor-burden' },
+      { title: 'True Employee Cost Calculator', description: 'Estimate the full annual employer cost of an hourly or salaried employee.', href: '/calculators/true-employee-cost' },
+      { title: 'Contractor Hourly Rate Calculator', description: 'Calculate a billing rate from owner compensation, overhead, billable hours, and target margin.', href: '/calculators/contractor-hourly-rate' },
+    ]} />
+  </Fragment>
+
+  <Fragment slot="scripts">
+    <script>
+      import { initializeCalculatorTracking } from '../../lib/analytics';
+      import {
+        calculateContractorMarkup,
+        type ContractorMarkupInput,
+        type ContractorMarkupResult,
+        type ContractorMarkupValidationError,
+      } from '../../lib/calculators/contractor-markup';
+
+      const form = document.querySelector<HTMLFormElement>('#contractor-markup-form');
+      const primaryValid = document.querySelector<HTMLElement>('[data-primary-valid]');
+      const validationSummary = document.querySelector<HTMLElement>('#validation-summary');
+      const validationErrors = document.querySelector<HTMLUListElement>('#validation-errors');
+      const validSections = document.querySelectorAll<HTMLElement>('[data-valid-section]');
+      const belowCostWarning = document.querySelector<HTMLElement>('#below-cost-warning');
+      const marginResultLabel = document.querySelector<HTMLElement>('#margin-result-label');
+
+      const fieldLabels: Record<string, string> = {
+        mode: 'Calculation mode', costEntryMode: 'Cost entry mode',
+        laborCost: 'Labor', materialsCost: 'Materials', subcontractorsCost: 'Subcontractors',
+        equipmentAndOtherDirectCosts: 'Equipment / other direct job costs',
+        allocatedOverhead: 'Allocated overhead for this job', totalJobCost: 'Total job cost',
+        enteredJobCost: 'Entered job cost', markupPercent: 'Markup',
+        targetMarginPercent: 'Target margin', sellingPrice: 'Selling / bid price', calculation: 'Calculation',
+      };
+      const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const percent = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+      const multiplier = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      function getNumber(name: string): number {
+        const control = form?.elements.namedItem(name);
+        return control instanceof HTMLInputElement ? control.valueAsNumber : Number.NaN;
+      }
+
+      function selectedValue(name: string): string {
+        return form?.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value ?? '';
+      }
+
+      function setOutput(name: string, value: string) {
+        document.querySelectorAll<HTMLElement>(`[data-output="${name}"]`).forEach((element) => { element.textContent = value; });
+      }
+
+      function formatCurrency(value: number) {
+        return currency.format(Object.is(value, -0) ? 0 : value);
+      }
+
+      function formatPercent(value: number) {
+        return `${percent.format(Object.is(value, -0) ? 0 : value)}%`;
+      }
+
+      function syncActiveFields() {
+        const mode = selectedValue('mode');
+        const costEntryMode = selectedValue('costEntryMode');
+        document.querySelectorAll<HTMLElement>('[data-mode-fields]').forEach((container) => {
+          const active = container.dataset.modeFields === mode;
+          container.toggleAttribute('hidden', !active);
+          container.querySelectorAll<HTMLInputElement>('input').forEach((input) => { input.disabled = !active; });
+        });
+        document.querySelectorAll<HTMLElement>('[data-cost-fields]').forEach((container) => {
+          const active = container.dataset.costFields === costEntryMode;
+          container.toggleAttribute('hidden', !active);
+          container.querySelectorAll<HTMLInputElement>('input').forEach((input) => { input.disabled = !active; });
+        });
+      }
+
+      function readInput(): ContractorMarkupInput {
+        const mode = selectedValue('mode');
+        const costEntryMode = selectedValue('costEntryMode');
+        const costInput = costEntryMode === 'total'
+          ? { costEntryMode: 'total' as const, totalJobCost: getNumber('totalJobCost') }
+          : {
+              costEntryMode: 'breakdown' as const,
+              laborCost: getNumber('laborCost'), materialsCost: getNumber('materialsCost'),
+              subcontractorsCost: getNumber('subcontractorsCost'),
+              equipmentAndOtherDirectCosts: getNumber('equipmentAndOtherDirectCosts'),
+              allocatedOverhead: getNumber('allocatedOverhead'),
+            };
+
+        if (mode === 'target-margin') return { ...costInput, mode, targetMarginPercent: getNumber('targetMarginPercent') };
+        if (mode === 'check-price') return { ...costInput, mode, sellingPrice: getNumber('sellingPrice') };
+        return { ...costInput, mode: 'add-markup', markupPercent: getNumber('markupPercent') };
+      }
+
+      function userFacingMessage(error: ContractorMarkupValidationError) {
+        return Object.entries(fieldLabels).reduce(
+          (message, [identifier, label]) => message.replaceAll(identifier, label),
+          error.message,
+        );
+      }
+
+      function showValidation(errors: ContractorMarkupValidationError[]) {
+        primaryValid?.setAttribute('hidden', '');
+        validSections.forEach((section) => section.setAttribute('hidden', ''));
+        validationSummary?.removeAttribute('hidden');
+        form?.querySelectorAll('input').forEach((input) => {
+          input.removeAttribute('aria-invalid');
+          input.removeAttribute('aria-errormessage');
+        });
+        validationErrors?.replaceChildren(...errors.map((error, index) => {
+          const item = document.createElement('li');
+          item.id = `markup-validation-error-${index}`;
+          const control = document.getElementById(error.field);
+          const message = userFacingMessage(error);
+          if (control instanceof HTMLInputElement && !control.disabled) {
+            control.setAttribute('aria-invalid', 'true');
+            control.setAttribute('aria-errormessage', item.id);
+            const link = document.createElement('a');
+            link.href = `#${error.field}`;
+            link.textContent = message;
+            item.append(link);
+          } else item.textContent = message;
+          return item;
+        }));
+      }
+
+      function showResults(result: ContractorMarkupResult, input: ContractorMarkupInput) {
+        primaryValid?.removeAttribute('hidden');
+        validSections.forEach((section) => section.removeAttribute('hidden'));
+        validationSummary?.setAttribute('hidden', '');
+        form?.querySelectorAll('input').forEach((control) => {
+          control.removeAttribute('aria-invalid');
+          control.removeAttribute('aria-errormessage');
+        });
+
+        setOutput('enteredJobCost', formatCurrency(result.enteredJobCost));
+        setOutput('inputEnteredJobCost', formatCurrency(result.enteredJobCost));
+        setOutput('sellingPrice', formatCurrency(result.sellingPrice));
+        setOutput('markupAmount', formatCurrency(result.markupAmount));
+        setOutput('markupPercent', formatPercent(result.markupPercent));
+        setOutput('marginPercent', formatPercent(result.marginPercent));
+        setOutput('costMultiplier', `${multiplier.format(result.costMultiplier)}×`);
+
+        document.querySelectorAll<HTMLElement>('[data-result-mode]').forEach((element) => {
+          element.toggleAttribute('hidden', element.dataset.resultMode !== result.mode);
+        });
+        document.querySelectorAll<HTMLElement>('[data-breakdown-output]').forEach((element) => {
+          element.toggleAttribute('hidden', result.costEntryMode !== 'breakdown');
+        });
+        belowCostWarning?.toggleAttribute('hidden', !result.isBelowCost);
+        primaryValid?.classList.toggle('below-cost-result', result.isBelowCost);
+        if (marginResultLabel) {
+          marginResultLabel.textContent = result.mode === 'add-markup'
+            ? 'Equivalent margin'
+            : result.mode === 'target-margin' ? 'Target margin' : 'Actual margin';
+        }
+
+        if (input.costEntryMode === 'breakdown') {
+          setOutput('laborCost', formatCurrency(input.laborCost));
+          setOutput('materialsCost', formatCurrency(input.materialsCost));
+          setOutput('subcontractorsCost', formatCurrency(input.subcontractorsCost));
+          setOutput('equipmentAndOtherDirectCosts', formatCurrency(input.equipmentAndOtherDirectCosts));
+          setOutput('allocatedOverhead', formatCurrency(input.allocatedOverhead));
+        }
+      }
+
+      function updateCalculator() {
+        syncActiveFields();
+        const input = readInput();
+        const calculation = calculateContractorMarkup(input);
+        if (calculation.success) showResults(calculation.result, input);
+        else showValidation(calculation.errors);
+      }
+
+      form?.addEventListener('input', updateCalculator);
+      updateCalculator();
+      initializeCalculatorTracking({
+        form,
+        calculatorId: 'contractor_markup',
+        hasValidResult: () => validationSummary?.hasAttribute('hidden') ?? false,
+      });
+    </script>
+  </Fragment>
+</CalculatorPageLayout>
+
+<style>
+  .selector-fieldset { margin: 0 0 1rem; border: 0; padding: 0; }
+  .selector-fieldset legend { margin-bottom: .4rem; color: var(--navy-deep); font-size: .88rem; font-weight: 750; }
+  .segmented-control { display: grid; gap: .3rem; border-radius: .65rem; background: #e9edef; padding: .25rem; }
+  .segmented-control label { position: relative; cursor: pointer; }
+  .segmented-control input { position: absolute; opacity: 0; pointer-events: none; }
+  .segmented-control span { display: block; border-radius: .45rem; padding: .65rem .75rem; color: var(--muted); font-weight: 750; text-align: center; }
+  .segmented-control input:checked + span { background: var(--white); color: var(--navy-deep); box-shadow: 0 1px 4px rgb(13 38 53 / 12%); }
+  .segmented-control input:focus-visible + span { outline: 3px solid var(--amber); outline-offset: 2px; }
+  .calculation-modes { grid-template-columns: 1fr; }
+  .cost-modes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cost-selector { margin-top: 1.1rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+  .cost-grid { gap: .75rem 1rem; }
+  .input-note { margin: .6rem 0 0; color: var(--muted); font-size: .82rem; }
+  .labor-note { border-left: 3px solid var(--teal); padding-left: .8rem; }
+  .entered-cost-line { display: flex; justify-content: space-between; gap: 1rem; margin: .8rem 0 0; border-top: 1px solid var(--line); padding-top: .75rem; color: var(--muted); }
+  .entered-cost-line strong { color: var(--navy-deep); }
+  .total-cost-note { margin: 0 0 .75rem; }
+  .total-cost-field, .mode-field { max-width: 24rem; }
+  .mode-inputs { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+  .result-stack { display: grid; gap: 1rem; }
+  .selling-result { min-height: 0; }
+  .selling-price { position: relative; z-index: 1; margin: .25rem 0 1rem; color: #ffc56d; font-size: clamp(2.4rem, 10vw, 4rem); font-weight: 850; line-height: 1; overflow-wrap: anywhere; }
+  .result-summary { position: relative; z-index: 1; margin-bottom: 0; color: var(--white); font-size: clamp(1.1rem, 4vw, 1.45rem); line-height: 1.35; }
+  .result-summary strong { color: #ffc56d; }
+  .below-cost-warning { position: relative; z-index: 1; margin: 1rem 0 0; border-left: 3px solid #ffc56d; padding-left: .75rem; color: #fff2dc; font-weight: 750; }
+  .below-cost-result { border-color: #b67a36; background: #49351f; }
+  .use-case-section { max-width: 54rem; }
+  .use-case-section p:last-child, .education-section > p { margin-bottom: 0; color: var(--muted); }
+  .education-section { max-width: 54rem; border-color: #b8dcd7; background: var(--teal-light); }
+  .example-grid { display: grid; gap: 1rem; margin-block: 1rem; }
+  .example-grid > div { border: 1px solid rgb(21 52 71 / 14%); border-radius: .65rem; background: rgb(255 255 255 / 64%); padding: 1rem; }
+  .example-grid h3 { margin-bottom: .5rem; color: var(--navy-deep); }
+  .example-grid p:last-child { margin-bottom: 0; color: var(--muted); }
+  @media (min-width: 42rem) {
+    .calculation-modes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .example-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 62rem) {
+    .markup-layout { grid-template-columns: minmax(0, 1.35fr) minmax(20rem, .65fr); }
+    .selling-result { position: sticky; min-height: 20rem; }
+  }
+</style>

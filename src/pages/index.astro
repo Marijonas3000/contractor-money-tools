@@ -2,7 +2,7 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 
 const pageTitle = 'Free Money Tools for Contractors | Contractor Money Tools';
-const pageDescription = 'Free calculators that help U.S. contractors understand labor costs, employee costs, hourly pricing, and business profitability.';
+const pageDescription = 'Free calculators that help U.S. contractors understand labor costs, employee costs, hourly pricing, job markup, and business profitability.';
 const calculators = [
   {
     title: 'Labor Burden Calculator',
@@ -21,6 +21,12 @@ const calculators = [
     question: 'How much should I charge per billable hour?',
     description: 'Turn owner compensation, overhead, billable hours, and a target margin into a practical billing rate.',
     href: '/calculators/contractor-hourly-rate',
+  },
+  {
+    title: 'Contractor Markup Calculator',
+    question: 'I know what the job costs. What selling price do I get after markup?',
+    description: 'Turn an itemized or total job cost into a selling price, or work backward from target margin or a proposed price.',
+    href: '/calculators/contractor-markup',
   },
 ];
 ---
@@ -66,6 +72,7 @@ const calculators = [
       <li><span>True productive labor cost</span><a href="/calculators/labor-burden">Use Labor Burden</a></li>
       <li><span>Total annual employee cost</span><a href="/calculators/true-employee-cost">Use True Employee Cost</a></li>
       <li><span>What to charge customers</span><a href="/calculators/contractor-hourly-rate">Use Contractor Hourly Rate</a></li>
+      <li><span>Job cost plus markup</span><a href="/calculators/contractor-markup">Use Contractor Markup</a></li>
     </ul>
   </section>
 

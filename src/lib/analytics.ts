@@ -1,7 +1,8 @@
 export type CalculatorId =
   | 'labor_burden'
   | 'true_employee_cost'
-  | 'contractor_hourly_rate';
+  | 'contractor_hourly_rate'
+  | 'contractor_markup';
 
 type CalculatorAnalyticsEvent =
   | { name: 'calculator_start'; params: { calculator_id: CalculatorId } }
@@ -15,6 +16,7 @@ const calculatorPaths: Record<string, CalculatorId> = {
   '/calculators/labor-burden': 'labor_burden',
   '/calculators/true-employee-cost': 'true_employee_cost',
   '/calculators/contractor-hourly-rate': 'contractor_hourly_rate',
+  '/calculators/contractor-markup': 'contractor_markup',
 };
 
 function emitAnalyticsEvent(event: CalculatorAnalyticsEvent) {

@@ -2,7 +2,7 @@
 import SiteLayout from '../../layouts/SiteLayout.astro';
 
 const pageTitle = 'Contractor Calculators | Contractor Money Tools';
-const pageDescription = 'Browse free contractor calculators for productive labor cost, total employee cost, and hourly billing rates.';
+const pageDescription = 'Browse free contractor calculators for productive labor cost, employee cost, hourly billing rates, and job markup.';
 const calculators = [
   {
     title: 'Labor Burden Calculator',
@@ -19,6 +19,11 @@ const calculators = [
     description: 'Calculate a break-even rate and recommended billing rate from owner compensation, overhead, billable hours, and target margin.',
     href: '/calculators/contractor-hourly-rate',
   },
+  {
+    title: 'Contractor Markup Calculator',
+    description: 'Apply markup to job cost, calculate a selling price from target margin, or check the markup and margin in a proposed price.',
+    href: '/calculators/contractor-markup',
+  },
 ];
 ---
 
@@ -26,7 +31,7 @@ const calculators = [
   <header class="content-hero">
     <p class="eyebrow">All live tools</p>
     <h1>Contractor Calculators</h1>
-    <p>Choose a practical calculator for labor costs, employee costs, or hourly pricing. No account is required.</p>
+    <p>Choose a practical calculator for labor costs, employee costs, hourly pricing, or job markup. No account is required.</p>
   </header>
 
   <section aria-labelledby="calculator-directory-title">
