@@ -1,0 +1,491 @@
+---
+import CalculatorPageLayout from '../../layouts/CalculatorPageLayout.astro';
+import RecommendationSlot from '../../components/calculators/RecommendationSlot.astro';
+import RelatedCalculators from '../../components/calculators/RelatedCalculators.astro';
+
+const pageTitle = 'Contractor Overhead Calculator | Contractor Money Tools';
+const pageDescription =
+  'Calculate annual contractor business overhead and view the same overhead by revenue, direct labor, direct job cost, or productive field hours.';
+---
+
+<CalculatorPageLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="calculator">
+    <header class="page-intro">
+      <p class="eyebrow">Company overhead planning</p>
+      <h1>Contractor Overhead Calculator</h1>
+      <p>
+        Add up the indirect cost of keeping your business running, then see how
+        the same annual overhead looks using different recovery bases.
+      </p>
+    </header>
+
+    <form id="contractor-overhead-form" novalidate>
+      <div class="calculator-layout overhead-layout">
+        <section class="panel inputs-panel" aria-labelledby="overhead-inputs-title">
+          <div class="section-heading">
+            <div>
+              <p class="step">Step 1</p>
+              <h2 id="overhead-inputs-title">Enter annual overhead</h2>
+            </div>
+            <p>One overhead total, with multiple recovery views later.</p>
+          </div>
+
+          <fieldset class="selector-fieldset">
+            <legend>Overhead entry</legend>
+            <div class="mode-toggle">
+              <label>
+                <input type="radio" name="overheadEntryMode" value="detailed" checked />
+                <span>Itemize annual overhead</span>
+              </label>
+              <label>
+                <input type="radio" name="overheadEntryMode" value="total" />
+                <span>Enter total annual overhead</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div data-overhead-fields="detailed">
+            <div class="input-grid overhead-input-grid">
+              <label class="field" for="officeShop">
+                <span>Office / shop</span>
+                <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="officeShop" name="officeShop" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span>
+              </label>
+              <label class="field" for="administrativePayroll">
+                <span>Administrative payroll</span>
+                <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="administrativePayroll" name="administrativePayroll" type="number" min="0" step="1" value="0" inputmode="decimal" aria-describedby="admin-payroll-help" /><span aria-hidden="true">/yr</span></span>
+              </label>
+              <label class="field" for="insuranceBonding">
+                <span>Insurance / bonding</span>
+                <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="insuranceBonding" name="insuranceBonding" type="number" min="0" step="1" value="0" inputmode="decimal" aria-describedby="insurance-help" /><span aria-hidden="true">/yr</span></span>
+              </label>
+              <label class="field" for="vehiclesTransportationOverhead">
+                <span>Vehicles / transportation overhead</span>
+                <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="vehiclesTransportationOverhead" name="vehiclesTransportationOverhead" type="number" min="0" step="1" value="0" inputmode="decimal" aria-describedby="vehicle-help" /><span aria-hidden="true">/yr</span></span>
+              </label>
+              <label class="field" for="softwareCommunications">
+                <span>Software / communications</span>
+                <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="softwareCommunications" name="softwareCommunications" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span>
+              </label>
+              <label class="field" for="marketingSales">
+                <span>Marketing / sales</span>
+                <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="marketingSales" name="marketingSales" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span>
+              </label>
+              <label class="field" for="professionalCompliance">
+                <span>Professional / compliance</span>
+                <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="professionalCompliance" name="professionalCompliance" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span>
+              </label>
+              <label class="field" for="equipmentShopOverhead">
+                <span>Equipment / shop overhead</span>
+                <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="equipmentShopOverhead" name="equipmentShopOverhead" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span>
+              </label>
+              <label class="field" for="otherOverhead">
+                <span>Other overhead</span>
+                <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="otherOverhead" name="otherOverhead" type="number" min="0" step="1" value="0" inputmode="decimal" /><span aria-hidden="true">/yr</span></span>
+              </label>
+            </div>
+            <div class="helper-list">
+              <p id="admin-payroll-help"><strong>Administrative payroll:</strong> company-level office or administrative payroll selected for overhead recovery—not direct field labor already treated elsewhere.</p>
+              <p id="insurance-help"><strong>Insurance / bonding:</strong> avoid counting workers’ compensation already in labor burden or job-specific insurance directly costed elsewhere.</p>
+              <p id="vehicle-help"><strong>Vehicles / transportation:</strong> use indirect fleet costs, not vehicle, travel, or delivery costs assigned directly to jobs.</p>
+            </div>
+          </div>
+
+          <div data-overhead-fields="total" hidden>
+            <p class="total-mode-copy">Use this if accounting or internal records already give you one annual overhead total.</p>
+            <label class="field total-field" for="totalAnnualOverhead">
+              <span>Total annual overhead</span>
+              <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="totalAnnualOverhead" name="totalAnnualOverhead" type="number" min="0.01" step="1" inputmode="decimal" disabled /><span aria-hidden="true">/yr</span></span>
+            </label>
+          </div>
+        </section>
+
+        <div class="result-stack" aria-live="polite">
+          <section class="result-card neutral-result" data-neutral-result aria-labelledby="neutral-result-title">
+            <p class="step">Your annual overhead</p>
+            <h2 id="neutral-result-title" class="result-statement">Enter at least one overhead amount to see your annual total.</h2>
+            <p>No benchmark assumptions have been prefilled.</p>
+          </section>
+
+          <section class="result-card overhead-result" data-primary-valid aria-labelledby="primary-result-title" hidden>
+            <p class="step">Your annual overhead</p>
+            <h2 id="primary-result-title" class="annual-total"><strong data-output="totalAnnualOverhead">—</strong><span>/year</span></h2>
+            <dl class="primary-periods">
+              <div><dt>Monthly overhead</dt><dd data-output="monthlyOverhead">—</dd></div>
+              <div><dt>Weekly overhead</dt><dd data-output="weeklyOverhead">—</dd></div>
+            </dl>
+          </section>
+
+          <section id="validation-summary" class="result-card validation-summary" role="alert" hidden>
+            <h2>Check your inputs</h2>
+            <ul id="validation-errors"></ul>
+          </section>
+        </div>
+      </div>
+
+      <section class="content-section recovery-inputs" aria-labelledby="recovery-inputs-title">
+        <div class="section-heading wide-heading">
+          <div>
+            <p class="step">Step 2 — optional</p>
+            <h2 id="recovery-inputs-title">See the same overhead using different recovery bases</h2>
+          </div>
+          <p>Leave any field blank if that recovery view is not useful to you.</p>
+        </div>
+        <div class="input-grid recovery-input-grid">
+          <label class="field" for="annualRevenue">
+            <span>Annual revenue <small>Optional</small></span>
+            <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="annualRevenue" name="annualRevenue" type="number" step="1" inputmode="decimal" /><span aria-hidden="true">/yr</span></span>
+          </label>
+          <label class="field" for="annualDirectLaborCost">
+            <span>Annual direct labor cost <small>Optional</small></span>
+            <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="annualDirectLaborCost" name="annualDirectLaborCost" type="number" step="1" inputmode="decimal" /><span aria-hidden="true">/yr</span></span>
+          </label>
+          <label class="field" for="annualDirectJobCosts">
+            <span>Annual direct job costs <small>Optional</small></span>
+            <span class="input-shell prefix suffix"><span aria-hidden="true">$</span><input id="annualDirectJobCosts" name="annualDirectJobCosts" type="number" step="1" inputmode="decimal" /><span aria-hidden="true">/yr</span></span>
+          </label>
+          <label class="field" for="annualProductiveFieldHours">
+            <span>Annual productive field labor hours <small>Optional</small></span>
+            <span class="input-shell suffix"><input id="annualProductiveFieldHours" name="annualProductiveFieldHours" type="number" step="1" inputmode="decimal" /><span aria-hidden="true">hrs/yr</span></span>
+          </label>
+        </div>
+      </section>
+    </form>
+  </Fragment>
+
+  <Fragment slot="results">
+    <section class="recovery-results" data-recovery-results aria-labelledby="recovery-results-title" hidden>
+      <div class="section-heading">
+        <p class="step">Recovery views</p>
+        <h2 id="recovery-results-title">How the annual overhead looks by denominator</h2>
+      </div>
+      <div class="recovery-card-grid">
+        <article class="recovery-card" data-recovery-card="revenue" hidden>
+          <h3>Overhead as % of revenue</h3>
+          <p class="recovery-value"><strong data-output="overheadAsPercentOfRevenue">—</strong> of revenue</p>
+        </article>
+        <article class="recovery-card" data-recovery-card="direct-labor" hidden>
+          <h3>Overhead per direct labor dollar</h3>
+          <p class="recovery-value"><strong data-output="directLaborOverheadPerDollar">—</strong> overhead per $1 of direct labor</p>
+          <p>Equivalent to <strong data-output="directLaborOverheadAsPercentOfBase">—</strong> of direct labor cost.</p>
+        </article>
+        <article class="recovery-card" data-recovery-card="direct-cost" hidden>
+          <h3>Overhead per direct-cost dollar</h3>
+          <p class="recovery-value"><strong data-output="directCostOverheadPerDollar">—</strong> overhead per $1 of direct job cost</p>
+          <p>Equivalent to <strong data-output="directCostOverheadAsPercentOfBase">—</strong> of direct job cost.</p>
+        </article>
+        <article class="recovery-card" data-recovery-card="productive-hour" hidden>
+          <h3>Overhead per productive field hour</h3>
+          <p class="recovery-value"><strong data-output="overheadPerProductiveFieldHour">—</strong> per productive field hour</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-section meaning-section" aria-labelledby="meaning-title">
+      <p class="step">What these numbers mean</p>
+      <h2 id="meaning-title">Different views of the same company overhead</h2>
+      <p class="meaning-callout">These rates recover the same annual overhead using different allocation bases. The best basis depends on how your business prices and tracks work.</p>
+      <div class="view-list">
+        <p><strong>Revenue view</strong> expresses overhead as a share of annual revenue.</p>
+        <p><strong>Labor-dollar view</strong> spreads overhead across direct labor cost.</p>
+        <p><strong>Direct-cost view</strong> spreads overhead across annual direct job costs.</p>
+        <p><strong>Productive-hour view</strong> spreads overhead across productive field labor hours.</p>
+      </div>
+    </section>
+  </Fragment>
+
+  <Fragment slot="methodology">
+    <section class="content-section comparison-section" aria-labelledby="comparison-title">
+      <p class="step">Same overhead, different denominators</p>
+      <h2 id="comparison-title">The percentages are not interchangeable</h2>
+      <div class="comparison-grid">
+        <p><strong>$100,000 overhead ÷ $500,000 revenue</strong><span>= 20% of revenue</span></p>
+        <p><strong>$100,000 overhead ÷ $400,000 direct job cost</strong><span>= 25% of direct cost</span></p>
+      </div>
+      <p>Both describe the same $100,000 annual overhead using different denominators.</p>
+    </section>
+
+    <section class="content-section prose-section" aria-labelledby="methodology-title">
+      <p class="step">Methodology</p>
+      <h2 id="methodology-title">How the calculator works</h2>
+      <div class="formula-list" aria-label="Contractor overhead formulas">
+        <p><strong>Total annual overhead</strong> = sum of active categories, or the user-entered annual total</p>
+        <p><strong>Monthly overhead</strong> = annual overhead ÷ 12</p>
+        <p><strong>Weekly overhead</strong> = annual overhead ÷ 52</p>
+        <p><strong>Overhead as % of revenue</strong> = annual overhead ÷ annual revenue</p>
+        <p><strong>Overhead per direct labor dollar</strong> = annual overhead ÷ annual direct labor cost</p>
+        <p><strong>Overhead per direct-cost dollar</strong> = annual overhead ÷ annual direct job costs</p>
+        <p><strong>Overhead per productive field hour</strong> = annual overhead ÷ annual productive field hours</p>
+      </div>
+      <p><strong>Overhead is a business cost. Profit is not included in overhead.</strong> This calculator does not calculate profit, markup, selling price, or job margin.</p>
+      <p><strong>Do not include the same cost in both labor burden and business overhead if your pricing model would recover it twice.</strong> Accounting classifications can differ, but every cost needs a consistent place in the pricing model.</p>
+      <p>Calculating employee productive-hour cost instead? Use the <a href="/calculators/labor-burden/">Labor Burden Calculator</a>.</p>
+      <p>If you're an owner-operator, use your annual overhead to calculate the hourly rate your business needs to charge with the <a href="/calculators/contractor-hourly-rate/">Contractor Hourly Rate Calculator</a>.</p>
+      <p>Ready to apply costs and allocated overhead to a job price? Use the <a href="/calculators/contractor-markup/">Contractor Markup Calculator</a>. Your business still needs to choose an allocation method appropriate to its pricing and records.</p>
+      <p class="disclaimer">This calculator provides business planning and educational information—not tax, accounting, legal, or financial advice.</p>
+    </section>
+  </Fragment>
+
+  <RecommendationSlot slot="recommendation" />
+
+  <Fragment slot="faq-related">
+    <section class="content-section faq-section" aria-labelledby="faq-title">
+      <p class="step">FAQ</p>
+      <h2 id="faq-title">Contractor overhead questions</h2>
+      <details><summary>What counts as contractor overhead?</summary><p>Overhead generally includes indirect company costs selected for recovery, such as office, administrative, insurance, software, marketing, professional, and shop expenses. Classification depends on how the business tracks and prices work.</p></details>
+      <details><summary>How do I calculate annual overhead?</summary><p>Add the active annual overhead categories, or enter a known annual total from your accounting or internal records.</p></details>
+      <details><summary>What is overhead as a percentage of revenue?</summary><p>It is annual overhead divided by annual revenue, expressed as a percentage.</p></details>
+      <details><summary>How do I calculate overhead per direct labor dollar?</summary><p>Divide annual overhead by annual direct labor cost. The result shows how much overhead corresponds to each $1 of direct labor.</p></details>
+      <details><summary>How do I calculate overhead per productive labor hour?</summary><p>Divide annual overhead by annual productive field labor hours.</p></details>
+      <details><summary>Which overhead recovery method should a contractor use?</summary><p>There is no universal method. The useful basis depends on how the business prices, performs, and tracks its work.</p></details>
+      <details><summary>Is overhead the same as profit?</summary><p>No. Overhead is business cost. Profit is not included in this calculator.</p></details>
+      <details><summary>How do I avoid double-counting labor burden and overhead?</summary><p>Define where each cost is recovered and use that treatment consistently. Do not include the same expense in both if the pricing model would recover it twice.</p></details>
+    </section>
+
+    <RelatedCalculators calculators={[
+      { title: 'Contractor Hourly Rate Calculator', description: 'Use annual overhead with owner compensation, billable hours, and target margin.', href: '/calculators/contractor-hourly-rate' },
+      { title: 'Contractor Markup Calculator', description: 'Apply job costs and allocated overhead to a selling-price calculation.', href: '/calculators/contractor-markup' },
+      { title: 'Labor Burden Calculator', description: 'Estimate employee cost per productive hour without double-counting company overhead.', href: '/calculators/labor-burden' },
+      { title: 'True Employee Cost Calculator', description: 'Estimate the full annual employer cost of an hourly or salaried employee.', href: '/calculators/true-employee-cost' },
+    ]} />
+  </Fragment>
+
+  <Fragment slot="scripts">
+    <script>
+      import { initializeCalculatorTracking } from '../../lib/analytics';
+      import {
+        calculateContractorOverhead,
+        type ContractorOverheadInput,
+        type ContractorOverheadResult,
+        type ContractorOverheadValidationError,
+      } from '../../lib/calculators/contractor-overhead';
+
+      const form = document.querySelector<HTMLFormElement>('#contractor-overhead-form');
+      const neutralResult = document.querySelector<HTMLElement>('[data-neutral-result]');
+      const primaryValid = document.querySelector<HTMLElement>('[data-primary-valid]');
+      const validationSummary = document.querySelector<HTMLElement>('#validation-summary');
+      const validationErrors = document.querySelector<HTMLUListElement>('#validation-errors');
+      const recoveryResults = document.querySelector<HTMLElement>('[data-recovery-results]');
+      let detailedHasInteracted = false;
+      let totalHasInteracted = false;
+
+      const detailedFields = [
+        'officeShop', 'administrativePayroll', 'insuranceBonding',
+        'vehiclesTransportationOverhead', 'softwareCommunications',
+        'marketingSales', 'professionalCompliance', 'equipmentShopOverhead',
+        'otherOverhead',
+      ] as const;
+
+      const fieldLabels: Record<string, string> = {
+        overheadEntryMode: 'Overhead entry', officeShop: 'Office / shop',
+        administrativePayroll: 'Administrative payroll', insuranceBonding: 'Insurance / bonding',
+        vehiclesTransportationOverhead: 'Vehicles / transportation overhead',
+        softwareCommunications: 'Software / communications', marketingSales: 'Marketing / sales',
+        professionalCompliance: 'Professional / compliance', equipmentShopOverhead: 'Equipment / shop overhead',
+        otherOverhead: 'Other overhead', totalAnnualOverhead: 'Total annual overhead',
+        annualRevenue: 'Annual revenue', annualDirectLaborCost: 'Annual direct labor cost',
+        annualDirectJobCosts: 'Annual direct job costs', annualProductiveFieldHours: 'Annual productive field labor hours',
+        calculation: 'Calculation',
+      };
+
+      const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const wholeCurrency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+      const percent = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 1 });
+
+      function selectedMode(): 'detailed' | 'total' {
+        return form?.querySelector<HTMLInputElement>('input[name="overheadEntryMode"]:checked')?.value === 'total' ? 'total' : 'detailed';
+      }
+
+      function numberValue(name: string): number {
+        const control = form?.elements.namedItem(name);
+        return control instanceof HTMLInputElement ? control.valueAsNumber : Number.NaN;
+      }
+
+      function optionalNumber(name: string): number | undefined {
+        const control = form?.elements.namedItem(name);
+        return control instanceof HTMLInputElement && control.value.trim() !== '' ? control.valueAsNumber : undefined;
+      }
+
+      function setOutput(name: string, value: string) {
+        document.querySelectorAll<HTMLElement>(`[data-output="${name}"]`).forEach((element) => { element.textContent = value; });
+      }
+
+      function syncMode() {
+        const mode = selectedMode();
+        document.querySelectorAll<HTMLElement>('[data-overhead-fields]').forEach((container) => {
+          const active = container.dataset.overheadFields === mode;
+          container.toggleAttribute('hidden', !active);
+          container.querySelectorAll<HTMLInputElement>('input').forEach((input) => { input.disabled = !active; });
+        });
+      }
+
+      function readInput(): ContractorOverheadInput {
+        const recovery = {
+          annualRevenue: optionalNumber('annualRevenue'),
+          annualDirectLaborCost: optionalNumber('annualDirectLaborCost'),
+          annualDirectJobCosts: optionalNumber('annualDirectJobCosts'),
+          annualProductiveFieldHours: optionalNumber('annualProductiveFieldHours'),
+        };
+        if (selectedMode() === 'total') {
+          return { overheadEntryMode: 'total', totalAnnualOverhead: numberValue('totalAnnualOverhead'), ...recovery };
+        }
+        return {
+          overheadEntryMode: 'detailed',
+          ...Object.fromEntries(detailedFields.map((field) => [field, numberValue(field)])),
+          ...recovery,
+        } as ContractorOverheadInput;
+      }
+
+      function clearInputErrors() {
+        form?.querySelectorAll('input').forEach((input) => {
+          input.removeAttribute('aria-invalid');
+          input.removeAttribute('aria-errormessage');
+        });
+      }
+
+      function hideRecoveryCards() {
+        document.querySelectorAll<HTMLElement>('[data-recovery-card]').forEach((card) => card.setAttribute('hidden', ''));
+        recoveryResults?.setAttribute('hidden', '');
+      }
+
+      function showNeutral() {
+        neutralResult?.removeAttribute('hidden');
+        primaryValid?.setAttribute('hidden', '');
+        validationSummary?.setAttribute('hidden', '');
+        hideRecoveryCards();
+        clearInputErrors();
+      }
+
+      function userFacingMessage(error: ContractorOverheadValidationError) {
+        return Object.entries(fieldLabels).reduce((message, [identifier, label]) => message.replaceAll(identifier, label), error.message);
+      }
+
+      function showValidation(errors: ContractorOverheadValidationError[]) {
+        neutralResult?.setAttribute('hidden', '');
+        primaryValid?.setAttribute('hidden', '');
+        validationSummary?.removeAttribute('hidden');
+        hideRecoveryCards();
+        clearInputErrors();
+        validationErrors?.replaceChildren(...errors.map((error, index) => {
+          const item = document.createElement('li');
+          item.id = `overhead-validation-${index}`;
+          const control = document.getElementById(error.field);
+          const message = userFacingMessage(error);
+          if (control instanceof HTMLInputElement && !control.disabled) {
+            control.setAttribute('aria-invalid', 'true');
+            control.setAttribute('aria-errormessage', item.id);
+            const link = document.createElement('a');
+            link.href = `#${error.field}`;
+            link.textContent = message;
+            item.append(link);
+          } else item.textContent = message;
+          return item;
+        }));
+      }
+
+      function showRecoveryCard(name: string, show: boolean) {
+        document.querySelector<HTMLElement>(`[data-recovery-card="${name}"]`)?.toggleAttribute('hidden', !show);
+      }
+
+      function showResults(result: ContractorOverheadResult) {
+        neutralResult?.setAttribute('hidden', '');
+        primaryValid?.removeAttribute('hidden');
+        validationSummary?.setAttribute('hidden', '');
+        clearInputErrors();
+        setOutput('totalAnnualOverhead', wholeCurrency.format(result.totalAnnualOverhead));
+        setOutput('monthlyOverhead', currency.format(result.monthlyOverhead));
+        setOutput('weeklyOverhead', currency.format(result.weeklyOverhead));
+
+        showRecoveryCard('revenue', result.revenueRecovery !== null);
+        showRecoveryCard('direct-labor', result.directLaborRecovery !== null);
+        showRecoveryCard('direct-cost', result.directCostRecovery !== null);
+        showRecoveryCard('productive-hour', result.productiveHourRecovery !== null);
+        const hasRecovery = result.revenueRecovery !== null || result.directLaborRecovery !== null || result.directCostRecovery !== null || result.productiveHourRecovery !== null;
+        recoveryResults?.toggleAttribute('hidden', !hasRecovery);
+
+        if (result.revenueRecovery) setOutput('overheadAsPercentOfRevenue', `${percent.format(result.revenueRecovery.overheadAsPercentOfRevenue)}%`);
+        if (result.directLaborRecovery) {
+          setOutput('directLaborOverheadPerDollar', currency.format(result.directLaborRecovery.overheadPerDollar));
+          setOutput('directLaborOverheadAsPercentOfBase', `${percent.format(result.directLaborRecovery.overheadAsPercentOfBase)}%`);
+        }
+        if (result.directCostRecovery) {
+          setOutput('directCostOverheadPerDollar', currency.format(result.directCostRecovery.overheadPerDollar));
+          setOutput('directCostOverheadAsPercentOfBase', `${percent.format(result.directCostRecovery.overheadAsPercentOfBase)}%`);
+        }
+        if (result.productiveHourRecovery) setOutput('overheadPerProductiveFieldHour', currency.format(result.productiveHourRecovery.overheadPerProductiveFieldHour));
+      }
+
+      function updateCalculator() {
+        syncMode();
+        const calculation = calculateContractorOverhead(readInput());
+        if (calculation.success) showResults(calculation.result);
+        else if (selectedMode() === 'detailed' ? !detailedHasInteracted : !totalHasInteracted) showNeutral();
+        else showValidation(calculation.errors);
+      }
+
+      form?.addEventListener('input', (event) => {
+        const control = event.target;
+        if (control instanceof HTMLInputElement) {
+          if (detailedFields.includes(control.name as (typeof detailedFields)[number])) detailedHasInteracted = true;
+          if (control.name === 'totalAnnualOverhead') totalHasInteracted = true;
+        }
+        updateCalculator();
+      });
+      syncMode();
+      updateCalculator();
+      initializeCalculatorTracking({
+        form,
+        calculatorId: 'contractor_overhead',
+        hasValidResult: () => primaryValid?.hasAttribute('hidden') === false,
+      });
+    </script>
+  </Fragment>
+</CalculatorPageLayout>
+
+<style>
+  .selector-fieldset { margin: 0 0 1rem; border: 0; padding: 0; }
+  .selector-fieldset legend { margin-bottom: .4rem; color: var(--navy-deep); font-size: .88rem; font-weight: 750; }
+  .mode-toggle { display: grid; gap: .3rem; border-radius: .65rem; background: #e9edef; padding: .25rem; }
+  .mode-toggle label { position: relative; cursor: pointer; }
+  .mode-toggle input { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+  .mode-toggle span { display: block; border-radius: .45rem; padding: .7rem; color: var(--muted); font-weight: 750; text-align: center; }
+  .mode-toggle input:checked + span { background: var(--white); color: var(--navy-deep); box-shadow: 0 1px 4px rgb(13 38 53 / 12%); }
+  .mode-toggle input:focus-visible + span { outline: 3px solid var(--amber); outline-offset: 2px; }
+  .overhead-input-grid { gap: .75rem 1rem; }
+  .helper-list { margin-top: 1rem; border-left: 3px solid var(--teal); padding-left: .8rem; }
+  .helper-list p, .total-mode-copy { margin: 0 0 .55rem; color: var(--muted); font-size: .82rem; }
+  .total-field { max-width: 25rem; }
+  .result-stack { display: grid; gap: 1rem; }
+  .neutral-result { border-color: #8ba1aa; background: var(--navy); }
+  .neutral-result > p:last-child { position: relative; z-index: 1; color: #cad6dc; }
+  .annual-total { position: relative; z-index: 1; margin: .3rem 0 1.4rem; color: #ffc56d; font-size: clamp(2.2rem, 9vw, 3.8rem); line-height: 1; overflow-wrap: anywhere; }
+  .annual-total span { display: block; margin-top: .35rem; color: var(--white); font-size: 1rem; font-weight: 700; }
+  .primary-periods { position: relative; z-index: 1; display: grid; gap: .65rem; margin: 0; }
+  .primary-periods div { display: flex; justify-content: space-between; gap: 1rem; border-top: 1px solid rgb(255 255 255 / 18%); padding-top: .65rem; }
+  .primary-periods dt { color: #cad6dc; }
+  .primary-periods dd { margin: 0; font-weight: 800; text-align: right; }
+  .recovery-inputs { border-color: #b8dcd7; background: var(--teal-light); }
+  .field small { color: var(--muted); font-size: .75rem; font-weight: 600; }
+  .recovery-results { margin-top: 1rem; }
+  .recovery-card-grid { display: grid; gap: 1rem; }
+  .recovery-card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); padding: 1.25rem; box-shadow: 0 .4rem 1.4rem rgb(13 38 53 / 5%); }
+  .recovery-card h3 { margin-bottom: .75rem; color: var(--navy-deep); }
+  .recovery-card p { margin-bottom: 0; color: var(--muted); }
+  .recovery-card .recovery-value { margin-bottom: .45rem; color: var(--navy-deep); font-size: 1.15rem; }
+  .recovery-value strong { color: var(--teal); font-size: 1.45rem; }
+  .meaning-section, .comparison-section { max-width: 54rem; }
+  .meaning-callout { border-left: 3px solid var(--amber); padding-left: 1rem; color: var(--navy-deep); font-size: 1.05rem; font-weight: 700; }
+  .view-list { display: grid; gap: .6rem; }
+  .view-list p { margin: 0; color: var(--muted); }
+  .comparison-section { border-color: #b8dcd7; background: var(--teal-light); }
+  .comparison-grid { display: grid; gap: 1rem; margin-block: 1rem; }
+  .comparison-grid p { margin: 0; border: 1px solid rgb(21 52 71 / 14%); border-radius: .65rem; background: rgb(255 255 255 / 70%); padding: 1rem; }
+  .comparison-grid span { display: block; margin-top: .35rem; color: var(--teal); font-weight: 800; }
+  @media (min-width: 42rem) {
+    .mode-toggle { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .recovery-card-grid, .comparison-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 62rem) {
+    .overhead-layout { grid-template-columns: minmax(0, 1.45fr) minmax(20rem, .55fr); }
+    .overhead-result, .neutral-result { min-height: 20rem; }
+  }
+</style>

@@ -2,7 +2,7 @@
 import SiteLayout from '../../layouts/SiteLayout.astro';
 
 const pageTitle = 'Contractor Calculators | Contractor Money Tools';
-const pageDescription = 'Browse free contractor calculators for productive labor cost, employee cost, hourly billing rates, and job markup.';
+const pageDescription = 'Browse free contractor calculators for labor cost, employee cost, business overhead, hourly billing rates, and job markup.';
 const calculators = [
   {
     title: 'Labor Burden Calculator',
@@ -24,6 +24,11 @@ const calculators = [
     description: 'Apply markup to job cost, calculate a selling price from target margin, or check the markup and margin in a proposed price.',
     href: '/calculators/contractor-markup',
   },
+  {
+    title: 'Contractor Overhead Calculator',
+    description: 'Calculate annual contractor overhead, then view the same cost as a percentage of revenue or per labor dollar, direct-cost dollar, or productive field hour.',
+    href: '/calculators/contractor-overhead',
+  },
 ];
 ---
 
@@ -31,7 +36,7 @@ const calculators = [
   <header class="content-hero">
     <p class="eyebrow">All live tools</p>
     <h1>Contractor Calculators</h1>
-    <p>Choose a practical calculator for labor costs, employee costs, hourly pricing, or job markup. No account is required.</p>
+    <p>Choose a practical calculator for labor costs, employee costs, business overhead, hourly pricing, or job markup. No account is required.</p>
   </header>
 
   <section aria-labelledby="calculator-directory-title">

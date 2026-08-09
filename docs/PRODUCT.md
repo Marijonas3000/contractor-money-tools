@@ -40,7 +40,7 @@ The product should help answer questions such as:
 2. True Employee Cost Calculator
 3. Billable Hour Rate Calculator
 4. Contractor Markup Calculator
-5. Job Profitability Calculator
+5. Contractor Overhead Calculator
 
 ## Long-term direction
 
