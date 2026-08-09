@@ -2,20 +2,36 @@
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import AnalyticsConsent from '../components/AnalyticsConsent.astro';
+import {
+  organizationSchema,
+  type StructuredDataNode,
+} from '../lib/seo';
 import '../styles/site.css';
 
 interface Props {
   title: string;
   description: string;
   noindex?: boolean;
+  openGraphType?: 'website' | 'article';
+  structuredData?: StructuredDataNode[];
 }
 
-const { title, description, noindex = false } = Astro.props;
+const {
+  title,
+  description,
+  noindex = false,
+  openGraphType = 'website',
+  structuredData = [],
+} = Astro.props;
 const currentPath = Astro.url.pathname;
 const siteUrl = Astro.site ?? new URL('https://contractormoneytools.com');
 const canonicalUrl = new URL(currentPath, siteUrl);
 const openGraphImageUrl = new URL('/og-default.svg', siteUrl);
 const measurementId = 'G-PS80221W71';
+const structuredDataJson = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [organizationSchema, ...structuredData],
+}).replaceAll('<', '\\u003c');
 ---
 
 <!doctype html>
@@ -24,19 +40,20 @@ const measurementId = 'G-PS80221W71';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={openGraphType} />
     <meta property="og:site_name" content="Contractor Money Tools" />
     <meta property="og:image" content={openGraphImageUrl} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={openGraphImageUrl} />
+    <script is:inline type="application/ld+json" set:html={structuredDataJson}></script>
     <title>{title}</title>
     <script is:inline define:vars={{ measurementId }}>
       window.dataLayer = window.dataLayer || [];

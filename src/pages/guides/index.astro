@@ -1,0 +1,25 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+
+const pageTitle = 'Contractor Business Guides | Contractor Money Tools';
+const pageDescription = 'Practical guides for contractors covering billable time, business capacity, costs, pricing, and profitability.';
+---
+
+<SiteLayout title={pageTitle} description={pageDescription}>
+  <header class="content-hero">
+    <p class="eyebrow">Practical explanations</p>
+    <h1>Contractor Business Guides</h1>
+    <p>Clear explanations that support better use of Contractor Money Tools calculators.</p>
+  </header>
+
+  <section aria-labelledby="published-guides-title">
+    <h2 id="published-guides-title" class="visually-hidden">Published guides</h2>
+    <div class="card-grid">
+      <article class="tool-card">
+        <h3>Billable vs Non-Billable Hours for Contractors</h3>
+        <p>Learn what counts as billable time, how to measure billable utilization, and why realistic billable capacity matters.</p>
+        <a class="card-link" href="/guides/billable-vs-non-billable-hours-contractors/">Read guide <span aria-hidden="true">→</span></a>
+      </article>
+    </div>
+  </section>
+</SiteLayout>

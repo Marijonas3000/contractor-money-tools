@@ -1,0 +1,65 @@
+---
+import SiteLayout from './SiteLayout.astro';
+import { ORGANIZATION_ID, type StructuredDataNode } from '../lib/seo';
+import '../styles/guide.css';
+
+interface Props {
+  title: string;
+  description: string;
+  headline: string;
+  datePublished: string;
+  dateModified: string;
+}
+
+const { title, description, headline, datePublished, dateModified } = Astro.props;
+const siteUrl = Astro.site ?? new URL('https://contractormoneytools.com');
+const articleUrl = new URL(Astro.url.pathname, siteUrl).href;
+const articleSchema: StructuredDataNode = {
+  '@type': 'Article',
+  '@id': `${articleUrl}#article`,
+  headline,
+  description,
+  datePublished,
+  dateModified,
+  author: { '@id': ORGANIZATION_ID },
+  publisher: { '@id': ORGANIZATION_ID },
+  mainEntityOfPage: articleUrl,
+};
+const breadcrumbSchema: StructuredDataNode = {
+  '@type': 'BreadcrumbList',
+  '@id': `${articleUrl}#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://contractormoneytools.com/' },
+    { '@type': 'ListItem', position: 2, name: 'Guides', item: 'https://contractormoneytools.com/guides/' },
+    { '@type': 'ListItem', position: 3, name: headline, item: articleUrl },
+  ],
+};
+---
+
+<SiteLayout
+  title={title}
+  description={description}
+  openGraphType="article"
+  structuredData={[articleSchema, breadcrumbSchema]}
+>
+  <nav class="guide-breadcrumb" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/">Home</a></li>
+      <li><a href="/guides/">Guides</a></li>
+      <li aria-current="page">{headline}</li>
+    </ol>
+  </nav>
+
+  <article class="guide-article">
+    <header class="guide-header">
+      <p class="eyebrow">Contractor business guide</p>
+      <h1>{headline}</h1>
+      <p class="guide-meta">
+        By Contractor Money Tools · Published <time datetime={datePublished}>August 9, 2026</time>
+      </p>
+    </header>
+    <div class="guide-body">
+      <slot />
+    </div>
+  </article>
+</SiteLayout>
