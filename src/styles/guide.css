@@ -23,5 +23,6 @@
 .guide-body th, .guide-body td { border-bottom: 1px solid var(--line); padding: .7rem .8rem; text-align: left; vertical-align: top; }
 .guide-body th { background: var(--teal-light); color: var(--navy-deep); font-size: .85rem; }
 .guide-body th:nth-child(2), .guide-body td:nth-child(2) { text-align: right; }
+.guide-body .guide-table-text th:nth-child(2), .guide-body .guide-table-text td:nth-child(2) { text-align: left; }
 .guide-body tbody tr:last-child th, .guide-body tbody tr:last-child td { border-bottom: 0; }
 @media (min-width: 42rem) { .guide-body { padding: 2rem; } }
