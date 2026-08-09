@@ -154,7 +154,7 @@ Initial calculator family:
 
 1. Labor Burden Calculator
 2. True Employee Cost Calculator
-3. Billable Hour Rate Calculator
+3. Contractor Hourly Rate Calculator
 4. Contractor Markup Calculator
 5. Contractor Overhead Calculator
 6. Contractor Job Profit & Costing Calculator

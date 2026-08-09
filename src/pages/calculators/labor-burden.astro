@@ -440,16 +440,19 @@ const pageDescription =
 
         form?.querySelectorAll('input').forEach((input) => {
           input.removeAttribute('aria-invalid');
+          input.removeAttribute('aria-errormessage');
         });
 
         if (validationErrors) {
           validationErrors.replaceChildren(
-            ...errors.map((error) => {
+            ...errors.map((error, index) => {
               const item = document.createElement('li');
+              item.id = `labor-burden-validation-${index}`;
               const input = document.getElementById(error.field);
 
               if (input instanceof HTMLInputElement) {
                 input.setAttribute('aria-invalid', 'true');
+                input.setAttribute('aria-errormessage', item.id);
                 const link = document.createElement('a');
                 link.href = `#${error.field}`;
                 link.textContent = `${fieldLabels[error.field]}: ${error.message}`;
@@ -470,6 +473,7 @@ const pageDescription =
         validSections.forEach((section) => section.removeAttribute('hidden'));
         form?.querySelectorAll('input').forEach((input) => {
           input.removeAttribute('aria-invalid');
+          input.removeAttribute('aria-errormessage');
         });
 
         setOutput('baseHourlyWage', `${currency.format(result.baseHourlyWage)}/hour`);

@@ -23,6 +23,10 @@ const calculatorPaths: Record<string, CalculatorId> = {
   '/calculators/job-profit': 'job_profit',
 };
 
+function normalizePathname(pathname: string) {
+  return pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+}
+
 function emitAnalyticsEvent(event: CalculatorAnalyticsEvent) {
   window.dispatchEvent(new CustomEvent('cmt:analytics', { detail: event }));
 }
@@ -62,7 +66,8 @@ export function initializeCalculatorTracking({
     const link = target.closest<HTMLAnchorElement>('a[href]');
     if (!link) return;
 
-    const destination = calculatorPaths[new URL(link.href, window.location.href).pathname];
+    const destinationPath = normalizePathname(new URL(link.href, window.location.href).pathname);
+    const destination = calculatorPaths[destinationPath];
     if (!destination || destination === calculatorId) return;
 
     emitAnalyticsEvent({

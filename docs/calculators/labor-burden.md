@@ -234,6 +234,6 @@ At minimum:
 
 ## Future integration
 
-The result `trueProductiveHourCost` must later be reusable by the Billable Hour Rate Calculator.
+The result `trueProductiveHourCost` must later be reusable by the Contractor Hourly Rate Calculator.
 
 Do not implement this integration yet.

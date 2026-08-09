@@ -350,13 +350,18 @@ const pageDescription =
         validationSummary?.removeAttribute('hidden');
         validSections.forEach((section) => section.setAttribute('hidden', ''));
         revenueResults?.setAttribute('hidden', '');
-        form?.querySelectorAll('input').forEach((input) => input.removeAttribute('aria-invalid'));
+        form?.querySelectorAll('input').forEach((input) => {
+          input.removeAttribute('aria-invalid');
+          input.removeAttribute('aria-errormessage');
+        });
 
-        validationErrors?.replaceChildren(...errors.map((error) => {
+        validationErrors?.replaceChildren(...errors.map((error, index) => {
           const item = document.createElement('li');
+          item.id = `employee-cost-validation-${index}`;
           const control = document.getElementById(error.field);
           if (control instanceof HTMLInputElement) {
             control.setAttribute('aria-invalid', 'true');
+            control.setAttribute('aria-errormessage', item.id);
             const link = document.createElement('a');
             link.href = `#${error.field}`;
             link.textContent = `${fieldLabels[error.field]}: ${error.message}`;
@@ -372,7 +377,10 @@ const pageDescription =
         primaryValid?.removeAttribute('hidden');
         validationSummary?.setAttribute('hidden', '');
         validSections.forEach((section) => section.removeAttribute('hidden'));
-        form?.querySelectorAll('input').forEach((control) => control.removeAttribute('aria-invalid'));
+        form?.querySelectorAll('input').forEach((control) => {
+          control.removeAttribute('aria-invalid');
+          control.removeAttribute('aria-errormessage');
+        });
 
         const description = input.mode === 'hourly'
           ? `${flexibleCurrency.format(input.hourlyWage)}/hour`
