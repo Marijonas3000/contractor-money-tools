@@ -1,0 +1,458 @@
+---
+import CalculatorPageLayout from '../../layouts/CalculatorPageLayout.astro';
+import RecommendationSlot from '../../components/calculators/RecommendationSlot.astro';
+import RelatedCalculators from '../../components/calculators/RelatedCalculators.astro';
+
+const pageTitle = 'Contractor Job Profit Calculator & Job Costing Tool | CMT';
+const pageDescription = 'Compare estimated and actual job revenue, labor, materials, subcontractors, overhead, profit, and margin to see where a contractor job gained or lost profitability.';
+
+const rows = [
+  { field: 'revenue', label: 'Job Revenue', estimatedLabel: 'Estimated / Quoted Job Revenue', actualLabel: 'Actual Job Revenue' },
+  { field: 'laborCost', label: 'Labor', estimatedLabel: 'Estimated Labor', actualLabel: 'Actual Labor' },
+  { field: 'materialsCost', label: 'Materials', estimatedLabel: 'Estimated Materials', actualLabel: 'Actual Materials' },
+  { field: 'subcontractorsCost', label: 'Subcontractors', estimatedLabel: 'Estimated Subcontractors', actualLabel: 'Actual Subcontractors' },
+  { field: 'equipmentCost', label: 'Equipment / Job-Specific Equipment', estimatedLabel: 'Estimated Equipment', actualLabel: 'Actual Equipment' },
+  { field: 'otherDirectCosts', label: 'Other Direct Costs', estimatedLabel: 'Estimated Other Direct Costs', actualLabel: 'Actual Other Direct Costs' },
+  { field: 'allocatedOverhead', label: 'Allocated Overhead', estimatedLabel: 'Estimated Allocated Overhead', actualLabel: 'Actual Allocated Overhead' },
+] as const;
+
+const input = (side: 'estimated' | 'actual', row: typeof rows[number]) => {
+  const id = `${side}${row.field[0].toUpperCase()}${row.field.slice(1)}`;
+  const label = side === 'estimated' ? row.estimatedLabel : row.actualLabel;
+  return { id, label };
+};
+---
+
+<CalculatorPageLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="calculator">
+    <header class="page-intro">
+      <p class="eyebrow">Estimated vs actual job costing</p>
+      <h1>Contractor Job Profit &amp; Costing Calculator</h1>
+      <p>Compare what you expected with what actually happened across revenue, direct job costs, allocated overhead, Job Profit, and Job Margin.</p>
+    </header>
+
+    <form id="job-profit-form" novalidate>
+      <section class="panel inputs-panel" aria-labelledby="job-inputs-title">
+        <div class="section-heading wide-heading">
+          <div><p class="step">Job values</p><h2 id="job-inputs-title">Enter estimated and actual amounts</h2></div>
+          <p>Leave unknown values blank. Enter an explicit 0 when the amount is truly zero.</p>
+        </div>
+
+        <div class="comparison-head" aria-hidden="true"><span>Category</span><span>Estimated</span><span>Actual</span></div>
+
+        <section class="input-group" aria-labelledby="revenue-input-title">
+          <h3 id="revenue-input-title">Revenue</h3>
+          {rows.slice(0, 1).map((row) => (
+            <div class="comparison-row">
+              <div class="category-label">{row.label}</div>
+              {(['estimated', 'actual'] as const).map((side) => {
+                const control = input(side, row);
+                return <label class="field" for={control.id}><span>{control.label}</span><span class="input-shell prefix"><span aria-hidden="true">$</span><input id={control.id} name={control.id} data-side={side} data-field={row.field} type="number" min="0" step="0.01" inputmode="decimal" /></span></label>;
+              })}
+            </div>
+          ))}
+        </section>
+
+        <section class="input-group" aria-labelledby="direct-cost-input-title">
+          <h3 id="direct-cost-input-title">Direct Job Costs</h3>
+          {rows.slice(1, 6).map((row) => (
+            <div class="comparison-row">
+              <div class="category-label">{row.label}</div>
+              {(['estimated', 'actual'] as const).map((side) => {
+                const control = input(side, row);
+                return <label class="field" for={control.id}><span>{control.label}</span><span class="input-shell prefix"><span aria-hidden="true">$</span><input id={control.id} name={control.id} data-side={side} data-field={row.field} type="number" min="0" step="0.01" inputmode="decimal" /></span></label>;
+              })}
+            </div>
+          ))}
+          <p class="input-helper">Need to determine the true productive-hour cost of employee labor first? Use the <a href="/calculators/labor-burden/">Labor Burden Calculator</a>.</p>
+        </section>
+
+        <section class="input-group" aria-labelledby="overhead-input-title">
+          <h3 id="overhead-input-title">Allocated Overhead</h3>
+          {rows.slice(6).map((row) => (
+            <div class="comparison-row">
+              <div class="category-label">{row.label}</div>
+              {(['estimated', 'actual'] as const).map((side) => {
+                const control = input(side, row);
+                return <label class="field" for={control.id}><span>{control.label}</span><span class="input-shell prefix"><span aria-hidden="true">$</span><input id={control.id} name={control.id} data-side={side} data-field={row.field} type="number" min="0" step="0.01" inputmode="decimal" /></span></label>;
+              })}
+            </div>
+          ))}
+          <p class="input-helper">Need to determine how much company overhead your jobs need to recover? Start with the <a href="/calculators/contractor-overhead/">Contractor Overhead Calculator</a>.</p>
+        </section>
+      </section>
+
+      <section id="neutral-result" class="result-card neutral-result" aria-live="polite">
+        <p class="step">Job analysis</p>
+        <h2>Enter estimated or actual job values to see results.</h2>
+        <p>Use only the values you know. Blank fields remain unknown rather than becoming a completed zero-dollar job.</p>
+      </section>
+
+      <section id="validation-summary" class="result-card validation-summary" role="alert" hidden>
+        <p class="step">Check your inputs</p><h2>Some values need attention.</h2><ul id="validation-errors"></ul>
+      </section>
+
+      <section id="performance-result" class="result-card performance-result" aria-live="polite" hidden>
+        <p class="step" data-output="heroContext">Actual result</p>
+        <h2 class="hero-label" data-output="heroLabel">Job Profit</h2>
+        <p class="hero-value" data-output="heroValue">—</p>
+        <p class="hero-margin"><span data-output="heroMarginLabel">Actual Job Margin</span>: <strong data-output="heroMargin">—</strong></p>
+        <p class="hero-interpretation" data-output="heroInterpretation"></p>
+        <p class="profit-guardrail">Job Profit reflects revenue minus the job costs and allocated overhead entered here. It is not necessarily company net profit.</p>
+      </section>
+
+      <section id="cost-only-result" class="result-card" aria-live="polite" hidden>
+        <p class="step">Cost totals available</p>
+        <h2>Enter job revenue to calculate Job Profit and Job Margin.</h2>
+        <p>Direct Job Costs and Total Job Cost are shown below for the supplied side.</p>
+      </section>
+    </form>
+  </Fragment>
+
+  <Fragment slot="results">
+    <div id="results-content" hidden>
+      <section id="side-breakdowns" class="content-section" aria-labelledby="side-breakdown-title">
+        <p class="step">Result breakdown</p><h2 id="side-breakdown-title">Job economics by side</h2>
+        <p class="contribution-help">Contribution after direct costs is revenue remaining after directly assigned job costs, before allocated overhead.</p>
+        <div class="side-grid">
+          {(['estimated', 'actual'] as const).map((side) => (
+            <article class="side-card" data-side-result={side} hidden>
+              <h3>{side === 'estimated' ? 'Estimated' : 'Actual'}</h3>
+              <dl>
+                <div><dt>Revenue</dt><dd data-side-output={`${side}.revenue`}>—</dd></div>
+                <div><dt>Direct Job Costs</dt><dd data-side-output={`${side}.directJobCosts`}>—</dd></div>
+                <div><dt>Contribution after direct costs</dt><dd data-side-output={`${side}.contributionAfterDirectCosts`}>—</dd></div>
+                <div><dt>Allocated Overhead</dt><dd data-side-output={`${side}.allocatedOverhead`}>—</dd></div>
+                <div><dt>Total Job Cost</dt><dd data-side-output={`${side}.totalJobCost`}>—</dd></div>
+                <div><dt data-profit-label={side}>Job Profit</dt><dd data-side-output={`${side}.jobProfit`}>—</dd></div>
+                <div><dt>Job Margin</dt><dd data-side-output={`${side}.jobMarginPercent`}>—</dd></div>
+                <div><dt>Markup on Entered Job Cost</dt><dd data-side-output={`${side}.markupOnEnteredJobCostPercent`}>—</dd></div>
+              </dl>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="comparison-summary" class="content-section" aria-labelledby="comparison-title" hidden>
+        <p class="step">Estimated vs actual</p><h2 id="comparison-title">What changed?</h2>
+        <div class="summary-grid" role="table" aria-label="Estimated and actual job result comparison">
+          <div class="summary-header" role="row"><span role="columnheader">Metric</span><span role="columnheader">Estimated</span><span role="columnheader">Actual</span><span role="columnheader">Change</span></div>
+          {[
+            ['Revenue', 'revenue', 'revenueVariance', 'revenue'],
+            ['Direct Job Costs', 'directJobCosts', 'directJobCostVariance', 'cost'],
+            ['Contribution', 'contributionAfterDirectCosts', 'contributionChange', 'profit'],
+            ['Allocated Overhead', 'allocatedOverhead', 'allocatedOverheadVariance', 'cost'],
+            ['Total Job Cost', 'totalJobCost', 'totalJobCostVariance', 'cost'],
+            ['Job Profit', 'jobProfit', 'jobProfitVariance', 'profit'],
+            ['Job Margin', 'jobMarginPercent', 'marginChangePercentagePoints', 'margin'],
+          ].map(([label, field, variance, kind]) => (
+            <div class="summary-row" role="row"><strong role="rowheader">{label}</strong><span data-summary={`estimated.${field}`} data-mobile-label="Estimated">—</span><span data-summary={`actual.${field}`} data-mobile-label="Actual">—</span><span data-variance={variance} data-kind={kind} data-mobile-label="Change">—</span></div>
+          ))}
+        </div>
+      </section>
+
+      <section id="variance-breakdown" class="content-section" aria-labelledby="variance-title" hidden>
+        <p class="step">Cost variance breakdown</p><h2 id="variance-title">Where costs changed</h2>
+        <div class="variance-grid">
+          {[
+            ['Labor', 'laborCost', 'laborVariance'],
+            ['Materials', 'materialsCost', 'materialsVariance'],
+            ['Subcontractors', 'subcontractorsCost', 'subcontractorsVariance'],
+            ['Equipment', 'equipmentCost', 'equipmentVariance'],
+            ['Other Direct Costs', 'otherDirectCosts', 'otherDirectCostsVariance'],
+            ['Allocated Overhead', 'allocatedOverhead', 'allocatedOverheadVariance'],
+          ].map(([label, field, variance]) => (
+            <article><h3>{label}</h3><dl><div><dt>Estimated</dt><dd data-summary={`estimated.${field}`}>—</dd></div><div><dt>Actual</dt><dd data-summary={`actual.${field}`}>—</dd></div><div><dt>Variance</dt><dd data-cost-variance={variance}>—</dd></div></dl></article>
+          ))}
+        </div>
+      </section>
+
+      <section id="insight-section" class="content-section insight-section" aria-labelledby="insight-title" hidden>
+        <p class="step">What the numbers indicate</p><h2 id="insight-title">Job performance insight</h2><p id="insight-copy"></p>
+      </section>
+
+      <section id="next-job-section" class="content-section" aria-labelledby="next-job-title" hidden>
+        <p class="step">Next job</p><h2 id="next-job-title">Use the result in future pricing</h2>
+        <p>Reviewing why this job missed its target? Use the <a href="/calculators/contractor-markup/">Contractor Markup Calculator</a> when setting the selling price for the next job.</p>
+      </section>
+    </div>
+  </Fragment>
+
+  <Fragment slot="methodology">
+    <section class="content-section prose-section" aria-labelledby="how-to-title">
+      <p class="step">How to use it</p><h2 id="how-to-title">How to use the Job Profit &amp; Costing Calculator</h2>
+      <p>Enter the job revenue and costs you expected, the amounts that actually occurred, or both. The comparison separates directly assigned costs from allocated company overhead so you can see where the job changed.</p>
+    </section>
+
+    <section class="content-section prose-section" aria-labelledby="costing-title">
+      <p class="step">Estimated vs actual job costing</p><h2 id="costing-title">Compare the plan with the completed job</h2>
+      <p>Estimated values describe the job economics you expected. Actual values describe the final amounts included in this analysis. Their differences show whether revenue, costs, or both changed.</p>
+      <h3>What counts as Direct Job Costs?</h3>
+      <p>Direct Job Costs include labor, materials, subcontractors, job-specific equipment, and other costs assigned directly to the job. Employee labor should use an appropriate productive labor-cost basis; the <a href="/calculators/labor-burden/">Labor Burden Calculator</a> can help establish it.</p>
+      <h3>Contribution after direct costs</h3>
+      <p>Contribution is the revenue remaining after directly assigned job costs, before allocated overhead. It is not Job Profit.</p>
+      <h3>How allocated overhead affects job profitability</h3>
+      <p>Allocated Overhead is the company overhead assigned to this job under the business’s chosen method. The <a href="/calculators/contractor-overhead/">Contractor Overhead Calculator</a> helps estimate company overhead and recovery views.</p>
+    </section>
+
+    <section class="content-section prose-section" aria-labelledby="methodology-title">
+      <p class="step">Methodology</p><h2 id="methodology-title">How Job Profit is calculated</h2>
+      <div class="formula-list" aria-label="Job profit and variance formulas">
+        <p><strong>Direct Job Costs</strong> = Labor + Materials + Subcontractors + Equipment + Other Direct Costs</p>
+        <p><strong>Contribution after direct costs</strong> = Revenue − Direct Job Costs</p>
+        <p><strong>Total Job Cost</strong> = Direct Job Costs + Allocated Overhead</p>
+        <p><strong>Job Profit</strong> = Revenue − Total Job Cost</p>
+        <p><strong>Job Margin</strong> = Job Profit ÷ Revenue, when Revenue &gt; 0</p>
+        <p><strong>Markup on Entered Job Cost</strong> = Job Profit ÷ Total Job Cost, when Total Job Cost &gt; 0</p>
+        <p><strong>Revenue Variance</strong> = Actual Revenue − Estimated Revenue</p>
+        <p><strong>Category Cost Variance</strong> = Actual Cost − Estimated Cost</p>
+        <p><strong>Direct Job Cost Variance</strong> = Actual Direct Job Costs − Estimated Direct Job Costs</p>
+        <p><strong>Contribution Change</strong> = Actual Contribution − Estimated Contribution</p>
+        <p><strong>Total Job Cost Variance</strong> = Actual Total Job Cost − Estimated Total Job Cost</p>
+        <p><strong>Job Profit Variance</strong> = Actual Job Profit − Estimated Job Profit</p>
+        <p><strong>Margin Change</strong> = Actual Job Margin − Estimated Job Margin, in percentage points</p>
+      </div>
+      <p><strong>Job Profit is not necessarily company net profit.</strong> Other company-level expenses may not be assigned to this job. Margin cannot be calculated when job revenue is zero.</p>
+      <h3>Job Margin vs Markup</h3>
+      <p>Job Margin divides Job Profit by revenue. Markup on Entered Job Cost divides Job Profit by Total Job Cost. For price-setting analysis, use the <a href="/calculators/contractor-markup/">Contractor Markup Calculator</a>.</p>
+    </section>
+
+    <section class="content-section prose-section" aria-labelledby="example-title">
+      <p class="step">Worked example</p><h2 id="example-title">A job with more revenue but lower Job Profit</h2>
+      <div class="example-columns"><div><h3>Estimated</h3><p>Revenue $20,000<br />Labor $5,000<br />Materials $4,000<br />Subcontractors $2,000<br />Equipment $500<br />Other Direct Costs $500<br />Allocated Overhead $2,000</p><p><strong>Direct Job Costs $12,000<br />Contribution $8,000<br />Total Job Cost $14,000<br />Job Profit $6,000<br />Job Margin 30.0%</strong></p></div><div><h3>Actual</h3><p>Revenue $21,000<br />Labor $6,000<br />Materials $4,500<br />Subcontractors $2,000<br />Equipment $700<br />Other Direct Costs $500<br />Allocated Overhead $2,200</p><p><strong>Direct Job Costs $13,700<br />Contribution $7,300<br />Total Job Cost $15,900<br />Job Profit $5,100<br />Job Margin approximately 24.3%</strong></p></div></div>
+      <p>Variance: Revenue +$1,000; Direct Job Costs +$1,700; Allocated Overhead +$200; Total Job Cost +$1,900; Job Profit -$900; Job Margin Change approximately -5.7 percentage points.</p>
+      <p><strong>Revenue increased by $1,000, but total job cost increased by $1,900, so actual Job Profit finished $900 below estimate and Job Margin fell from 30.0% to approximately 24.3%.</strong></p>
+    </section>
+
+    <section class="content-section prose-section" aria-labelledby="reasons-title">
+      <p class="step">Review the result</p><h2 id="reasons-title">Common reasons a job misses expected profit</h2>
+      <ul><li>Labor above estimate</li><li>Material cost changes</li><li>Missed subcontractor scope</li><li>Change orders not fully priced</li><li>Unallocated job costs</li><li>Overhead recovery mismatch</li><li>Estimating assumptions outdated</li></ul>
+      <h3>How to improve the next estimate</h3>
+      <ol><li>Identify the largest meaningful variance.</li><li>Determine whether it came from price, quantity, productivity, or scope.</li><li>Update estimating assumptions.</li><li>Confirm labor and overhead cost basis.</li><li>Reprice future work consistently.</li></ol>
+    </section>
+  </Fragment>
+
+  <RecommendationSlot slot="recommendation" />
+
+  <Fragment slot="faq-related">
+    <section class="content-section faq-section" aria-labelledby="faq-title">
+      <p class="step">FAQ</p><h2 id="faq-title">Job profit and costing questions</h2>
+      <details><summary>What is job profit?</summary><p>Job Profit is job revenue minus the direct job costs and allocated overhead entered here. It is not necessarily company net profit.</p></details>
+      <details><summary>How do you calculate profit on a construction job?</summary><p>Subtract Direct Job Costs and Allocated Overhead from Job Revenue.</p></details>
+      <details><summary>What is job margin?</summary><p>Job Margin is Job Profit divided by Job Revenue. It is undefined when revenue is zero.</p></details>
+      <details><summary>What is the difference between job margin and markup?</summary><p>Margin uses revenue as its denominator. Markup uses the entered cost as its denominator.</p></details>
+      <details><summary>What costs should be included in job costing?</summary><p>Include the net labor, materials, subcontractors, job-specific equipment, other direct costs, and allocated overhead assigned to the job.</p></details>
+      <details><summary>Why compare estimated and actual job costs?</summary><p>The comparison shows where revenue or costs changed and helps update future estimating assumptions.</p></details>
+      <details><summary>Is Job Profit the same as company net profit?</summary><p>No. Other company-level expenses may not be assigned to this job.</p></details>
+      <details><summary>What if a job loses money?</summary><p>The calculator shows a Job Loss when entered revenue does not cover Direct Job Costs and Allocated Overhead.</p></details>
+    </section>
+    <RelatedCalculators calculators={[
+      { title: 'Contractor Markup Calculator', description: 'Set or check a selling price using job cost, markup, and margin.', href: '/calculators/contractor-markup' },
+      { title: 'Contractor Overhead Calculator', description: 'Calculate annual overhead and view different recovery bases.', href: '/calculators/contractor-overhead' },
+      { title: 'Labor Burden Calculator', description: 'Estimate the productive-hour cost of employee labor.', href: '/calculators/labor-burden' },
+    ]} />
+  </Fragment>
+
+  <Fragment slot="scripts">
+    <script>
+      import { initializeCalculatorTracking } from '../../lib/analytics';
+      import { calculateContractorJobProfit, type ContractorJobProfitResult, type ContractorJobProfitValidationError, type JobEconomicsInput, type JobEconomicsResult, type JobProfitVariances } from '../../lib/calculators/contractor-job-profit';
+
+      const form = document.querySelector<HTMLFormElement>('#job-profit-form');
+      const neutralResult = document.querySelector<HTMLElement>('#neutral-result');
+      const validationSummary = document.querySelector<HTMLElement>('#validation-summary');
+      const validationErrors = document.querySelector<HTMLUListElement>('#validation-errors');
+      const performanceResult = document.querySelector<HTMLElement>('#performance-result');
+      const costOnlyResult = document.querySelector<HTMLElement>('#cost-only-result');
+      const resultsContent = document.querySelector<HTMLElement>('#results-content');
+      const comparisonSummary = document.querySelector<HTMLElement>('#comparison-summary');
+      const varianceBreakdown = document.querySelector<HTMLElement>('#variance-breakdown');
+      const insightSection = document.querySelector<HTMLElement>('#insight-section');
+      const insightCopy = document.querySelector<HTMLElement>('#insight-copy');
+      const nextJobSection = document.querySelector<HTMLElement>('#next-job-section');
+      const estimatedRevenue = document.querySelector<HTMLInputElement>('#estimatedRevenue');
+      const actualRevenue = document.querySelector<HTMLInputElement>('#actualRevenue');
+      let actualRevenueTouched = false;
+      let hasVisiblePerformance = false;
+
+      const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const percent = new Intl.NumberFormat('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+      const fieldLabels: Record<string, string> = {
+        'estimated.revenue': 'Estimated / Quoted Job Revenue', 'actual.revenue': 'Actual Job Revenue',
+        'estimated.laborCost': 'Estimated Labor', 'actual.laborCost': 'Actual Labor',
+        'estimated.materialsCost': 'Estimated Materials', 'actual.materialsCost': 'Actual Materials',
+        'estimated.subcontractorsCost': 'Estimated Subcontractors', 'actual.subcontractorsCost': 'Actual Subcontractors',
+        'estimated.equipmentCost': 'Estimated Equipment', 'actual.equipmentCost': 'Actual Equipment',
+        'estimated.otherDirectCosts': 'Estimated Other Direct Costs', 'actual.otherDirectCosts': 'Actual Other Direct Costs',
+        'estimated.allocatedOverhead': 'Estimated Allocated Overhead', 'actual.allocatedOverhead': 'Actual Allocated Overhead',
+        calculation: 'Calculation',
+      };
+
+      function readSide(side: 'estimated' | 'actual'): JobEconomicsInput | null {
+        const output: JobEconomicsInput = {};
+        form?.querySelectorAll<HTMLInputElement>(`input[data-side="${side}"]`).forEach((control) => {
+          if (control.value === '') return;
+          const field = control.dataset.field as keyof JobEconomicsInput;
+          output[field] = control.valueAsNumber;
+        });
+        return Object.keys(output).length > 0 ? output : null;
+      }
+
+      function setOutput(name: string, value: string) {
+        document.querySelectorAll<HTMLElement>(`[data-output="${name}"]`).forEach((element) => { element.textContent = value; });
+      }
+
+      function formatCurrency(value: number) { return currency.format(Object.is(value, -0) ? 0 : value); }
+      function formatPercent(value: number) { return `${percent.format(Object.is(value, -0) ? 0 : value)}%`; }
+      function sideValue(value: number | null, kind: 'currency' | 'percent' = 'currency') { return value === null ? 'N/A' : kind === 'percent' ? formatPercent(value) : formatCurrency(value); }
+
+      function clearValidation() {
+        validationSummary?.setAttribute('hidden', '');
+        form?.querySelectorAll('input').forEach((control) => { control.removeAttribute('aria-invalid'); control.removeAttribute('aria-errormessage'); });
+      }
+
+      function showValidation(errors: ContractorJobProfitValidationError[]) {
+        hasVisiblePerformance = false;
+        neutralResult?.setAttribute('hidden', ''); performanceResult?.setAttribute('hidden', ''); costOnlyResult?.setAttribute('hidden', ''); resultsContent?.setAttribute('hidden', '');
+        validationSummary?.removeAttribute('hidden');
+        validationErrors?.replaceChildren(...errors.map((error, index) => {
+          const item = document.createElement('li'); item.id = `job-profit-error-${index}`;
+          const label = fieldLabels[error.field] ?? 'Calculation';
+          item.textContent = error.code === 'not_finite' ? `${label} must be a valid number.` : error.code === 'must_be_nonnegative' ? `${label} cannot be negative.` : error.message;
+          const [side, field] = error.field.split('.');
+          const id = field ? `${side}${field[0].toUpperCase()}${field.slice(1)}` : '';
+          const control = document.getElementById(id);
+          if (control instanceof HTMLInputElement) { control.setAttribute('aria-invalid', 'true'); control.setAttribute('aria-errormessage', item.id); }
+          return item;
+        }));
+      }
+
+      function renderSide(sideName: 'estimated' | 'actual', side: JobEconomicsResult | null) {
+        const card = document.querySelector<HTMLElement>(`[data-side-result="${sideName}"]`);
+        card?.toggleAttribute('hidden', side === null);
+        if (!side) return;
+        const values: Record<string, string> = {
+          revenue: sideValue(side.revenue), laborCost: formatCurrency(side.laborCost), materialsCost: formatCurrency(side.materialsCost),
+          subcontractorsCost: formatCurrency(side.subcontractorsCost), equipmentCost: formatCurrency(side.equipmentCost), otherDirectCosts: formatCurrency(side.otherDirectCosts),
+          directJobCosts: formatCurrency(side.directJobCosts), contributionAfterDirectCosts: sideValue(side.contributionAfterDirectCosts),
+          allocatedOverhead: formatCurrency(side.allocatedOverhead), totalJobCost: formatCurrency(side.totalJobCost), jobProfit: sideValue(side.jobProfit),
+          jobMarginPercent: sideValue(side.jobMarginPercent, 'percent'), markupOnEnteredJobCostPercent: sideValue(side.markupOnEnteredJobCostPercent, 'percent'),
+        };
+        Object.entries(values).forEach(([field, value]) => document.querySelectorAll<HTMLElement>(`[data-side-output="${sideName}.${field}"], [data-summary="${sideName}.${field}"]`).forEach((element) => { element.textContent = value; }));
+        const label = document.querySelector<HTMLElement>(`[data-profit-label="${sideName}"]`);
+        if (label) label.textContent = side.jobProfit === null ? 'Job Profit' : side.jobProfit < 0 ? 'Job Loss' : side.jobProfit === 0 ? 'Break-even' : 'Job Profit';
+      }
+
+      function varianceText(value: number | null, kind: string) {
+        if (value === null) return 'N/A';
+        if (kind === 'margin') return value === 0 ? 'Matched estimate (0.0 percentage points)' : `${value > 0 ? '+' : '−'}${percent.format(Math.abs(value))} percentage points`;
+        const amount = formatCurrency(Math.abs(value));
+        if (value === 0) return `${amount} — Matched estimate`;
+        if (kind === 'cost') return `${value > 0 ? '+' : '−'}${amount} — ${value > 0 ? 'Over estimate / unfavorable' : 'Under estimate / favorable'}`;
+        return `${value > 0 ? '+' : '−'}${amount} — ${value > 0 ? 'Above estimate' : 'Below estimate'}`;
+      }
+
+      function renderVariances(variances: JobProfitVariances | null, performanceComparison: boolean) {
+        comparisonSummary?.toggleAttribute('hidden', !performanceComparison);
+        varianceBreakdown?.toggleAttribute('hidden', variances === null);
+        if (!variances) return;
+        document.querySelectorAll<HTMLElement>('[data-variance]').forEach((element) => {
+          const field = element.dataset.variance as keyof JobProfitVariances;
+          element.textContent = varianceText(variances[field], element.dataset.kind ?? 'profit');
+        });
+        document.querySelectorAll<HTMLElement>('[data-cost-variance]').forEach((element) => {
+          const field = element.dataset.costVariance as keyof JobProfitVariances;
+          element.textContent = varianceText(variances[field], 'cost');
+        });
+      }
+
+      function chooseInsight(result: ContractorJobProfitResult): string | null {
+        const estimated = result.estimated; const actual = result.actual; const variances = result.variances;
+        if (actual?.contributionAfterDirectCosts !== null && actual?.contributionAfterDirectCosts !== undefined && actual.contributionAfterDirectCosts > 0 && actual.jobProfit !== null && actual.jobProfit < 0) return 'The job covered its direct costs but did not fully cover the allocated overhead entered.';
+        if (!estimated || !actual || !variances || estimated.jobProfit === null || actual.jobProfit === null || variances.revenueVariance === null) return null;
+        if (variances.revenueVariance > 0 && variances.jobProfitVariance !== null && variances.jobProfitVariance < 0) return 'Revenue increased, but higher costs more than offset the gain.';
+        if (variances.revenueVariance === 0 && variances.jobProfitVariance !== null && variances.jobProfitVariance < 0) return 'The job missed its expected profit because actual costs were higher than estimated.';
+        if (variances.jobProfitVariance !== null && variances.jobProfitVariance > 0) return 'The job performed above the expected profit under the costs entered.';
+        return null;
+      }
+
+      function renderResult(result: ContractorJobProfitResult) {
+        clearValidation(); neutralResult?.setAttribute('hidden', ''); resultsContent?.toggleAttribute('hidden', result.estimated === null && result.actual === null);
+        if (result.estimated === null && result.actual === null) { neutralResult?.removeAttribute('hidden'); performanceResult?.setAttribute('hidden', ''); costOnlyResult?.setAttribute('hidden', ''); hasVisiblePerformance = false; return; }
+        renderSide('estimated', result.estimated); renderSide('actual', result.actual);
+        const heroSideName = result.actual?.jobProfit !== null && result.actual?.jobProfit !== undefined ? 'actual' : result.estimated?.jobProfit !== null && result.estimated?.jobProfit !== undefined ? 'estimated' : null;
+        const hero = heroSideName ? result[heroSideName] : null;
+        hasVisiblePerformance = hero?.jobProfit !== null && hero?.jobProfit !== undefined;
+        performanceResult?.toggleAttribute('hidden', !hasVisiblePerformance); costOnlyResult?.toggleAttribute('hidden', hasVisiblePerformance);
+        if (hero && hero.jobProfit !== null) {
+          const label = hero.jobProfit < 0 ? 'Job Loss' : hero.jobProfit === 0 ? 'Break-even on entered job costs' : 'Job Profit';
+          setOutput('heroContext', `${heroSideName === 'actual' ? 'Actual' : 'Estimated'} result`); setOutput('heroLabel', label); setOutput('heroValue', formatCurrency(Math.abs(hero.jobProfit)));
+          setOutput('heroMarginLabel', `${heroSideName === 'actual' ? 'Actual' : 'Estimated'} Job Margin`); setOutput('heroMargin', hero.jobMarginPercent === null ? 'N/A' : formatPercent(hero.jobMarginPercent));
+          setOutput('heroInterpretation', hero.jobProfit < 0 ? `The job lost ${formatCurrency(Math.abs(hero.jobProfit))} after the ${heroSideName} job costs and allocated overhead entered here.` : hero.jobProfit === 0 ? 'Job revenue exactly matched the direct job costs and allocated overhead entered.' : `The job produced ${formatCurrency(hero.jobProfit)} after the ${heroSideName} job costs and allocated overhead entered here.`);
+        }
+        const performanceComparison = result.estimated?.jobProfit !== null && result.estimated?.jobProfit !== undefined && result.actual?.jobProfit !== null && result.actual?.jobProfit !== undefined;
+        renderVariances(result.variances, performanceComparison);
+        const insight = chooseInsight(result); insightSection?.toggleAttribute('hidden', insight === null); if (insightCopy && insight) insightCopy.textContent = insight;
+        nextJobSection?.toggleAttribute('hidden', result.actual?.jobProfit === null || result.actual?.jobProfit === undefined);
+      }
+
+      function updateCalculator() {
+        const calculation = calculateContractorJobProfit({ estimated: readSide('estimated'), actual: readSide('actual') });
+        calculation.success ? renderResult(calculation.result) : showValidation(calculation.errors);
+      }
+
+      form?.addEventListener('input', (event) => {
+        if (event.target === actualRevenue) actualRevenueTouched = true;
+        if (event.target === estimatedRevenue && !actualRevenueTouched && actualRevenue && actualRevenue.value === '') actualRevenue.value = estimatedRevenue?.value ?? '';
+        updateCalculator();
+      });
+      updateCalculator();
+      initializeCalculatorTracking({ form, calculatorId: 'job_profit', hasValidResult: () => hasVisiblePerformance });
+    </script>
+  </Fragment>
+</CalculatorPageLayout>
+
+<style>
+  .inputs-panel { margin-bottom: 1rem; }
+  .comparison-head { display: none; }
+  .input-group { border-top: 1px solid var(--line); padding-top: 1rem; }
+  .input-group + .input-group { margin-top: 1.25rem; }
+  .input-group h3 { margin-bottom: .75rem; color: var(--navy-deep); }
+  .comparison-row { display: grid; gap: .65rem; border-top: 1px solid #edf0f1; padding-block: 1rem; }
+  .comparison-row:first-of-type { border-top: 0; }
+  .category-label { color: var(--navy-deep); font-weight: 800; }
+  .input-helper, .contribution-help { margin: .75rem 0 0; color: var(--muted); font-size: .88rem; }
+  .neutral-result { min-height: 0; background: var(--navy); }
+  .neutral-result h2, #cost-only-result h2 { position: relative; z-index: 1; color: var(--white); }
+  .neutral-result p:last-child, #cost-only-result p:last-child { position: relative; z-index: 1; margin-bottom: 0; color: #d7e3e7; }
+  .hero-label { position: relative; z-index: 1; margin-bottom: .2rem; color: var(--white); font-size: 1rem; }
+  .hero-value { position: relative; z-index: 1; margin: 0 0 .7rem; color: #ffc56d; font-size: clamp(2.5rem, 11vw, 4.4rem); font-weight: 850; line-height: 1; overflow-wrap: anywhere; }
+  .hero-margin, .hero-interpretation, .profit-guardrail { position: relative; z-index: 1; }
+  .hero-margin { font-size: 1.1rem; }.hero-margin strong { color: #ffc56d; }
+  .hero-interpretation { font-weight: 700; }
+  .profit-guardrail { margin-bottom: 0; border-left: 3px solid #8ed9d1; padding-left: .75rem; color: #d7e3e7; font-size: .85rem; }
+  .side-grid, .variance-grid, .example-columns { display: grid; gap: 1rem; margin-top: 1rem; }
+  .side-card, .variance-grid article, .example-columns > div { border: 1px solid var(--line); border-radius: .7rem; padding: 1rem; }
+  .side-card h3, .variance-grid h3, .example-columns h3 { color: var(--navy-deep); }
+  .side-card dl, .variance-grid dl { margin: 0; }
+  .side-card dl div, .variance-grid dl div { display: flex; justify-content: space-between; gap: 1rem; border-top: 1px solid var(--line); padding-block: .65rem; }
+  .side-card dt, .variance-grid dt { color: var(--muted); }.side-card dd, .variance-grid dd { margin: 0; font-weight: 800; text-align: right; }
+  .summary-grid { margin-top: 1rem; }
+  .summary-header { display: none; }
+  .summary-row { display: grid; gap: .45rem; border-top: 1px solid var(--line); padding-block: 1rem; }
+  .summary-row > span::before { display: block; color: var(--muted); font-size: .72rem; font-weight: 750; text-transform: uppercase; content: attr(data-mobile-label); }
+  .summary-row > span { font-weight: 750; }
+  .insight-section { border-color: #b8dcd7; background: var(--teal-light); }
+  .insight-section p:last-child { margin-bottom: 0; }
+  .prose-section h3 { margin-top: 1.35rem; }
+  @media (min-width: 42rem) {
+    .comparison-head, .comparison-row { grid-template-columns: minmax(10rem, .8fr) repeat(2, minmax(0, 1fr)); }
+    .comparison-head { display: grid; gap: 1rem; border-bottom: 2px solid var(--navy); padding: .5rem 0; color: var(--muted); font-size: .8rem; font-weight: 800; text-transform: uppercase; }
+    .comparison-row { align-items: end; gap: 1rem; }.comparison-row .field > span:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .category-label { align-self: center; }.side-grid, .example-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }.variance-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .summary-header, .summary-row { display: grid; grid-template-columns: minmax(9rem, 1fr) repeat(3, minmax(8rem, 1fr)); gap: 1rem; }
+    .summary-header { border-bottom: 2px solid var(--navy); padding: .7rem 0; color: var(--muted); font-size: .78rem; font-weight: 800; text-transform: uppercase; }
+    .summary-row > span::before { display: none; }
+  }
+  @media (min-width: 62rem) { .variance-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+</style>

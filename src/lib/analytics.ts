@@ -3,7 +3,8 @@ export type CalculatorId =
   | 'true_employee_cost'
   | 'contractor_hourly_rate'
   | 'contractor_markup'
-  | 'contractor_overhead';
+  | 'contractor_overhead'
+  | 'job_profit';
 
 type CalculatorAnalyticsEvent =
   | { name: 'calculator_start'; params: { calculator_id: CalculatorId } }
@@ -19,6 +20,7 @@ const calculatorPaths: Record<string, CalculatorId> = {
   '/calculators/contractor-hourly-rate': 'contractor_hourly_rate',
   '/calculators/contractor-markup': 'contractor_markup',
   '/calculators/contractor-overhead': 'contractor_overhead',
+  '/calculators/job-profit': 'job_profit',
 };
 
 function emitAnalyticsEvent(event: CalculatorAnalyticsEvent) {

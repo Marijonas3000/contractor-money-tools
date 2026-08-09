@@ -41,6 +41,7 @@ The product should help answer questions such as:
 3. Billable Hour Rate Calculator
 4. Contractor Markup Calculator
 5. Contractor Overhead Calculator
+6. Contractor Job Profit & Costing Calculator
 
 ## Long-term direction
 

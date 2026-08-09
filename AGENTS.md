@@ -157,6 +157,7 @@ Initial calculator family:
 3. Billable Hour Rate Calculator
 4. Contractor Markup Calculator
 5. Contractor Overhead Calculator
+6. Contractor Job Profit & Costing Calculator
 
 Do not implement additional calculators unless explicitly requested.
 
