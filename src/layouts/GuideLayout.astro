@@ -19,11 +19,13 @@ const articleSchema: StructuredDataNode = {
   '@id': `${articleUrl}#article`,
   headline,
   description,
+  url: articleUrl,
   datePublished,
   dateModified,
   author: { '@id': ORGANIZATION_ID },
   publisher: { '@id': ORGANIZATION_ID },
   mainEntityOfPage: articleUrl,
+  inLanguage: 'en-US',
 };
 const breadcrumbSchema: StructuredDataNode = {
   '@type': 'BreadcrumbList',
