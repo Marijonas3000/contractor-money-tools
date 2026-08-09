@@ -58,6 +58,52 @@ Future calculator, content, affiliate, and paid-product ideas should be evaluate
 
 Do not add a fixed revenue range as part of the ICP yet.
 
+## 30-Day Validation Scorecard — 2026-09-08
+
+These are pre-committed decision thresholds set before seeing the 30-day results. They are internal strategy thresholds, not industry benchmarks.
+
+### Acquisition / SEO
+
+| Signal | Green | Yellow | Red |
+| --- | --- | --- | --- |
+| Important URLs indexed | >=90% | 60–89% | <60% |
+| GSC impressions / 30 days | >=3,000 | 500–2,999 | <500 |
+| Non-brand queries with impressions | >=30 | 10–29 | <10 |
+| Pages receiving organic impressions | >=6 | 3–5 | 0–2 |
+| Queries in Top 20 | >=5 | 1–4 | 0 |
+
+### Engagement
+
+| Signal | Green | Yellow | Red |
+| --- | --- | --- | --- |
+| Calculator starts | >=100 | 30–99 | <30 |
+| Calculator completion rate | >=35% | 15–34% | <15% |
+| Cross-calculator navigation rate | >=10% | 3–9% | <3% |
+
+Important:
+
+- completion and cross-navigation percentages should not be treated as strong evidence when sample size is very small;
+- indexing alone is not considered validation;
+- query breadth, ranking progress, and multiple CMT pages receiving visibility matter more than raw impressions alone.
+
+### Affiliate / Monetization
+
+By 2026-09-08:
+
+- Green: at least one relevant affiliate partner approved;
+- Yellow: applications pending or declined mainly because the site is newly launched / lacks traffic, with no structural CMT or LT-entity blocker;
+- Red: core partner categories repeatedly reject CMT because of structural publisher, jurisdiction, or business-model incompatibility.
+
+Affiliate revenue itself is not required for the first 30-day validation because monetized RecommendationSlots may not yet have been live long enough.
+
+### Decision rules
+
+- Mostly Green: Strategy may release HOLD and expand based on demonstrated search/product signals.
+- Mostly Yellow: optimize pages already receiving Google signals; do not expand blindly.
+- Acquisition Red with technically healthy indexing/site: do not solve the problem by simply adding more calculators. Reassess authority, distribution, positioning, and SEO opportunity.
+- Acquisition Green + Engagement Red: improve product/UX/search-intent fit.
+- Acquisition + Engagement Green + Monetization Red: evaluate higher-value lead generation and lightweight paid-utility experiments.
+
 ## 2. Production
 
 | Item | Current fact/status |
