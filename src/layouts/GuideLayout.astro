@@ -3,7 +3,7 @@ import SiteLayout from './SiteLayout.astro';
 import { ORGANIZATION_ID, type StructuredDataNode } from '../lib/seo';
 import '../styles/guide.css';
 
-interface Props {
+interface GuideMetadata {
   title: string;
   description: string;
   headline: string;
@@ -11,7 +11,12 @@ interface Props {
   dateModified: string;
 }
 
-const { title, description, headline, datePublished, dateModified } = Astro.props;
+interface Props extends Partial<GuideMetadata> {
+  frontmatter?: GuideMetadata;
+}
+
+const metadata = Astro.props.frontmatter ?? Astro.props;
+const { title, description, headline, datePublished, dateModified } = metadata as GuideMetadata;
 const siteUrl = Astro.site ?? new URL('https://contractormoneytools.com');
 const articleUrl = new URL(Astro.url.pathname, siteUrl).href;
 const articleSchema: StructuredDataNode = {
