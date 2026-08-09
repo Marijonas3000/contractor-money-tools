@@ -23,6 +23,41 @@ Update this file only when production state, roadmap status, monetization status
 - Avoid intrusive advertising and low-quality affiliate content.
 - Primary initial acquisition hypothesis: high-intent U.S. organic search → useful calculator / guide. Social, paid acquisition, email, and other distribution channels are not current priorities unless Strategy changes this based on evidence.
 
+## Working ICP Hypothesis
+
+Current working hypothesis — **not yet validated by CMT traffic or customer data**:
+
+**Primary ICP:** U.S. trade/service contractor with roughly 2–20 employees, where the owner is still directly involved in estimating, pricing, and profitability decisions.
+
+Priority trade segments for future validation:
+
+- HVAC
+- plumbing
+- electrical
+- roofing
+- remodeling / residential general contracting
+
+Core organizational condition:
+
+**Too complex to price by gut feel, but still owner-led enough that enterprise software may be excessive.**
+
+Current product hypothesis:
+
+CMT may occupy a useful layer between spreadsheets/manual calculations and full field-service / contractor-management software.
+
+CMT should remain focused on contractor business economics:
+
+- what labor really costs;
+- what overhead costs;
+- what to charge;
+- whether jobs perform as expected.
+
+This does **not** authorize building a SaaS product.
+
+Future calculator, content, affiliate, and paid-product ideas should be evaluated partly against this ICP, but the hypothesis must be revised if Search Console, GA4, affiliate, or future customer evidence contradicts it.
+
+Do not add a fixed revenue range as part of the ICP yet.
+
 ## 2. Production
 
 | Item | Current fact/status |
