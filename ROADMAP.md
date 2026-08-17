@@ -16,13 +16,13 @@ Status date: 2026-08-16
 
 ## Current affiliate pipeline
 
-- Jobber — waiting for clarification on business insurance requirement
-- Gusto — declined; manual reassessment requested
-- Patriot Software — declined; reconsideration requested
-- National Funding — application pending
-- FreshBooks — application pending
-- ServiceTitan — eligibility clarification sent
-- QuickBooks / CJ — application submitted; pending Intuit review
+- Jobber — waiting for clarification on business insurance requirement; follow-up sent 2026-08-17.
+- Gusto — declined; manual reassessment requested; follow-up sent 2026-08-17.
+- Patriot Software — declined; reconsideration requested; follow-up sent 2026-08-17.
+- National Funding — application pending; follow-up sent 2026-08-17.
+- FreshBooks — application submitted; pending review.
+- ServiceTitan — eligibility clarification email sent; WAIT.
+- QuickBooks / CJ — CJ publisher onboarding completed and Intuit application submitted; pending advertiser review.
 
 ## Current SEO / validation signal
 
@@ -63,10 +63,10 @@ DO NOT:
 Affiliate follow-up Wave 1:
 
 Send short follow-ups to:
-1. Jobber
-2. Gusto
-3. Patriot Software
-4. National Funding
+- [x] Jobber — follow-up sent
+- [x] Gusto — follow-up sent
+- [x] Patriot Software — follow-up sent
+- [x] National Funding — follow-up sent
 
 Goal:
 - confirm whether applications/questions are still under review;
