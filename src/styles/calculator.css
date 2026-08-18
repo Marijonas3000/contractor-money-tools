@@ -4,8 +4,8 @@
 .page-intro > p:last-child, .section-heading > p, .advanced-content > p, .prose-section > p { color: var(--muted); }
 .page-intro > p:last-child { max-width: 43rem; margin-bottom: 0; font-size: 1.1rem; }
 .calculator-layout { display: grid; gap: 1rem; }
-.panel, .content-section { border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); box-shadow: var(--shadow-card); }
-.inputs-panel { border-top: 3px solid var(--navy); }
+.panel, .content-section { border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow-card); }
+.inputs-panel { border-top: 4px solid var(--navy); }
 .inputs-panel, .content-section { padding: 1.25rem; }
 .section-heading { display: flex; flex-direction: column; gap: .25rem; margin-bottom: 1rem; }
 .section-heading h2, .section-heading p { margin-bottom: 0; }
@@ -21,7 +21,7 @@
 input[aria-invalid="true"] { color: var(--danger); }
 .input-shell:has(input[aria-invalid="true"]) { border-color: var(--danger); box-shadow: 0 0 0 3px rgb(164 42 42 / 12%); }
 .assumption-note { margin: 1rem 0 0; border-left: 3px solid var(--amber); padding-left: .8rem; color: var(--muted); font-size: .82rem; }
-.result-card { position: relative; contain: paint; overflow: hidden; border: 1px solid #315667; border-top: 4px solid var(--amber); border-radius: var(--radius); background-color: var(--navy-deep); background-image: linear-gradient(rgb(255 255 255 / 4%) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / 4%) 1px, transparent 1px), radial-gradient(circle at 100% 0, rgb(23 111 103 / 24%), transparent 42%); background-size: 24px 24px, 24px 24px, auto; padding: 1.5rem; color: var(--white); box-shadow: var(--shadow-result); }
+.result-card { position: relative; contain: paint; overflow: hidden; border: 1px solid var(--navy-3); border-top: 4px solid var(--yellow); border-radius: var(--radius); background-color: var(--navy); background-image: linear-gradient(rgb(255 255 255 / 4%) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / 4%) 1px, transparent 1px), linear-gradient(135deg, transparent 55%, rgb(31 74 115 / 32%)); background-size: 24px 24px, 24px 24px, auto; padding: 1.5rem; color: var(--white); box-shadow: var(--shadow-result); }
 .result-card::before { position: absolute; top: 1.15rem; right: .9rem; width: .45rem; height: 3.2rem; background: repeating-linear-gradient(180deg, rgb(242 182 50 / 72%) 0 1px, transparent 1px 8px); content: ""; opacity: .65; }
 .result-card::after { position: absolute; right: -1.5rem; bottom: 1rem; width: 8rem; height: 1px; background: repeating-linear-gradient(90deg, var(--amber) 0 2px, transparent 2px 9px); content: ""; opacity: .45; pointer-events: none; transform: rotate(-8deg); }
 .result-card .step { color: #8ed9d1; }
@@ -63,7 +63,7 @@ input[aria-invalid="true"] { color: var(--danger); }
 .segmented-control label, .mode-toggle label { position: relative; cursor: pointer; }
 .segmented-control input, .mode-toggle input { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
 .segmented-control span, .mode-toggle span { display: block; border-radius: .45rem; padding: .7rem .75rem; color: var(--muted); font-weight: 750; text-align: center; }
-.segmented-control input:checked + span, .mode-toggle input:checked + span { background: var(--paper); color: var(--navy-deep); box-shadow: 0 1px 4px rgb(7 31 45 / 12%); }
+.segmented-control input:checked + span, .mode-toggle input:checked + span { background: var(--card); color: var(--navy-deep); box-shadow: 0 1px 4px rgb(7 31 45 / 12%); }
 .segmented-control input:checked + span { box-shadow: inset 0 -3px var(--amber), 0 1px 4px rgb(7 31 45 / 12%); }
 .segmented-control input:focus-visible + span, .mode-toggle input:focus-visible + span { outline: 3px solid var(--amber); outline-offset: 2px; }
 .result-card [data-output], .primary-periods dd, .recovery-value strong, .side-card dd, .variance-grid dd, .summary-row > span { font-family: var(--font-number); font-variant-numeric: tabular-nums; }

@@ -16,17 +16,17 @@ const {
   question,
   description,
   href,
-  actionLabel = 'Open calculator',
+  actionLabel = 'Open',
 } = Astro.props;
 ---
 
 <article class="tool-card work-order-card">
-  <div class="work-order-meta" aria-label={`${serial}, ${category}`}>
-    <span class="calculator-serial">{serial}</span>
-    <span class="calculator-category">{category}</span>
-  </div>
+  <p class="calculator-category">{category}</p>
   <h3>{title}</h3>
   {question && <p class="card-question">{question}</p>}
   <p>{description}</p>
-  <a class="card-link" href={href}>{actionLabel} <span aria-hidden="true">→</span></a>
+  <div class="work-order-footer" aria-label={`${serial}, ${category}`}>
+    <a class="card-link" href={href}>{actionLabel} <span aria-hidden="true">→</span></a>
+    <span class="calculator-serial">{serial}</span>
+  </div>
 </article>

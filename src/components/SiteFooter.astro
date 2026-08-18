@@ -4,28 +4,38 @@ interface Props { currentPath: string; }
 const { currentPath } = Astro.props;
 const normalizePath = (path: string) => path === '/' ? '/' : `/${path.replace(/^\/+|\/+$/g, '')}/`;
 const normalizedCurrentPath = normalizePath(currentPath);
-const navigationItems = [
+const siteNavigationItems = [
   { label: 'Home', href: '/' },
   { label: 'Calculators', href: '/calculators/' },
   { label: 'Guides', href: '/guides/' },
   { label: 'About', href: '/about/' },
-  { label: 'Privacy', href: '/privacy/' },
 ];
 ---
 
 <footer class="site-footer">
   <div class="site-footer-inner">
     <div class="footer-identity">
-      <p class="footer-brand"><span class="footer-brand-mark" aria-hidden="true">CMT</span><span>Contractor Money Tools</span></p>
+      <p class="footer-brand"><span class="footer-brand-mark" aria-hidden="true"></span><span>Contractor Money Tools</span></p>
       <p>Practical business planning calculators for contractors and home-service businesses.</p>
-      <p><a href="mailto:hello@contractormoneytools.com">hello@contractormoneytools.com</a></p>
     </div>
-    <nav class="footer-nav" aria-label="Footer navigation">
-      <ul>
-        {navigationItems.map(({ label, href }) => (
-          <li><a href={href} aria-current={normalizedCurrentPath === href ? 'page' : undefined}>{label}</a></li>
-        ))}
-      </ul>
-    </nav>
+    <div class="footer-groups">
+      <nav class="footer-nav" aria-label="Footer site navigation">
+        <p class="footer-heading">Site</p>
+        <ul>
+          {siteNavigationItems.map(({ label, href }) => (
+            <li><a href={href} aria-current={normalizedCurrentPath === href ? 'page' : undefined}>{label}</a></li>
+          ))}
+        </ul>
+      </nav>
+      <nav class="footer-nav" aria-label="Legal navigation">
+        <p class="footer-heading">Legal</p>
+        <ul><li><a href="/privacy/" aria-current={normalizedCurrentPath === '/privacy/' ? 'page' : undefined}>Privacy</a></li></ul>
+      </nav>
+      <div class="footer-contact">
+        <p class="footer-heading">Contact</p>
+        <a href="mailto:hello@contractormoneytools.com">hello@contractormoneytools.com</a>
+      </div>
+    </div>
+    <p class="footer-bottom">© 2026 Contractor Money Tools.</p>
   </div>
 </footer>

@@ -10,7 +10,7 @@
 .guide-meta time { font-family: var(--font-number); font-variant-numeric: tabular-nums; }
 .guide-type-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 1rem; color: var(--muted); font-family: var(--font-number); font-size: .7rem; letter-spacing: .08em; }
 .guide-type-meta .eyebrow { margin-bottom: 0; }
-.guide-body { border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); padding: 1.25rem; box-shadow: var(--shadow-card); }
+.guide-body { border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); padding: 1.25rem; box-shadow: var(--shadow-card); }
 .guide-body > p:first-child { color: var(--navy-deep); font-size: 1.15rem; }
 .guide-body h2 { margin-top: 2.5rem; }
 .guide-body h3 { margin-top: 1.75rem; font-size: 1.15rem; }

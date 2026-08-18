@@ -54,13 +54,45 @@ const calculators = [
     href: '/calculators/job-profit',
   },
 ];
+const guides = [
+  {
+    topic: 'Billable time',
+    title: 'Billable vs Non-Billable Hours for Contractors',
+    description: 'Learn what counts as billable time, how to measure billable utilization, and why realistic billable capacity matters.',
+    href: '/guides/billable-vs-non-billable-hours-contractors/',
+  },
+  {
+    topic: 'Labor pricing',
+    title: 'How to Use Labor Burden in Construction Estimates and Job Pricing',
+    description: 'Learn how to apply an already-calculated productive-hour labor cost in estimates, bids, change orders, and job-cost reviews.',
+    href: '/guides/labor-burden-construction-estimates/',
+  },
+  {
+    topic: 'Hiring costs',
+    title: 'Cost to Hire an Employee for Small Contractors',
+    description: 'Plan for recruiting, onboarding, setup, training, and ramp-up costs when bringing a new employee into the business.',
+    href: '/guides/cost-to-hire-an-employee/',
+  },
+  {
+    topic: 'Overhead',
+    title: 'How to Allocate Overhead to Construction Jobs',
+    description: 'Choose between labor hours, labor dollars, direct costs, and revenue, then apply the selected recovery rate to jobs.',
+    href: '/guides/how-to-allocate-overhead-to-construction-jobs/',
+  },
+  {
+    topic: 'Job costing',
+    title: 'Estimated vs Actual Job Costs: How Contractors Find Profit Leaks',
+    description: 'Diagnose job-cost variances, identify labor, material, revenue, and overhead causes, and correct the relevant inputs in future estimates.',
+    href: '/guides/estimated-vs-actual-job-costs/',
+  },
+];
 ---
 
 <SiteLayout title={pageTitle} description={pageDescription}>
   <section class="hero home-hero" aria-labelledby="home-title">
     <div class="hero-content">
       <p class="eyebrow">Practical business planning</p>
-      <h1 id="home-title">Free Money Tools for Contractors</h1>
+      <h1 id="home-title"><span>Know What the Job Is</span> <span class="hero-title-accent">Worth Before You Bid.</span></h1>
       <p class="hero-copy">
         Contractor Money Tools helps U.S. contractors and home-service business owners understand labor cost,
         employee cost, hourly pricing, and profitability.
@@ -108,6 +140,28 @@ const calculators = [
       <li><span>Business overhead and recovery</span><a href="/calculators/contractor-overhead">Use Contractor Overhead</a></li>
       <li><span>Estimated versus actual job performance</span><a href="/calculators/job-profit">Use Job Profit &amp; Costing</a></li>
     </ul>
+  </section>
+
+  <section class="page-section guides-discovery" aria-labelledby="guides-title">
+    <div class="section-intro guides-heading">
+      <div>
+        <p class="eyebrow">Field notes</p>
+        <h2 id="guides-title">Practical guides for better inputs and decisions</h2>
+      </div>
+      <a class="section-link" href="/guides/">View all guides <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="editorial-list">
+      {guides.map((guide) => (
+        <article class="editorial-card">
+          <p class="guide-topic">{guide.topic}</p>
+          <div>
+            <h3>{guide.title}</h3>
+            <p>{guide.description}</p>
+          </div>
+          <a href={guide.href}>Read guide <span aria-hidden="true">→</span></a>
+        </article>
+      ))}
+    </div>
   </section>
 
   <section class="page-section trust-section" aria-labelledby="why-title">
