@@ -1,35 +1,42 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import CalculatorCard from '../../components/calculators/CalculatorCard.astro';
 
 const pageTitle = 'Contractor Calculators | Contractor Money Tools';
 const pageDescription = 'Browse free contractor calculators for labor cost, employee cost, business overhead, hourly billing rates, and job markup.';
 const calculators = [
   {
+    serial: 'CMT-01', category: 'Labor',
     title: 'Labor Burden Calculator',
     description: 'Estimate what an employee really costs per productive hour after wage-based burden, annual costs, and paid nonproductive time.',
     href: '/calculators/labor-burden',
   },
   {
+    serial: 'CMT-02', category: 'Labor',
     title: 'True Employee Cost Calculator',
     description: 'Estimate the full annual employer cost of an hourly or salaried employee, including benefits and operating support costs.',
     href: '/calculators/true-employee-cost',
   },
   {
+    serial: 'CMT-03', category: 'Pricing',
     title: 'Contractor Hourly Rate Calculator',
     description: 'Calculate a break-even rate and recommended billing rate from owner compensation, overhead, billable hours, and target margin.',
     href: '/calculators/contractor-hourly-rate',
   },
   {
+    serial: 'CMT-04', category: 'Pricing',
     title: 'Contractor Markup Calculator',
     description: 'Apply markup to job cost, calculate a selling price from target margin, or check the markup and margin in a proposed price.',
     href: '/calculators/contractor-markup',
   },
   {
+    serial: 'CMT-05', category: 'Overhead',
     title: 'Contractor Overhead Calculator',
     description: 'Calculate annual contractor overhead, then view the same cost as a percentage of revenue or per labor dollar, direct-cost dollar, or productive field hour.',
     href: '/calculators/contractor-overhead',
   },
   {
+    serial: 'CMT-06', category: 'Job costing',
     title: 'Contractor Job Profit & Costing Calculator',
     description: 'Compare estimated and actual revenue, direct job costs, allocated overhead, Job Profit, Job Margin, and variances to see where a job changed.',
     href: '/calculators/job-profit',
@@ -48,11 +55,7 @@ const calculators = [
     <h2 id="calculator-directory-title" class="visually-hidden">Available contractor calculators</h2>
     <div class="card-grid">
       {calculators.map((calculator) => (
-        <article class="tool-card directory-card">
-          <h3>{calculator.title}</h3>
-          <p>{calculator.description}</p>
-          <a class="card-link" href={calculator.href}>Open calculator <span aria-hidden="true">→</span></a>
-        </article>
+        <CalculatorCard {...calculator} />
       ))}
     </div>
   </section>

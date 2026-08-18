@@ -26,6 +26,7 @@ const input = (side: 'estimated' | 'actual', row: typeof rows[number]) => {
 <CalculatorPageLayout title={pageTitle} description={pageDescription}>
   <Fragment slot="calculator">
     <header class="page-intro">
+      <div class="calculator-meta"><span class="calculator-serial">CMT-06</span><span class="calculator-category">Job costing</span></div>
       <p class="eyebrow">Estimated vs actual job costing</p>
       <h1>Contractor Job Profit &amp; Costing Calculator</h1>
       <p>Compare what you expected with what actually happened across revenue, direct job costs, allocated overhead, Job Profit, and Job Margin.</p>
@@ -423,13 +424,13 @@ const input = (side: 'estimated' | 'actual', row: typeof rows[number]) => {
   .comparison-row:first-of-type { border-top: 0; }
   .category-label { color: var(--navy-deep); font-weight: 800; }
   .input-helper, .contribution-help { margin: .75rem 0 0; color: var(--muted); font-size: .88rem; }
-  .neutral-result { min-height: 0; background: var(--navy); }
+  .neutral-result { min-height: 0; background-color: var(--navy); }
   .neutral-result h2, #cost-only-result h2 { position: relative; z-index: 1; color: var(--white); }
   .neutral-result p:last-child, #cost-only-result p:last-child { position: relative; z-index: 1; margin-bottom: 0; color: #d7e3e7; }
   .hero-label { position: relative; z-index: 1; margin-bottom: .2rem; color: var(--white); font-size: 1rem; }
-  .hero-value { position: relative; z-index: 1; margin: 0 0 .7rem; color: #ffc56d; font-size: clamp(2.5rem, 11vw, 4.4rem); font-weight: 850; line-height: 1; overflow-wrap: anywhere; }
+  .hero-value { position: relative; z-index: 1; margin: 0 0 .7rem; color: var(--amber); font-family: var(--font-number); font-size: clamp(2.5rem, 11vw, 4.4rem); font-weight: 850; font-variant-numeric: tabular-nums; letter-spacing: -.06em; line-height: 1; overflow-wrap: anywhere; }
   .hero-margin, .hero-interpretation, .profit-guardrail { position: relative; z-index: 1; }
-  .hero-margin { font-size: 1.1rem; }.hero-margin strong { color: #ffc56d; }
+  .hero-margin { font-size: 1.1rem; }.hero-margin strong { color: var(--amber); font-family: var(--font-number); }
   .hero-interpretation { font-weight: 700; }
   .profit-guardrail { margin-bottom: 0; border-left: 3px solid #8ed9d1; padding-left: .75rem; color: #d7e3e7; font-size: .85rem; }
   .side-grid, .variance-grid, .example-columns { display: grid; gap: 1rem; margin-top: 1rem; }

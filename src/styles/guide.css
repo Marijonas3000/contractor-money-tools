@@ -3,10 +3,14 @@
 .guide-breadcrumb li:not(:last-child)::after { margin-left: .35rem; color: #89969d; content: "→"; }
 .guide-breadcrumb a { color: var(--navy-deep); font-weight: 700; }
 .guide-article { max-width: 54rem; }
-.guide-header { margin-bottom: 2rem; }
+.guide-header { position: relative; margin-bottom: 2rem; border-bottom: 1px dashed var(--line-strong); padding-bottom: 1.25rem; }
+.guide-header::after { position: absolute; bottom: -1px; left: 0; width: 5rem; height: 2px; background: var(--teal); content: ""; }
 .guide-header h1 { max-width: 50rem; }
 .guide-meta { margin-bottom: 0; color: var(--muted); font-size: .9rem; }
-.guide-body { border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); padding: 1.25rem; box-shadow: 0 .4rem 1.4rem rgb(13 38 53 / 5%); }
+.guide-meta time { font-family: var(--font-number); font-variant-numeric: tabular-nums; }
+.guide-type-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 1rem; color: var(--muted); font-family: var(--font-number); font-size: .7rem; letter-spacing: .08em; }
+.guide-type-meta .eyebrow { margin-bottom: 0; }
+.guide-body { border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper); padding: 1.25rem; box-shadow: var(--shadow-card); }
 .guide-body > p:first-child { color: var(--navy-deep); font-size: 1.15rem; }
 .guide-body h2 { margin-top: 2.5rem; }
 .guide-body h3 { margin-top: 1.75rem; font-size: 1.15rem; }
@@ -16,7 +20,7 @@
 .guide-body blockquote { margin: 1.25rem 0; border-left: 3px solid var(--teal); padding: .25rem 0 .25rem 1rem; color: var(--navy-deep); font-weight: 700; }
 .guide-body blockquote p { margin: 0; }
 .guide-body a { font-weight: 750; }
-.guide-formula { border-left: 3px solid var(--teal); padding-left: 1rem; color: var(--navy-deep); }
+.guide-formula { border-left: 3px solid var(--amber); background: #fff9e8; padding: .7rem 1rem; color: var(--navy-deep); font-family: var(--font-number); }
 .guide-table-region { overflow-x: auto; margin-block: 1.25rem; border: 1px solid var(--line); border-radius: .65rem; }
 .guide-table-region:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
 .guide-body table { width: 100%; min-width: 38rem; border-collapse: collapse; }

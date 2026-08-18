@@ -10,6 +10,7 @@ const pageDescription = 'Turn contractor job cost into a selling price using mar
 <CalculatorPageLayout title={pageTitle} description={pageDescription}>
   <Fragment slot="calculator">
     <header class="page-intro">
+      <div class="calculator-meta"><span class="calculator-serial">CMT-04</span><span class="calculator-category">Pricing</span></div>
       <p class="eyebrow">Contractor job pricing</p>
       <h1>Contractor Markup Calculator</h1>
       <p>
@@ -415,14 +416,6 @@ const pageDescription = 'Turn contractor job cost into a selling price using mar
 </CalculatorPageLayout>
 
 <style>
-  .selector-fieldset { margin: 0 0 1rem; border: 0; padding: 0; }
-  .selector-fieldset legend { margin-bottom: .4rem; color: var(--navy-deep); font-size: .88rem; font-weight: 750; }
-  .segmented-control { display: grid; gap: .3rem; border-radius: .65rem; background: #e9edef; padding: .25rem; }
-  .segmented-control label { position: relative; cursor: pointer; }
-  .segmented-control input { position: absolute; opacity: 0; pointer-events: none; }
-  .segmented-control span { display: block; border-radius: .45rem; padding: .65rem .75rem; color: var(--muted); font-weight: 750; text-align: center; }
-  .segmented-control input:checked + span { background: var(--white); color: var(--navy-deep); box-shadow: 0 1px 4px rgb(13 38 53 / 12%); }
-  .segmented-control input:focus-visible + span { outline: 3px solid var(--amber); outline-offset: 2px; }
   .calculation-modes { grid-template-columns: 1fr; }
   .cost-modes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cost-selector { margin-top: 1.1rem; border-top: 1px solid var(--line); padding-top: 1rem; }
@@ -436,9 +429,9 @@ const pageDescription = 'Turn contractor job cost into a selling price using mar
   .mode-inputs { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: 1rem; }
   .result-stack { display: grid; gap: 1rem; }
   .selling-result { min-height: 0; }
-  .selling-price { position: relative; z-index: 1; margin: .25rem 0 1rem; color: #ffc56d; font-size: clamp(2.4rem, 10vw, 4rem); font-weight: 850; line-height: 1; overflow-wrap: anywhere; }
+  .selling-price { position: relative; z-index: 1; margin: .25rem 0 1rem; color: var(--amber); font-family: var(--font-number); font-size: clamp(2.4rem, 10vw, 4rem); font-weight: 850; font-variant-numeric: tabular-nums; letter-spacing: -.06em; line-height: 1; overflow-wrap: anywhere; }
   .result-summary { position: relative; z-index: 1; margin-bottom: 0; color: var(--white); font-size: clamp(1.1rem, 4vw, 1.45rem); line-height: 1.35; }
-  .result-summary strong { color: #ffc56d; }
+  .result-summary strong { color: var(--amber); font-family: var(--font-number); }
   .below-cost-warning { position: relative; z-index: 1; margin: 1rem 0 0; border-left: 3px solid #ffc56d; padding-left: .75rem; color: #fff2dc; font-weight: 750; }
   .below-cost-result { border-color: #b67a36; background: #49351f; }
   .use-case-section { max-width: 54rem; }

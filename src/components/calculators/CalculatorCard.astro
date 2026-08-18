@@ -1,0 +1,32 @@
+---
+interface Props {
+  serial: string;
+  category: string;
+  title: string;
+  question?: string;
+  description: string;
+  href: string;
+  actionLabel?: string;
+}
+
+const {
+  serial,
+  category,
+  title,
+  question,
+  description,
+  href,
+  actionLabel = 'Open calculator',
+} = Astro.props;
+---
+
+<article class="tool-card work-order-card">
+  <div class="work-order-meta" aria-label={`${serial}, ${category}`}>
+    <span class="calculator-serial">{serial}</span>
+    <span class="calculator-category">{category}</span>
+  </div>
+  <h3>{title}</h3>
+  {question && <p class="card-question">{question}</p>}
+  <p>{description}</p>
+  <a class="card-link" href={href}>{actionLabel} <span aria-hidden="true">→</span></a>
+</article>

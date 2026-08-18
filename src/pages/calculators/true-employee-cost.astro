@@ -9,6 +9,7 @@ const pageDescription =
 
 <CalculatorPageLayout title={pageTitle} description={pageDescription}>
   <Fragment slot="calculator">      <header class="page-intro">
+        <div class="calculator-meta"><span class="calculator-serial">CMT-02</span><span class="calculator-category">Labor</span></div>
         <p class="eyebrow">Employee cost planning</p>
         <h1>True Employee Cost Calculator</h1>
         <p>
@@ -113,6 +114,7 @@ const pageDescription =
           <section class="result-card" aria-labelledby="primary-result-title" aria-live="polite">
             <p class="step">Estimated annual cost</p>
             <div data-primary-valid>
+              <p class="result-label">Total annual employee cost</p>
               <h2 id="primary-result-title" class="result-statement">
                 Your <strong data-output="compensationDescription">$30/hour</strong>{' '}
                 employee costs about{' '}
@@ -438,14 +440,7 @@ const pageDescription =
 </CalculatorPageLayout>
 
 <style>
-  .mode-fieldset { margin: 0 0 1rem; border: 0; padding: 0; }
-  .mode-fieldset legend { margin-bottom: .4rem; color: var(--navy-deep); font-size: .88rem; font-weight: 750; }
   .mode-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem; border-radius: .65rem; background: #e9edef; padding: .25rem; }
-  .mode-toggle label { position: relative; cursor: pointer; }
-  .mode-toggle input { position: absolute; opacity: 0; pointer-events: none; }
-  .mode-toggle span { display: block; border-radius: .45rem; padding: .65rem 1rem; color: var(--muted); font-weight: 750; text-align: center; }
-  .mode-toggle input:checked + span { background: var(--white); color: var(--navy-deep); box-shadow: 0 1px 4px rgb(13 38 53 / 12%); }
-  .mode-toggle input:focus-visible + span { outline: 3px solid var(--amber); outline-offset: 2px; }
   .input-group + .input-group { margin-top: 1rem; border-top: 1px solid var(--line); padding-top: 1rem; }
   .secondary-result { position: relative; z-index: 1; max-width: 30rem; margin: 1.25rem 0 0; color: #cad6dc; font-size: 1.05rem; }
   .revenue-copy > p { color: var(--muted); margin-bottom: 1rem; }

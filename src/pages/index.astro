@@ -1,40 +1,53 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import CalculatorCard from '../components/calculators/CalculatorCard.astro';
 
 const pageTitle = 'Free Money Tools for Contractors | Contractor Money Tools';
 const pageDescription = 'Free calculators that help U.S. contractors understand labor costs, employee costs, overhead, hourly pricing, and job markup.';
 const calculators = [
   {
+    serial: 'CMT-01',
+    category: 'Labor',
     title: 'Labor Burden Calculator',
     question: 'What does an employee really cost per productive hour?',
     description: 'Add wage-based costs, benefits, and paid nonproductive time to estimate true productive-hour cost.',
     href: '/calculators/labor-burden',
   },
   {
+    serial: 'CMT-02',
+    category: 'Labor',
     title: 'True Employee Cost Calculator',
     question: 'What does an employee really cost my business per year?',
     description: 'Estimate the full annual employer cost of an hourly or salaried employee beyond base pay.',
     href: '/calculators/true-employee-cost',
   },
   {
+    serial: 'CMT-03',
+    category: 'Pricing',
     title: 'Contractor Hourly Rate Calculator',
     question: 'How much should I charge per billable hour?',
     description: 'Turn owner compensation, overhead, billable hours, and a target margin into a practical billing rate.',
     href: '/calculators/contractor-hourly-rate',
   },
   {
+    serial: 'CMT-04',
+    category: 'Pricing',
     title: 'Contractor Markup Calculator',
     question: 'I know what the job costs. What selling price do I get after markup?',
     description: 'Turn an itemized or total job cost into a selling price, or work backward from target margin or a proposed price.',
     href: '/calculators/contractor-markup',
   },
   {
+    serial: 'CMT-05',
+    category: 'Overhead',
     title: 'Contractor Overhead Calculator',
     question: 'What does it cost to keep my business running, and how can that overhead be recovered?',
     description: 'Total annual company overhead and view it by revenue, direct labor, direct job cost, or productive field hours.',
     href: '/calculators/contractor-overhead',
   },
   {
+    serial: 'CMT-06',
+    category: 'Job costing',
     title: 'Contractor Job Profit & Costing Calculator',
     question: 'Did this job perform as expected, and where did the difference come from?',
     description: 'Compare estimated and actual revenue, direct job costs, allocated overhead, Job Profit, Job Margin, and variances.',
@@ -44,17 +57,29 @@ const calculators = [
 ---
 
 <SiteLayout title={pageTitle} description={pageDescription}>
-  <section class="hero" aria-labelledby="home-title">
-    <p class="eyebrow">Practical business planning</p>
-    <h1 id="home-title">Free Money Tools for Contractors</h1>
-    <p class="hero-copy">
-      Contractor Money Tools helps U.S. contractors and home-service business owners understand labor cost,
-      employee cost, hourly pricing, and profitability.
-    </p>
-    <div class="button-row">
-      <a class="button button-primary" href="/calculators/">Explore Calculators</a>
-      <a class="button button-secondary" href="/calculators/contractor-hourly-rate">Calculate Your Hourly Rate</a>
+  <section class="hero home-hero" aria-labelledby="home-title">
+    <div class="hero-content">
+      <p class="eyebrow">Practical business planning</p>
+      <h1 id="home-title">Free Money Tools for Contractors</h1>
+      <p class="hero-copy">
+        Contractor Money Tools helps U.S. contractors and home-service business owners understand labor cost,
+        employee cost, hourly pricing, and profitability.
+      </p>
+      <div class="button-row">
+        <a class="button button-primary" href="/calculators/">Explore Calculators</a>
+        <a class="button button-secondary" href="/calculators/contractor-hourly-rate">Calculate Your Hourly Rate</a>
+      </div>
     </div>
+    <aside class="hero-sample blueprint-grid" aria-label="Illustrative contractor hourly rate example">
+      <div class="work-order-meta">
+        <span class="calculator-serial">CMT-03</span>
+        <span class="calculator-category">Pricing · Illustrative example</span>
+      </div>
+      <p class="sample-question">What should I charge?</p>
+      <p class="sample-formula">Labor + overhead + target margin</p>
+      <p class="sample-result"><span>$87.40</span> <small>/ HR</small></p>
+      <p class="sample-truth">Illustrative example — not a benchmark. Your result depends on your business inputs.</p>
+    </aside>
   </section>
 
   <section class="page-section" aria-labelledby="live-calculators-title">
@@ -65,12 +90,7 @@ const calculators = [
     </div>
     <div class="card-grid">
       {calculators.map((calculator) => (
-        <article class="tool-card">
-          <h3>{calculator.title}</h3>
-          <p class="card-question">{calculator.question}</p>
-          <p>{calculator.description}</p>
-          <a class="card-link" href={calculator.href}>Open calculator <span aria-hidden="true">→</span></a>
-        </article>
+        <CalculatorCard {...calculator} />
       ))}
     </div>
   </section>
@@ -80,7 +100,7 @@ const calculators = [
       <p class="eyebrow">Choose the right tool</p>
       <h2 id="choose-title">Match the calculator to your decision</h2>
     </div>
-    <ul class="decision-list">
+    <ul class="decision-list decision-board">
       <li><span>True productive labor cost</span><a href="/calculators/labor-burden">Use Labor Burden</a></li>
       <li><span>Total annual employee cost</span><a href="/calculators/true-employee-cost">Use True Employee Cost</a></li>
       <li><span>What to charge customers</span><a href="/calculators/contractor-hourly-rate">Use Contractor Hourly Rate</a></li>
