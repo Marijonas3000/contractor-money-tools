@@ -1,6 +1,6 @@
 # Contractor Money Tools — Near-Term Roadmap
 
-Status date: 2026-08-16
+Status date: 2026-08-22
 
 ## Current state
 
@@ -20,17 +20,19 @@ Status date: 2026-08-16
 - Gusto — declined; manual reassessment requested; follow-up sent 2026-08-17.
 - Patriot Software — declined; reconsideration requested; follow-up sent 2026-08-17.
 - National Funding — application pending; follow-up sent 2026-08-17.
-- FreshBooks — application submitted; pending review.
-- ServiceTitan — eligibility clarification email sent; WAIT.
-- QuickBooks / CJ — CJ publisher onboarding completed and Intuit application submitted; pending advertiser review.
+- FreshBooks — application remains pending in PartnerStack; PartnerStack business profile/account setup completed; follow-up sent through PartnerStack Messages on 2026-08-22.
+- ServiceTitan — original eligibility clarification sent 2026-08-12; no response received by the checkpoint; follow-up sent 2026-08-22.
+- QuickBooks / CJ — CJ support replied 2026-08-14; final Intuit confirmation regarding eligibility of a Lithuanian/EU publisher remains unresolved.
 
 ## Current SEO / validation signal
 
 - Google is indexing and showing CMT pages.
 - All 6 calculators are receiving impressions.
-- About 89% of impressions are from the United States.
+- 7-day GSC impressions: 345; clicks: 0; average position: 78.4 as of 2026-08-22.
+- Approximately 89% of impressions are from the United States.
 - Query relevance is good.
-- Ranking authority is still weak; no Top 50 queries yet as of 2026-08-16.
+- Best visible query position remains outside Top 50; `employee cost calculator` is approximately 64.6.
+- Ranking authority is still weak; no Top 50 query yet as of 2026-08-22.
 - Organic traffic is still very low.
 - GA4 engagement sample is too small to evaluate reliably.
 
@@ -80,22 +82,29 @@ Do not follow up yet with:
 
 ## 2026-08-20 to 2026-08-21 — Thursday/Friday checkpoint
 
-Review affiliate inbox.
+COMPLETED 2026-08-22:
 
-If still no response:
-- follow up FreshBooks
-- follow up ServiceTitan
-
-QuickBooks / CJ:
-- only follow up if advertiser review has clearly stalled or a stated normal review window has passed.
+Affiliate:
+- [x] Affiliate inbox reviewed.
+- [x] FreshBooks follow-up completed through PartnerStack Messages.
+- [x] ServiceTitan follow-up completed.
+- [x] QuickBooks / CJ reviewed; no new follow-up required because CJ had already responded and final Intuit eligibility remains unresolved.
 
 Authority outreach:
-- no second wave yet unless an editor explicitly requests a different contact/process.
+- [x] No Authority Wave 2 launched.
+- [x] No second-wave authority outreach was required at this checkpoint.
 
 SEO:
-- observe GSC only;
-- do not rewrite titles/meta because rankings are still too low for CTR analysis;
-- record whether any query has entered Top 50.
+- [x] Observed GSC only.
+- [x] Did not rewrite titles/meta because rankings are still too low for CTR analysis.
+- [x] Recorded whether any query entered Top 50 — none yet as of 2026-08-22.
+- 7-day impressions: 345.
+- Clicks: 0.
+- Average position: 78.4.
+- Approximately 89% of impressions are from the United States.
+- Query relevance remains good.
+- All 6 calculators are receiving impressions.
+- Best visible query remains outside Top 50; `employee cost calculator` is approximately 64.6.
 
 ## 2026-08-24 to 2026-08-25 — Affiliate decision checkpoint
 
