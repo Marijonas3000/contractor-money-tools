@@ -1,6 +1,6 @@
 # Contractor Money Tools — Near-Term Roadmap
 
-Status date: 2026-08-22
+Status date: 2026-08-24
 
 ## Current state
 
@@ -22,7 +22,9 @@ Status date: 2026-08-22
 - National Funding — application pending; follow-up sent 2026-08-17.
 - FreshBooks — application remains pending in PartnerStack; PartnerStack business profile/account setup completed; follow-up sent through PartnerStack Messages on 2026-08-22.
 - ServiceTitan — original eligibility clarification sent 2026-08-12; no response received by the checkpoint; follow-up sent 2026-08-22.
-- QuickBooks / CJ — CJ support replied 2026-08-14; final Intuit confirmation regarding eligibility of a Lithuanian/EU publisher remains unresolved.
+- QuickBooks / CJ — declined 2026-08-21; no specific reason given; CJ account remains active and correctly configured for UAB Metta; W-8BEN-E and payout setup completed successfully; HOLD / WAIT UNTIL MEANINGFUL TRAFFIC before reconsidering or reapplying.
+  - The rejection does not establish whether the blocker was Lithuanian/EU entity status, low traffic/site age, or another internal publisher criterion.
+  - Do not delete or close the CJ account.
 
 ## Current SEO / validation signal
 
@@ -88,7 +90,7 @@ Affiliate:
 - [x] Affiliate inbox reviewed.
 - [x] FreshBooks follow-up completed through PartnerStack Messages.
 - [x] ServiceTitan follow-up completed.
-- [x] QuickBooks / CJ reviewed; no new follow-up required because CJ had already responded and final Intuit eligibility remains unresolved.
+- [x] QuickBooks / CJ reviewed; application declined 2026-08-21 without a specific reason; CJ account remains active; hold until meaningful traffic before reconsidering.
 
 Authority outreach:
 - [x] No Authority Wave 2 launched.
