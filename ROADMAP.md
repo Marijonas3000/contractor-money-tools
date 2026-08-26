@@ -1,6 +1,6 @@
 # Contractor Money Tools — Near-Term Roadmap
 
-Status date: 2026-08-24
+Status date: 2026-08-26
 
 ## Current state
 
@@ -129,19 +129,14 @@ Paid advertising remains OFF until:
 - tracking is working;
 - the monetized funnel is live.
 
-### If still ZERO approvals
+### Affiliate Wave 2 — HOLD
 
-Launch Affiliate Wave 2 with only 2 new partners.
+Affiliate Wave 2 remains **HOLD** while CMT has negligible real traffic.
 
-Priority Wave 2 candidates:
-1. ERGO NEXT — business insurance / workers comp
-2. Housecall Pro — field service / contractor software
-
-Possible next candidates after those:
-- Xero
-- one additional contractor-specific or insurance partner
-
-Do not submit to 10+ programs at once.
+- Do not apply to additional affiliate programs just to increase the pipeline.
+- Existing affiliate applications / clarifications remain event-driven.
+- If an existing partner approves CMT, Strategy may activate one controlled RecommendationSlot test.
+- Paid advertising remains OFF until at least one suitable partner is approved and a monetized funnel is live.
 
 ## 2026-08-26 to 2026-08-28 — Authority Sprint follow-up
 
@@ -187,6 +182,8 @@ Do not change the 2026-09-08 pre-committed scorecard.
 ## 2026-09-08 — Full 30-day CMT performance review
 
 Use the canonical PROJECT_STATE.md scorecard.
+
+This remains a measurement checkpoint against the pre-committed PROJECT_STATE.md scorecard. It is not necessarily a go/no-go decision for the entire CMT project.
 
 Review:
 
@@ -239,6 +236,27 @@ Acquisition GREEN + Engagement RED:
 
 Acquisition + Engagement GREEN + Monetization RED:
 - test higher-value lead generation and lightweight paid utility.
+
+## 2026-10-08 — 60-day performance review
+
+Review:
+
+- GSC total impressions and clicks;
+- best and average rankings;
+- number of queries in Top 50 / Top 20;
+- US traffic share;
+- pages gaining meaningful visibility;
+- GA4 real-user calculator starts/completions/navigation;
+- authority outreach results and live citations/backlinks;
+- affiliate approvals/rejections and reasons;
+- whether traffic is now sufficient to justify Affiliate Wave 2;
+- whether Calculator #7 / additional content should remain HOLD or resume.
+
+Decision principle:
+
+- Affiliate Wave 2 is justified only if there is meaningful relevant traffic to monetize or a specific partner opportunity that Strategy explicitly approves.
+- If rankings are still mostly around 60–90 and real traffic remains negligible, do not solve that by submitting more affiliate applications or building more calculators.
+- Focus instead on authority/distribution and evidence from the pages already live.
 
 ---
 
