@@ -1,6 +1,6 @@
 # Contractor Money Tools — Near-Term Roadmap
 
-Status date: 2026-08-26
+Status date: 2026-08-31
 
 ## Current state
 
@@ -20,7 +20,9 @@ Status date: 2026-08-26
 - Gusto — declined; manual reassessment requested; follow-up sent 2026-08-17.
 - Patriot Software — declined; reconsideration requested; follow-up sent 2026-08-17.
 - National Funding — application pending; follow-up sent 2026-08-17.
-- FreshBooks — application remains pending in PartnerStack; PartnerStack business profile/account setup completed; follow-up sent through PartnerStack Messages on 2026-08-22.
+- FreshBooks — declined 2026-08-30; reason: "Not a fit at this time - thanks!"; no specific structural LT/EU publisher blocker identified; HOLD UNTIL MEANINGFUL TRAFFIC before reapplying.
+  - The rejection does not establish whether the blocker was site age, low traffic, publisher fit, or another internal criterion.
+  - PartnerStack indicates the program can be re-applied to later; do not follow up with FreshBooks now.
 - ServiceTitan — original eligibility clarification sent 2026-08-12; no response received by the checkpoint; follow-up sent 2026-08-22.
 - QuickBooks / CJ — declined 2026-08-21; no specific reason given; CJ account remains active and correctly configured for UAB Metta; W-8BEN-E and payout setup completed successfully; HOLD / WAIT UNTIL MEANINGFUL TRAFFIC before reconsidering or reapplying.
   - The rejection does not establish whether the blocker was Lithuanian/EU entity status, low traffic/site age, or another internal publisher criterion.
